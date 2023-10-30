@@ -7,6 +7,7 @@ public interface User {
     String getPassword();
     HashMap<String, TransactionHistory> getHistory();
     void updatePortfolio(String ticker, Double amount);
+    void removePortfolio(String ticker);
     Double getStockOwned(String ticker);
     boolean hasStock(String ticker);
     boolean hasEnough(Double amount);

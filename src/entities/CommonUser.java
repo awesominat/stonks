@@ -11,11 +11,10 @@ public class CommonUser implements User {
     private Double balance;
 
     public void updatePortfolio(String ticker, Double amount) {
-        if (amount == 0) {
-            portfolio.remove(ticker);
-            return;
-        }
         portfolio.put(ticker, amount);
+    }
+    public void removePortfolio(String ticker) {
+        portfolio.remove(ticker);
     }
     public Double getStockOwned(String ticker) {
         return portfolio.get(ticker);
