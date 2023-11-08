@@ -46,6 +46,6 @@ public class ResetBalanceView extends JPanel implements ActionListener, Property
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Ricky
+        ;
     }
 }
