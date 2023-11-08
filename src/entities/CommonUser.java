@@ -10,12 +10,18 @@ public class CommonUser implements User {
     private final HashMap<String, TransactionHistory> history;
     private Double balance;
 
-    public void updatePortfolio(String ticker, Double amount) {
+    public void addToPortfolio(String ticker, Double amount) {
         portfolio.put(ticker, amount);
     }
-    public void removePortfolio(String ticker) {
+    public void removeFromPortfolio(String ticker) {
         portfolio.remove(ticker);
     }
+
+    @Override
+    public Boolean isInPortfolio(String ticker) {
+        return portfolio.containsKey(ticker);
+    }
+
     public Double getStockOwned(String ticker) {
         return portfolio.get(ticker);
     }
