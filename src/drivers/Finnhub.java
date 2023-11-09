@@ -17,8 +17,6 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO
-// code the code using okhttp to necessary information about the stocks
 public class Finnhub implements APIAccessInterface {
     String APIKEY;  // Question: should this be private or static or final or some combination of these things?
     int NUM_ARTICLES = 5;
@@ -26,12 +24,6 @@ public class Finnhub implements APIAccessInterface {
 
     public Finnhub() {
         File f = new File("file.txt");
-        if(!f.exists()) {
-            // do something
-            System.out.println("please create a file in the src parent directory called file.txt with your Finnhub token");
-            // Question: should we be throwing FileNotFoundException here?
-            return;
-        }
         FileReader fileReader = new FileReader();
         InputStream inputStream = null;
         try {
@@ -39,7 +31,7 @@ public class Finnhub implements APIAccessInterface {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        // Set constant attribute `APIKEY` of Finnhub object to your API key
+        // Set constant attribute `APIKEY` of Finnhub object to your personal API key
         APIKEY = fileReader.readFromInputStream(inputStream);
     }
 
