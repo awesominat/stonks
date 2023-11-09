@@ -5,7 +5,7 @@
 1. Clone the repository using any CLI with git installed using "git clone https://github.com/awesominat/stonks.git" (alternatively, you can download the repo)
 2. Install all necessary packages (OkHttp, json)
 3. Create an account over on [Finnhub](finnhub.io) and copy your API key
-4. Create a file called file.txt and insert the key and nothing else (no spaces)
+4. Create a file called file.txt in the root directory and insert the key and nothing else (no spaces)
 5. Open src/app/main, and run the file
 
 ## General Description
