@@ -10,9 +10,10 @@ public class SellPresenter implements SellOutputBoundary {
     private final ViewManagerModel viewManagerModel;
 
     public SellPresenter(ViewManagerModel viewManagerModel,
-                         SellViewModel sellViewModel) {
+                         SellViewModel sellViewModel, PortfolioViewModel portfolioViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.sellViewModel = sellViewModel;
+        this.portfolioViewModel = portfolioViewModel;
     }
 
     @Override
