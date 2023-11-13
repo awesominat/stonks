@@ -41,7 +41,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
         Transaction transaction = new BuyTransaction(amount, new PricePoint(LocalDate.now(), currentPrice));
 
-        user.updatePortfolio(ticker, amount);
+        super.updatePortfolio(user, ticker, amount);
         super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
         userDataAccessObject.save(user);
 
