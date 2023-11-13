@@ -66,7 +66,7 @@ public class buySellTest {
         lastMonthPrices.add(new PricePoint(LocalDate.now(), 100.0));
 
         User mockUser = new CommonUser("zain", "mypass");
-        mockUser.updatePortfolio("AAPL", 10.0);
+        mockUser.addToPortfolio("AAPL", 10.0);
 
         Mockito.when(userDataAccessObject.get("zain")).thenReturn(mockUser);
 

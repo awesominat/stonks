@@ -25,6 +25,13 @@ public abstract class BaseStockInteractor {
 
         return new TransactionHistory(newStock, transactions);
     }
+    protected void updatePortfolio(User user, String ticker, Double amount) {
+        if (amount == 0 && user.isInPortfolio(ticker)) {
+            user.removeFromPortfolio(ticker);
+        } else {
+            user.addToPortfolio(ticker, amount);
+        }
+    }
 
     protected void addToHistory(HashMap<String, TransactionHistory> userHistory, String ticker,
                                 User user, Double amount, Double currentPrice, Transaction transaction) {

@@ -15,7 +15,20 @@ public class CommonUser implements User {
         return portfolio;
     }
 
-    public void updatePortfolio(String ticker, Double amount) {
+    public void addToPortfolio(String ticker, Double amount) {
+        portfolio.put(ticker, amount);
+    }
+    public void removeFromPortfolio(String ticker) {
+        portfolio.remove(ticker);
+    }
+
+    @Override
+    public Boolean isInPortfolio(String ticker) {
+        return portfolio.containsKey(ticker);
+    }
+
+
+        public void updatePortfolio(String ticker, Double amount) {
         if (amount == 0) {
             portfolio.remove(ticker);
             return;

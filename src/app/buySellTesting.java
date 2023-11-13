@@ -34,7 +34,7 @@ public class buySellTesting {
         userDataAccessObject.save(newUser);
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL", "zain");
-        BuyOutputBoundary buyPresenter = new BuyPrgit esenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
+        BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
         SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
         APIAccessInterface Finnhub = new Finnhub();
 
