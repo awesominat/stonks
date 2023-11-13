@@ -41,3 +41,6 @@ As an aspiring investor who understands the stock market is changing rapidly, I 
 using the fake money in my portfolio and know how much I have profited/lost from what stocks (of what company) as well 
 as how much money my account will have after I sell. These features are so that I can effectively track how well I am 
 progressing in my investment journey.
+
+# Screens and design
+![Screens](stonks-screens.png)
