@@ -17,6 +17,16 @@ public class CompanyNews {
         this.summary = summary;
     }
 
+    public String getCategory() {return category;}
+
+    public LocalDate getDatetime() {return datetime;}
+
+    public String getHeadline() {return headline;}
+
+    public String getUrl() {return url;}
+
+    public String getSummary() {return summary;}
+
     public String toString() {
         return "CompanyNews{\n" +
                 "category='" + this.category + "', \n" +
