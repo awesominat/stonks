@@ -8,6 +8,7 @@ import entities.User;
 import interface_adapters.Buy.BuyOutputBoundary;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
+import interface_adapters.Dashboard.Sell.DashboardViewModel;
 import interface_adapters.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
@@ -18,7 +19,6 @@ import use_cases.Buy.BuyInteractor;
 import use_cases.Sell.SellInputData;
 import use_cases.Sell.SellInteractor;
 import view.BuyView;
-import view.SellView;
 
 import java.io.IOException;
 
@@ -34,8 +34,8 @@ public class buySellTesting {
         userDataAccessObject.save(newUser);
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL", "zain");
-        BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
-        SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellView(new SellViewModel()));
+        BuyOutputBoundary buyPresenter = new BuyPrgit esenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
+        SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
         APIAccessInterface Finnhub = new Finnhub();
 
 
