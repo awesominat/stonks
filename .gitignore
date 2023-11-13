@@ -15,7 +15,7 @@ file.txt
 .idea/**/dictionaries
 .idea/**/shelf
 csc207-project.iml
-users.csv
+# users.csv  # this needs to be a common file now cuz we have only one local user
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -195,6 +195,5 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,java,macos,visualstudiocode,vim
 
-# Stephen's addition #
-# Ignore Stephen's commit executable
-./git-commit.sh
+## Stephen's personal necessity ##
+help.txt
