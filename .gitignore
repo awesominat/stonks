@@ -20,6 +20,8 @@ users.csv
 # AWS User-specific
 .idea/**/aws.xml
 
+target
+
 # Generated files
 .idea/**/contentModel.xml
 
