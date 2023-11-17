@@ -15,7 +15,7 @@ file.txt
 .idea/**/dictionaries
 .idea/**/shelf
 csc207-project.iml
-# users.csv  # this needs to be a common file now cuz we have only one local user
+users.csv  # this still needs to be private apparently
 
 # AWS User-specific
 .idea/**/aws.xml
