@@ -1,7 +1,7 @@
-package main.java.drivers;
+package drivers;
 
-import main.java.entities.CompanyInformation;
-import main.java.entities.CompanyNews;
+import entities.CompanyInformation;
+import entities.CompanyNews;
 import entities.PricePoint;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -9,7 +9,7 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import main.java.use_cases.APIAccessInterface;
+import use_cases.APIAccessInterface;
 
 import java.io.*;
 import java.math.BigDecimal;

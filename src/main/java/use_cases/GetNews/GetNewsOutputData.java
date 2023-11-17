@@ -1,6 +1,6 @@
-package main.java.use_cases.GetNews;
+package use_cases.GetNews;
 
-import main.java.entities.CompanyNews;
+import entities.CompanyNews;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package main.java.use_cases;
+package use_cases;
 
-import main.java.entities.CompanyInformation;
-import main.java.entities.CompanyNews;
+import entities.CompanyInformation;
+import entities.CompanyNews;
 import entities.PricePoint;
 
 import java.time.LocalDate;

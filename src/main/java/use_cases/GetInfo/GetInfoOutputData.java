@@ -1,6 +1,6 @@
-package main.java.use_cases.GetInfo;
+package use_cases.GetInfo;
 
-import main.java.entities.CompanyInformation;
+import entities.CompanyInformation;
 
 import java.util.Map;
 import java.util.HashMap;

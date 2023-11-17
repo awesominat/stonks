@@ -1,7 +1,7 @@
-package main.java.use_cases.GetInfo;
+package use_cases.GetInfo;
 
-import main.java.entities.CompanyInformation;
-import main.java.use_cases.APIAccessInterface;
+import entities.CompanyInformation;
+import use_cases.APIAccessInterface;
 
 public class GetInfoInteractor implements GetInfoInputBoundary {
     GetInfoOutputBoundary getInfoPresenter;
