@@ -1,4 +1,4 @@
-package use_cases.GetNews;
+package main.java.use_cases.GetNews;
 
 public interface GetNewsOutputBoundary {
     void prepareSuccessView(GetNewsOutputData result);

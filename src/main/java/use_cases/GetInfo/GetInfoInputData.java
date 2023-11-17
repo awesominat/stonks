@@ -1,9 +1,9 @@
-package main.java.use_cases.GetNews;
+package main.java.use_cases.GetInfo;
 
-public class GetNewsInputData {
+public class GetInfoInputData {
     public String ticker;
 
-    public GetNewsInputData(String ticker) {
+    public GetInfoInputData(String ticker) {
         this.ticker = ticker;
     }
 

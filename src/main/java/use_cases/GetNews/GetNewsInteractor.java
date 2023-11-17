@@ -1,7 +1,7 @@
-package use_cases.GetNews;
+package main.java.use_cases.GetNews;
 
-import entities.CompanyNews;
-import use_cases.APIAccessInterface;
+import main.java.entities.CompanyNews;
+import main.java.use_cases.APIAccessInterface;
 
 import java.time.LocalDate;
 import java.util.List;
