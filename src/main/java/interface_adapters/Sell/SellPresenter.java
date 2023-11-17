@@ -1,6 +1,6 @@
 package interface_adapters.Sell;
 
-import interface_adapters.Dashboard.Sell.DashboardViewModel;
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.Sell.SellOutputData;
 

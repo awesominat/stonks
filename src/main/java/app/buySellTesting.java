@@ -8,7 +8,7 @@ import entities.User;
 import interface_adapters.Buy.BuyOutputBoundary;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Dashboard.Sell.DashboardViewModel;
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
