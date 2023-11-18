@@ -1,4 +1,4 @@
-package interface_adapters.Dashboard.Sell;
+package interface_adapters.Dashboard;
 
 public class DashboardState {
     private String amountError = null;

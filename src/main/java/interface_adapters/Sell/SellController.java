@@ -10,7 +10,7 @@ public class SellController {
         this.sellInteractor = sellInteractor;
     }
 
-    public void execute(Double amount, String ticker, String username) {
+    public void execute(String amount, String ticker) {
         SellInputData sellInputData = new SellInputData(amount, ticker, username);
         sellInteractor.execute(sellInputData);
     }

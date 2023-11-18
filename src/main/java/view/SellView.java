@@ -1,7 +1,9 @@
 package view;
 
-import interface_adapters.Sell.SellState;
+import interface_adapters.ViewManagerModel;
+import interface_adapters.Sell.SellController;
 import interface_adapters.Sell.SellViewModel;
+import interface_adapters.Sell.SellState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,61 +16,95 @@ import java.beans.PropertyChangeListener;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "Sell Stock";
+    public final String viewName = "sell";
     private final SellViewModel sellViewModel;
+    private final ViewManagerModel viewManagerModel;
 
-    /**
-     * The username chosen by the user
-     */
-    final JTextField amountInputField = new JTextField(15);
-    private final JLabel amountErrorField = new JLabel();
-    /**
-     * The password
-     */
-    final JButton purchase;
-    final JButton cancel;
+    final JComboBox<String> stockInputField = new JComboBox<String>();
+    final JTextField amountInputField = new JTextField(3);
 
-    /**
-     * A window with a title and a JButton.
-     */
-    public SellView(SellViewModel sellViewModel) {
+    final JButton sell;
+    final JButton back;
+    private final SellController sellController;
+
+    public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel) {
+
+        this.sellController = sellController;
+        this.viewManagerModel = viewManagerModel;
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Sell Stock");
+        JLabel title = new JLabel("Sell Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        LabelTextPanel amountInfo = new LabelTextPanel(
-                new JLabel("Username"), amountInputField);
+        JLabel stockSelectionLabel = new JLabel("Select an owned stock");
+        LabelTextPanel stockAmountInfo = new LabelTextPanel(
+                new JLabel("Select amount to sell"), amountInputField);
 
         JPanel buttons = new JPanel();
-        purchase = new JButton(sellViewModel.PURCHASE_BUTTON_LABEL);
-        buttons.add(purchase);
-        cancel = new JButton(sellViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
+        back = new JButton("Back");
+        buttons.add(back);
+        sell = new JButton("Sell Stocks");
+        buttons.add(sell);
 
-        purchase.addActionListener(this);
-        cancel.addActionListener(this);
+        sell.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(sell)) {
+                            SellState currentState = sellViewModel.getState();
 
-        amountInfo.addKeyListener(new KeyListener() {
+                            sellController.execute(
+                                    currentState.getAmount(),
+                                    currentState.getStockSelected()
+                            );
+                        }
+                    }
+                }
+        );
+
+        back.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(back)) {
+                            viewManagerModel.setActiveView("dashboard");
+                            viewManagerModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
+
+        amountInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 SellState currentState = sellViewModel.getState();
-                currentState.setAmount(amountInputField.getText());
+                currentState.setAmount(amountInputField.getText() + e.getKeyChar());
                 sellViewModel.setState(currentState);
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+        stockInputField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SellState currentState = sellViewModel.getState();
+                currentState.setStockSelected(String.valueOf(stockInputField.getSelectedItem()));
+                sellViewModel.setState(currentState);
+            }
         });
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+
         this.add(title);
-        this.add(amountInfo);
-        this.add(amountErrorField);
+        this.add(stockSelectionLabel);
+        this.add(stockInputField);
+        this.add(stockAmountInfo);
         this.add(buttons);
     }
 
@@ -86,7 +122,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
     private void setFields(SellState state) {
-        amountInputField.setText(state.getAmount());
     }
 
 }
