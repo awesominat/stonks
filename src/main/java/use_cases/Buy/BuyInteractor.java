@@ -27,7 +27,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         String ticker = buyInputData.getTicker();
         Double amount = buyInputData.getAmount();
 
-        User user = userDataAccessObject.get(username);
+        User user = userDataAccessObject.get();
 
         Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
 
@@ -43,7 +43,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
         super.updatePortfolio(user, ticker, amount);
         super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
-        userDataAccessObject.save(user);
+        userDataAccessObject.save();
 
         BuyOutputData result = new BuyOutputData(buyInputData.getAmount(), buyInputData.getTicker());
         buyPresenter.prepareSuccessView(result);

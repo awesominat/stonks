@@ -4,8 +4,6 @@ public class finnhubapitesting {
     public static void main(String[] args) {
         System.out.println("hi");
 
-        System.out.println("eventually this will start the swing ui");
-
         String APIKEY = "";
 
 //        File f = new File("file.txt");

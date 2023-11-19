@@ -3,7 +3,7 @@ package entities;
 import java.util.List;
 
 public class TransactionHistory {
-    private final Stock stock;
+    private Stock stock;
     private List<Transaction> transactions;
 
     public List<Transaction> getTransactions() {
@@ -26,6 +26,16 @@ public class TransactionHistory {
         this.stock = stock;
         this.transactions = transactions;
     }
+
+    public TransactionHistory() {
+    }
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
 
     @Override
     public String toString() {
