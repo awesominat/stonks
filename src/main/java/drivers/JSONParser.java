@@ -33,7 +33,6 @@ public class JSONParser {
         try (FileReader reader = new FileReader("user.json")) {
             List<TransactionHistory> historyList = gson.fromJson(reader, type);
 
-            // Assuming each Stock symbol is unique and can be used as a key
             for (TransactionHistory history : historyList) {
                 historyMap.put(history.getStock().getTicker(), history);
             }
