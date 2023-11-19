@@ -33,7 +33,7 @@ public class buySellTest {
         List<PricePoint> lastMonthPrices = new ArrayList<>();
         lastMonthPrices.add(new PricePoint(LocalDate.now(), 100.0));
 
-        Mockito.when(userDataAccessObject.get("zain")).thenReturn(new CommonUser("zain", "mypass"));
+        Mockito.when(userDataAccessObject.get()).thenReturn(new CommonUser());
         Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
                 "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
@@ -50,9 +50,9 @@ public class buySellTest {
 
         Mockito.verify(mockApi).getCurrentPrice("AAPL");
         Mockito.verify(mockBuyPresenter).prepareSuccessView(any(BuyOutputData.class));
-        Mockito.verify(userDataAccessObject).save(userCaptor.capture());
+        Mockito.verify(userDataAccessObject).save();
 
-        User capturedUser = userCaptor.getValue();
+        User capturedUser = userDataAccessObject.get(); //userCaptor.getValue();
 
         assert capturedUser.getBalance().equals(9000.0);
     }
@@ -65,10 +65,10 @@ public class buySellTest {
         List<PricePoint> lastMonthPrices = new ArrayList<>();
         lastMonthPrices.add(new PricePoint(LocalDate.now(), 100.0));
 
-        User mockUser = new CommonUser("zain", "mypass");
+        User mockUser = new CommonUser();
         mockUser.addToPortfolio("AAPL", 10.0);
 
-        Mockito.when(userDataAccessObject.get("zain")).thenReturn(mockUser);
+        Mockito.when(userDataAccessObject.get()).thenReturn(mockUser);
 
         Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
@@ -86,10 +86,10 @@ public class buySellTest {
 
         Mockito.verify(mockApi).getCurrentPrice("AAPL");
         Mockito.verify(mockSellPresenter).prepareSuccessView(any(SellOutputData.class));
-        Mockito.verify(userDataAccessObject).save(userCaptor.capture());
+        Mockito.verify(userDataAccessObject).save(); // userCaptor.capture());
 
-        User capturedUser = userCaptor.getValue();
-        assert capturedUser.getBalance().equals(11000.0);
-        assert capturedUser.getPortfolio().isEmpty();
+//        User capturedUser = userCaptor.getValue();
+        assert mockUser.getBalance().equals(11000.0);
+        assert mockUser.getPortfolio().isEmpty();
     }
 }

@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 public class CommonUser implements User {
 
-    final private String username;
-    final private String password;
     private final HashMap<String, Double> portfolio;
     private final HashMap<String, TransactionHistory> history;
     private Double balance;
@@ -55,18 +53,14 @@ public class CommonUser implements User {
         this.balance += addition;
     }
 
-    public CommonUser(String username, String password, HashMap<String, Double> portfolio, HashMap<String,
+    public CommonUser(HashMap<String, Double> portfolio, HashMap<String,
             TransactionHistory> history, Double balance) {
-        this.username = username;
-        this.password = password;
         this.portfolio = portfolio;
         this.history = history;
         this.balance = balance;
     }
 
-    public CommonUser(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public CommonUser() {
         this.balance = 10000.0;
         this.portfolio = new HashMap<>();
         this.history = new HashMap<>();
@@ -82,13 +76,24 @@ public class CommonUser implements User {
         return balance;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
+//    private class UserBuilder {
+//        private final HashMap<String, Double> portfolio;
+//        private final HashMap<String, TransactionHistory> history;
+//        private Double balance;;
+//
+//        public UserBuilder(HashMap<String, Double> portfolio, HashMap<String, TransactionHistory> history, Double balance){
+//        }
+//
+//        public UserBuilder setPortfolio(HashMap<String, Double> portfolio) {
+//            return this;
+//        }
+//
+//        public UserBuilder setHistory(HashMap<String, TransactionHistory> history) {
+//            return this;
+//        }
+//
+//        public User build(){
+//            return new CommonUser(this);
+//        }
+//    }
 }
