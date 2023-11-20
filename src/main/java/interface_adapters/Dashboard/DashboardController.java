@@ -9,6 +9,6 @@ public class DashboardController {
     }
 
     public void execute() {
-        sellInteractor.execute();
+        dashboardInteractor.execute();
     }
 }

@@ -1,15 +1,13 @@
 package app;
 
-import drivers.Finnhub;
-import entities.CompanyInformation;
-import entities.CompanyNews;
-
-import java.time.LocalDate;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
-        Finnhub a = new Finnhub();
+//        LocalDate now = LocalDate.now();
+//        LocalDate then = now.minusMonths(1);
+//
+//        System.out.println(then.datesUntil(now));
+//        System.out.println(DAYS.between(then, now));
+//        Finnhub a = new Finnhub();
 
         // the api offers very cool ability to choose resolution window of 1 minute
         // so we have minutely access to live stock data
@@ -21,19 +19,19 @@ public class Main {
 
         // Test Finnhub.getCompanyNews()
         // Define end of news period to be right now
-        LocalDate to = LocalDate.now();
-        // Define start of news period to be a month ago
-        LocalDate from = to.minusMonths(1);
-        // Print output
-        List<CompanyNews> news_list = a.getCompanyNews("AAPL", from, to);
-        // System.out.println(news_list);  // a whole bunch of CompanyNews objects
-        CompanyNews first_news_item = news_list.get(0);
-        // Inspect news item
-        System.out.println(first_news_item.toString());
-
-        // Test Finnhub.getCompanyProfile()
-        CompanyInformation sample_profile = a.getCompanyProfile("AAPL");
-        System.out.println("\n" + sample_profile.toString());
+//        LocalDate to = LocalDate.now();
+//        // Define start of news period to be a month ago
+//        LocalDate from = to.minusMonths(1);
+//        // Print output
+//        List<CompanyNews> news_list = a.getCompanyNews("AAPL", from, to);
+//        // System.out.println(news_list);  // a whole bunch of CompanyNews objects
+//        CompanyNews first_news_item = news_list.get(0);
+//        // Inspect news item
+//        System.out.println(first_news_item.toString());
+//
+//        // Test Finnhub.getCompanyProfile()
+//        CompanyInformation sample_profile = a.getCompanyProfile("AAPL");
+//        System.out.println("\n" + sample_profile.toString());
 
 
         // TASK check if this is your desired output
