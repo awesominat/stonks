@@ -1,4 +1,4 @@
-package interface_adapters.Sell;
+package use_cases.Sell;
 
 import use_cases.Sell.SellOutputData;
 
