@@ -1,17 +1,14 @@
 package interface_adapters.Dashboard;
-
-import use_cases.Sell.SellInputBoundary;
-import use_cases.Sell.SellInputData;
+import use_cases.Dashboard.DashboardInputBoundary;
 
 public class DashboardController {
-    final private SellInputBoundary sellInteractor;
+    final private DashboardInputBoundary dashboardInteractor;
 
-    public DashboardController(SellInputBoundary sellInteractor) {
-        this.sellInteractor = sellInteractor;
+    public DashboardController(DashboardInputBoundary dashboardInteractor) {
+        this.dashboardInteractor = dashboardInteractor;
     }
 
-    public void execute(Double amount, String ticker, String username) {
-        SellInputData sellInputData = new SellInputData(amount, ticker, username);
-        sellInteractor.execute(sellInputData);
+    public void execute() {
+        dashboardInteractor.execute();
     }
 }
