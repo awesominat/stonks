@@ -24,7 +24,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
     public void execute(ResetBalanceInputData sellInputData) {
         String username = sellInputData.getUsername();
 
-        User user = userDataAccessObject.get(username);
+        User user = userDataAccessObject.get();
 
         if (user.getBalance() >= 500.0) {
             resetBalancePresenter.prepareFailView("You have way too much money.");
@@ -41,7 +41,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         Transaction transaction = new TopupTransaction(curBalance + amountToAdd, new PricePoint(LocalDate.now(), curBalance));
 
         super.addToHistory(userHistory, "Stonks App", user, curBalance + amountToAdd, curBalance, transaction);
-        userDataAccessObject.save(user);
+        userDataAccessObject.save();
 
         ResetBalanceOutputData result = new ResetBalanceOutputData(curBalance + amountToAdd);
         resetBalancePresenter.prepareSuccessView(result);

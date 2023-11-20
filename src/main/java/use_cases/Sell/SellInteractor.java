@@ -27,7 +27,7 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
         String ticker = sellInputData.getTicker();
         Double amount = sellInputData.getAmount();
 
-        User user = userDataAccessObject.get(username);
+        User user = userDataAccessObject.get();
 
         if (!user.hasStock(ticker) || user.getStockOwned(ticker) < amount) {
             sellPresenter.prepareFailView("You can't sell more than you have.");
@@ -43,7 +43,7 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
 
         super.updatePortfolio(user, ticker, currentlyOwned - amount);
         super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
-        userDataAccessObject.save(user);
+        userDataAccessObject.save();
 
         SellOutputData result = new SellOutputData(sellInputData.getAmount(), sellInputData.getTicker());
         sellPresenter.prepareSuccessView(result);

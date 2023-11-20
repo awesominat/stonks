@@ -8,6 +8,6 @@ public class CommonUserFactory implements UserFactory {
         HashMap<String, Double> initialPortfolio = new HashMap<>();
         HashMap<String, TransactionHistory> history = new HashMap<String, TransactionHistory>();
 
-        return new CommonUser(username, password, initialPortfolio, history, initialBalance);
+        return new CommonUser(initialPortfolio, history, initialBalance);
     }
 }

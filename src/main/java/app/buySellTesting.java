@@ -8,7 +8,7 @@ import entities.User;
 import interface_adapters.Buy.BuyOutputBoundary;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Dashboard.Sell.DashboardViewModel;
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
@@ -24,14 +24,14 @@ import java.io.IOException;
 
 public class buySellTesting {
     public static void main(String[] args) throws IOException, InterruptedException {
-        FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./users.csv", new CommonUserFactory());
+        FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
 
         // this code should purchase 10 pieces of apple stock, ticker AAPL
         // then it sells 5 as one transaction
         // and sells off the final 5, since this selling was all done instantaneously, the price of AAPL didn't change
         // so you're back at 10k, your starting balance
-        User newUser = new CommonUser("zain", "mypass");
-        userDataAccessObject.save(newUser);
+        User newUser = new CommonUser();
+        userDataAccessObject.save();
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL", "zain");
         BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
