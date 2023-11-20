@@ -25,12 +25,6 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         String username = sellInputData.getUsername();
 
         User user = userDataAccessObject.get();
-
-        if (user.getBalance() >= 500.0) {
-            resetBalancePresenter.prepareFailView("You have way too much money.");
-            return;
-        }
-
         Double curBalance = user.getBalance();
         Double amountToAdd = 10000.0;
         user.addBalance(amountToAdd);
