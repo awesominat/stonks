@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import interface_adapters.Sell.SellController;
 import interface_adapters.Sell.SellViewModel;
@@ -18,6 +19,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     public final String viewName = "sell";
     private final SellViewModel sellViewModel;
+    private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
     final JComboBox<String> stockInputField = new JComboBox<String>();
@@ -27,10 +29,10 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     final JButton back;
     private final SellController sellController;
 
-    public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel) {
-
+    public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
         this.sellController = sellController;
         this.viewManagerModel = viewManagerModel;
+        this.dashboardViewModel = dashboardViewModel;
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
 
@@ -66,7 +68,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(back)) {
-                            viewManagerModel.setActiveView("dashboard");
+                            viewManagerModel.setActiveView(dashboardViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }
                     }
