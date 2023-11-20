@@ -11,7 +11,7 @@ public class SellController {
     }
 
     public void execute(String amount, String ticker) {
-        SellInputData sellInputData = new SellInputData(amount, ticker, username);
+        SellInputData sellInputData = new SellInputData(Double.parseDouble(amount), ticker);
         sellInteractor.execute(sellInputData);
     }
 }
