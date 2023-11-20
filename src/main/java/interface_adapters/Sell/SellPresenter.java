@@ -3,6 +3,7 @@ package interface_adapters.Sell;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.Sell.SellOutputData;
+import use_cases.Sell.SellOutputBoundary;
 
 public class SellPresenter implements SellOutputBoundary {
 

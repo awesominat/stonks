@@ -1,7 +1,7 @@
 package use_cases.ResetBalance;
 
 import entities.*;
-import interface_adapters.ResetBalance.ResetBalanceOutputBoundary;
+import use_cases.ResetBalance.ResetBalanceOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 

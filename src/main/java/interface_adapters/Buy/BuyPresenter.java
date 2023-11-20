@@ -1,6 +1,7 @@
 package interface_adapters.Buy;
 
 import interface_adapters.ViewManagerModel;
+import use_cases.Buy.BuyOutputBoundary
 import use_cases.Buy.BuyOutputData;
 import view.BuyView;
 

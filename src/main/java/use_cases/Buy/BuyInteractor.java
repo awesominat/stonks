@@ -1,7 +1,7 @@
 package use_cases.Buy;
 
 import entities.*;
-import interface_adapters.Buy.BuyOutputBoundary;
+import use_cases.Buy.BuyOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 
