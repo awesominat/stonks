@@ -11,7 +11,7 @@ public class GetNewsViewModel extends ViewModel {
 
     private GetNewsState state = new GetNewsState();
 
-    public GetNewsViewModel() {super("Get Company News");}
+    public GetNewsViewModel() {super("news");}
 
     public void setState(GetNewsState state) {
         this.state = state;

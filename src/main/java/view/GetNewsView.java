@@ -14,7 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class GetNewsView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "Get Company News";
+    public final String viewName = "news";
     private final GetNewsViewModel getNewsViewModel;
 
     /**

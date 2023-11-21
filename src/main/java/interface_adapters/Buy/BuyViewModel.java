@@ -15,7 +15,7 @@ public class BuyViewModel extends ViewModel {
     private BuyState state = new BuyState();
 
     public BuyViewModel() {
-        super("Buy Stock");
+        super("buy");
     }
 
     public void setState(BuyState state) {
