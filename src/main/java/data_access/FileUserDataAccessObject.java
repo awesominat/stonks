@@ -9,6 +9,7 @@ import entities.Transaction;
 import entities.User;
 import entities.UserFactory;
 import use_cases.Buy.BuyDataAccessInterface;
+import use_cases.Dashboard.DashboardDataAccessInterface;
 import use_cases.ResetBalance.ResetBalanceDataAccessInterface;
 import use_cases.Sell.SellDataAccessInterface;
 
@@ -18,7 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class FileUserDataAccessObject implements BuyDataAccessInterface, SellDataAccessInterface, ResetBalanceDataAccessInterface {
+public class FileUserDataAccessObject implements BuyDataAccessInterface, SellDataAccessInterface, ResetBalanceDataAccessInterface, DashboardDataAccessInterface {
 
     private File jsonFile;
     private User user;

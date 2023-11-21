@@ -53,6 +53,9 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             stockInputField.addItem(s);
         }
 
+        // Check if an error occurs and display an error pane
+
+
         JPanel buttons = new JPanel();
         back = new JButton("Back");
         buttons.add(back);
@@ -131,10 +134,12 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         SellState state = (SellState) evt.getNewValue();
-        setFields(state);
-    }
-
-    private void setFields(SellState state) {
+        String amountError = state.getAmountError();
+        if (amountError != null) {
+            JOptionPane.showMessageDialog(this, amountError);
+        }
+        state.setAmountError(null);
+        sellViewModel.setState(state);
     }
 
 }
