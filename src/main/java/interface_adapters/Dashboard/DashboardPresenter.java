@@ -32,5 +32,4 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         // fire the property changed for view manager model such that the view changes to dashboard
         viewManagerModel.firePropertyChanged();
     }
-
 }

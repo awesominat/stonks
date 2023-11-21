@@ -10,8 +10,13 @@ public class SellController {
         this.sellInteractor = sellInteractor;
     }
 
-    public void execute(Double amount, String ticker, String username) {
-        SellInputData sellInputData = new SellInputData(amount, ticker, username);
-        sellInteractor.execute(sellInputData);
+    public void execute(String amount, String ticker) {
+        try {
+            SellInputData sellInputData = new SellInputData(Double.parseDouble(amount), ticker);
+            sellInteractor.execute(sellInputData);
+        } catch (NumberFormatException ex) {
+            SellInputData sellInputData = new SellInputData(ticker);
+            sellInteractor.execute(sellInputData);
+        }
     }
 }
