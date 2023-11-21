@@ -20,32 +20,101 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     private final GetNewsViewModel getNewsViewModel;
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final GetNewsController getNewsController;
 
     /**
      * Text fields, labels, and buttons
      */
-    final JTextField ticker = new JTextField(4);
+    final JTextField tickerIn = new JTextField(4);
     final JButton search;
     final JButton back;
-    private final GetNewsController getNewsController;
 
     public GetNewsView(GetNewsViewModel getNewsViewModel,
                        GetNewsController getNewsController,
                        ViewManagerModel viewManagerModel,
                        DashboardViewModel dashboardViewModel) {
+
         this.getNewsController = getNewsController;
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
         this.getNewsViewModel = getNewsViewModel;
         this.getNewsViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Get Company News Screen");
+        JLabel title = new JLabel(getNewsViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setAlignmentY(Component.TOP_ALIGNMENT);
 
-        JLabel title = new JLabel("Sell Screen");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Create stock search bar.
+        LabelTextPanel tickerField = new LabelTextPanel(
+                new JLabel("Stock ticker"), tickerIn);
+        tickerField.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel back_panel = new JPanel();
+        back = new JButton(getNewsViewModel.BACK_BUTTON_LABEL);
+        back_panel.add(back);
+
+        JPanel search_panel = new JPanel();
+        search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
+        search_panel.add(search);
+
+        back.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(back)) {
+                            dashboardViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+                            viewManagerModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
+
+        search.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(search)) {
+                            GetNewsState currentState = getNewsViewModel.getState();
+                            getNewsController.execute(currentState.getTicker());
+                        }
+                    }
+                }
+        );
+
+        tickerField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                GetNewsState currentState = getNewsViewModel.getState();
+                currentState.setTicker(tickerIn.getText() + e.getKeyChar());
+                getNewsViewModel.setState(currentState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.add(title);
+        this.add(tickerField);
+        this.add(back_panel);
+        this.add(search_panel);
     }
 
-    // TODO fill the rest in
+    /**
+     * React to a button click that results in evt.
+     */
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        GetNewsState state = (GetNewsState) evt.getNewValue();
+        setFields(state);
+    }
+
+    private void setFields(GetNewsState state) {}
 
 }
