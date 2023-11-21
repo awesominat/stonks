@@ -9,7 +9,7 @@ import use_cases.Buy.BuyOutputBoundary;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.Sell.SellOutputBoundary;
+import use_cases.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
@@ -45,14 +45,14 @@ public class buySellTesting {
         System.out.println(newUser.getBalance());
         System.out.println(newUser.getHistory());
 
-        SellInputData sellInputData = new SellInputData(5.0, "AAPL", "zain");
+        SellInputData sellInputData = new SellInputData(5.0, "AAPL");
         SellInteractor sellInteractor = new SellInteractor(userDataAccessObject, sellPresenter, Finnhub);
         sellInteractor.execute(sellInputData);
 
         System.out.println(newUser.getBalance());
         System.out.println(newUser.getHistory());
 
-        SellInputData sellInputData2 = new SellInputData(5.0, "AAPL", "zain");
+        SellInputData sellInputData2 = new SellInputData(5.0, "AAPL");
         SellInteractor sellInteractor2 = new SellInteractor(userDataAccessObject, sellPresenter, Finnhub);
         sellInteractor2.execute(sellInputData2);
 
