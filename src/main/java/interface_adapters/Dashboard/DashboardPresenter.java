@@ -1,7 +1,7 @@
 package interface_adapters.Dashboard;
 
 import interface_adapters.ViewManagerModel;
-import use_cases.Sell.SellOutputData;
+import use_cases.Dashboard.DashboardOutputData;
 
 public class DashboardPresenter implements DashboardOutputBoundary {
 
@@ -17,7 +17,7 @@ public class DashboardPresenter implements DashboardOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(SellOutputData response) {
+    public void prepareSuccessView(DashboardOutputData response) {
         dashboardViewModel.firePropertyChanged();
         viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
