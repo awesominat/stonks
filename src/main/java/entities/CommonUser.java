@@ -76,24 +76,4 @@ public class CommonUser implements User {
         return balance;
     }
 
-//    private class UserBuilder {
-//        private final HashMap<String, Double> portfolio;
-//        private final HashMap<String, TransactionHistory> history;
-//        private Double balance;;
-//
-//        public UserBuilder(HashMap<String, Double> portfolio, HashMap<String, TransactionHistory> history, Double balance){
-//        }
-//
-//        public UserBuilder setPortfolio(HashMap<String, Double> portfolio) {
-//            return this;
-//        }
-//
-//        public UserBuilder setHistory(HashMap<String, TransactionHistory> history) {
-//            return this;
-//        }
-//
-//        public User build(){
-//            return new CommonUser(this);
-//        }
-//    }
 }

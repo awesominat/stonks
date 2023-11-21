@@ -89,12 +89,6 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
                 }
             }
         }
-//
-//        liquid money (balance)
-//                total assets (balance + worth of stock)
-//        days since last top up
-//        total profit
-//        aggregate trading volume (sum the amount of money spent buying and amount of money gained when selling)
         HashMap<String, Double> userStats = new HashMap<>();
 
         userStats.put("balance", accountBalance);
