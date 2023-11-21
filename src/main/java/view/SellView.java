@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import interface_adapters.Sell.SellController;
@@ -14,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import java.util.List;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -43,6 +46,13 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
                 new JLabel("Select amount to sell"), amountInputField);
 
+        // Get owned stocks list from dashboard for dropdown menu on sell page
+        DashboardState dashboardState = dashboardViewModel.getState();
+        List<String> ownedStocks = dashboardState.getTickers();
+        for (String s: ownedStocks) {
+            stockInputField.addItem(s);
+        }
+
         JPanel buttons = new JPanel();
         back = new JButton("Back");
         buttons.add(back);
@@ -68,6 +78,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(back)) {
+                            dashboardViewModel.firePropertyChanged();
                             viewManagerModel.setActiveView(dashboardViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }

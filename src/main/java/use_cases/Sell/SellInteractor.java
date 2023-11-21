@@ -26,13 +26,19 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
         String username = sellInputData.getUsername();
         String ticker = sellInputData.getTicker();
         Double amount = sellInputData.getAmount();
+        boolean amountFormatError = sellInputData.isAmountFormatError();
 
         User user = userDataAccessObject.get();
 
+        if (amountFormatError) {
+            sellPresenter.prepareFailView("Please enter a decimal value");
+            return;
+        }
         if (!user.hasStock(ticker) || user.getStockOwned(ticker) < amount) {
             sellPresenter.prepareFailView("You can't sell more than you have.");
             return;
         }
+            
         Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
         Double currentlyOwned = user.getStockOwned(ticker);
 
