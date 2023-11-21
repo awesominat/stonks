@@ -3,9 +3,9 @@ package app;
 import data_access.FileUserDataAccessObject;
 import drivers.Finnhub;
 import entities.CommonUserFactory;
-//import interface_adapters.Dashboard.DashboardViewModel;
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.Sell.SellController;
-import interface_adapters.Sell.SellOutputBoundary;
+import use_cases.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
@@ -51,11 +51,12 @@ public class testSellView {
         }
 
         APIAccessInterface driverAPI = new Finnhub();
-        SellOutputBoundary sellPresenter = new SellPresenter(viewManagerModel, sellViewModel);
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
+        SellOutputBoundary sellPresenter = new SellPresenter(viewManagerModel, sellViewModel, dashboardViewModel);
         SellInputBoundary sellInteractor = new SellInteractor(userDataAccessObject, sellPresenter, driverAPI);
         SellController sellController = new SellController(sellInteractor);
 
-        SellView sellView = new SellView(sellViewModel, sellController, viewManagerModel);
+        SellView sellView = new SellView(sellViewModel, sellController, viewManagerModel, dashboardViewModel);
         views.add(sellView, sellView.viewName);
 
         viewManagerModel.setActiveView(sellView.viewName);

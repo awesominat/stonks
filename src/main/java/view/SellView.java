@@ -48,7 +48,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
         // Get owned stocks list from dashboard for dropdown menu on sell page
         DashboardState dashboardState = dashboardViewModel.getState();
-        List<String> ownedStocks = dashboardState.getTickers();
+        List<String> ownedStocks = dashboardState.getOwnedTickers();
         for (String s: ownedStocks) {
             stockInputField.addItem(s);
         }
