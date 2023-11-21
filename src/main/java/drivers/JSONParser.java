@@ -43,21 +43,4 @@ public class JSONParser {
         return historyMap;
     }
 
-//    public HashMap<String, Double> getPortfolio() {
-//        String line;
-//        HashMap<String, Double> map = new HashMap<>();
-//
-//        try (BufferedReader br = new BufferedReader(new FileReader("user.csv"))) {
-//            while ((line = br.readLine()) != null) {
-//                String[] keyValue = line.split(",");
-//                String key = keyValue[0].trim();
-//                Double value = Double.parseDouble(keyValue[1].trim());
-//                map.put(key, value);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return map;
-//    }
 }

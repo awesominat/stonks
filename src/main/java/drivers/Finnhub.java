@@ -170,21 +170,6 @@ public class Finnhub implements APIAccessInterface {
             Response response = client.newCall(request).execute();
             assert response.body() != null;
             JSONObject responseBody = new JSONObject(response.body().string());
-
-            // TODO
-            // very important to know if we want information like
-            //d
-            //Change
-            //dp
-            //Percent change
-            //h
-            //High price of the day
-            //l
-            //Low price of the day
-            //o
-            //Open price of the day
-            //pc
-            //Previous close price
             LocalDate now = LocalDate.now();
             Double result;
 

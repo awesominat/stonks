@@ -17,10 +17,17 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     public final String viewName = "Get Company News";
     private final GetNewsViewModel getNewsViewModel;
 
-    /**
-     * Text fields, labels, and buttons
-     */
+    public GetNewsView(GetNewsViewModel getNewsViewModel) {
+        this.getNewsViewModel = getNewsViewModel;
+    }
 
-    // TODO fill the rest in
+    public void actionPerformed(ActionEvent evt){
+        System.out.println("Click " + evt.getActionCommand());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        GetNewsState state = (GetNewsState) evt.getNewValue();
+    }
 
 }
