@@ -1,4 +1,4 @@
-package interface_adapters.ResetBalance;
+package use_cases.ResetBalance;
 
 import use_cases.ResetBalance.ResetBalanceOutputData;
 

@@ -1,7 +1,7 @@
 package use_cases.Sell;
 
 import entities.*;
-import interface_adapters.Sell.SellOutputBoundary;
+import use_cases.Sell.SellOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 

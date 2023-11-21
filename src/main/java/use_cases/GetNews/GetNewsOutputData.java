@@ -14,6 +14,7 @@ public class GetNewsOutputData {
     public GetNewsOutputData(String ticker, List<CompanyNews> company_news_items) {
         this.ticker = ticker;
         this.news_items = new ArrayList<Map<String, String>>();
+
         for (CompanyNews company_news : company_news_items) {
             Map<String, String> news_item = new HashMap<>();
 

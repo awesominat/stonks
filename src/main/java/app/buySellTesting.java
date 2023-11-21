@@ -5,7 +5,7 @@ import drivers.Finnhub;
 import entities.CommonUser;
 import entities.CommonUserFactory;
 import entities.User;
-import interface_adapters.Buy.BuyOutputBoundary;
+import use_cases.Buy.BuyOutputBoundary;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;

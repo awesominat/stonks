@@ -15,9 +15,15 @@ public class CompanyInformation {
         this.ipo = ipo;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getCountry() {return country;}
+
+    public String getName() {return name;}
+
+    public String getTicker() {return ticker;}
+
+    public String getWeburl() {return weburl;}
+
+    public String getIpo() {return ipo;}
 
     public String toString() {
         return "CompanyInformation{\n" +
