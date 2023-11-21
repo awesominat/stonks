@@ -48,10 +48,13 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
         // Get owned stocks list from dashboard for dropdown menu on sell page
         DashboardState dashboardState = dashboardViewModel.getState();
-        List<String> ownedStocks = dashboardState.getTickers();
+        List<String> ownedStocks = dashboardState.getOwnedTickers();
         for (String s: ownedStocks) {
             stockInputField.addItem(s);
         }
+
+        // Check if an error occurs and display an error pane
+
 
         JPanel buttons = new JPanel();
         back = new JButton("Back");
@@ -131,10 +134,12 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         SellState state = (SellState) evt.getNewValue();
-        setFields(state);
-    }
-
-    private void setFields(SellState state) {
+        String amountError = state.getAmountError();
+        if (amountError != null) {
+            JOptionPane.showMessageDialog(this, amountError);
+        }
+        state.setAmountError(null);
+        sellViewModel.setState(state);
     }
 
 }

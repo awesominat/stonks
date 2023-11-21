@@ -23,7 +23,6 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
 
     @Override
     public void execute(SellInputData sellInputData) {
-        String username = sellInputData.getUsername();
         String ticker = sellInputData.getTicker();
         Double amount = sellInputData.getAmount();
         boolean amountFormatError = sellInputData.isAmountFormatError();

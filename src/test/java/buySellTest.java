@@ -75,7 +75,7 @@ public class buySellTest {
                 "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
         Mockito.when(mockApi.getLastMonthPrices("AAPL")).thenReturn(lastMonthPrices);
 
-        SellInputData sellInputData = new SellInputData(10.0, "AAPL", "zain");
+        SellInputData sellInputData = new SellInputData(10.0, "AAPL");
 
         SellOutputBoundary mockSellPresenter = Mockito.mock(SellOutputBoundary.class);
 

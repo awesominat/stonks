@@ -1,24 +1,21 @@
 package interface_adapters.GetNews;
 
-import java.util.List;
-import java.util.Map;
-
 public class GetNewsState {
-    private String newsError = null;
-    private List<Map<String, String>> newsList = null;
+    private String tickerError = null;
+    private String ticker = null;
 
-    public GetNewsState(List<Map<String, String>> news_list, String newsError) {
-        this.newsList = news_list;
-        this.newsError = newsError;
+    public GetNewsState(String ticker, String tickerError) {
+        this.ticker = ticker;
+        this.tickerError = tickerError;
     }
 
-    public String getNewsError() {return newsError;}
+    public String getTickerError() {return tickerError;}
 
-    public void setNewsError() {this.newsError = newsError;}
+    public void setTickerError(String tickerError) {this.tickerError = tickerError;}
 
-    public List<Map<String, String>> getNewsList() {return newsList;}
+    public String getTicker() {return ticker;}
 
-    public void setNewsList(List<Map<String, String>> news_list) {this.newsList = news_list;}
+    public void setTicker(String ticker) {this.ticker = ticker;}
 
     // Due to the copy constructor, the default constructor must be explicit. So we overload it.
     public GetNewsState() {}
