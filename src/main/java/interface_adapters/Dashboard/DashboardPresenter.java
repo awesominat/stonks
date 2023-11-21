@@ -18,8 +18,11 @@ public class DashboardPresenter implements DashboardOutputBoundary {
     public void prepareSuccessView(DashboardOutputData dashboardOutputData) {
         // Get the current dashboardViewModel's state
         DashboardState dashboardState = dashboardViewModel.getState();
-        // Alter the state such that it updates to the new portfolioInformation and user stats
-        dashboardState.setOwnedStocks(dashboardOutputData.getPortfolioInformation());
+        // Alter the state such that it updates to the new ticker, amount, and full name info
+        // and user stats
+        dashboardState.setOwnedAmounts(dashboardOutputData.getAmountInformation());
+        dashboardState.setOwnedTickers(dashboardOutputData.getTickerInformation());
+        dashboardState.setOwnedFullNames(dashboardOutputData.getFullNamesInformation());
         dashboardState.setUserStats(dashboardOutputData.getUserStats());
         // fire the property changed for dashboard view model
         dashboardViewModel.firePropertyChanged();
