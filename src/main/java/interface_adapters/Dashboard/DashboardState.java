@@ -7,15 +7,40 @@ import java.util.List;
 public class DashboardState {
     private HashMap<String, Double> userStats;
     // change owned stocks data type
-    private List<PortfolioInformation> ownedStocks;
+    private List<String> ownedTickers;
+    private List<String> ownedFullNames;
+    private List<Double> ownedAmounts;
 
-    public DashboardState(HashMap<String, Double> userStats, List<PortfolioInformation> ownedStocks) {
+    public DashboardState(HashMap<String, Double> userStats, List<String> ownedTickers,
+                          List<String> ownedFullNames, List<Double> ownedAmounts) {
         this.userStats = userStats;
-        this.ownedStocks = ownedStocks;
+        this.ownedTickers = ownedTickers;
+        this.ownedAmounts = ownedAmounts;
+        this.ownedFullNames = ownedFullNames;
     }
 
-    public List<PortfolioInformation> getOwnedStocks() {
-        return this.ownedStocks;
+    public List<Double> getOwnedAmounts() {
+        return this.ownedAmounts;
+    }
+
+    public void setOwnedAmounts(List<Double> ownedAmounts) {
+        this.ownedAmounts = ownedAmounts;
+    }
+
+    public List<String> getOwnedTickers() {
+        return ownedTickers;
+    }
+
+    public void setOwnedTickers(List<String> ownedTickers) {
+        this.ownedTickers = ownedTickers;
+    }
+
+    public List<String> getOwnedFullNames() {
+        return ownedFullNames;
+    }
+
+    public void setOwnedFullNames(List<String> ownedFullNames) {
+        this.ownedFullNames = ownedFullNames;
     }
 
     public HashMap<String, Double> getUserStats() {
@@ -26,9 +51,6 @@ public class DashboardState {
         this.userStats = userStats;
     }
 
-    public void setOwnedStocks(List<PortfolioInformation> ownedStocks) {
-        this.ownedStocks = ownedStocks;
-    }
 
     // Because of the previous copy constructor, the default constructor must be explicit. Hence overloading.
     public DashboardState() {

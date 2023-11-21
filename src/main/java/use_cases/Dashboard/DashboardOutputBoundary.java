@@ -1,4 +1,4 @@
-package interface_adapters.Dashboard;
+package use_cases.Dashboard;
 
 import use_cases.Dashboard.DashboardOutputData;
 
