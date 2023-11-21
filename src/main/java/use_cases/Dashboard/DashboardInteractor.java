@@ -1,7 +1,6 @@
 package use_cases.Dashboard;
 
 import entities.*;
-import interface_adapters.Dashboard.DashboardOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 
