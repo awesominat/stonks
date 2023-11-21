@@ -18,7 +18,7 @@ public class DashboardOutputData {
         return this.userStats;
     }
 
-    public List<PortfolioInformation> getPortfolioInformations() {
+    public List<PortfolioInformation> getPortfolioInformation() {
         return this.portfolioInformation;
     }
 }
