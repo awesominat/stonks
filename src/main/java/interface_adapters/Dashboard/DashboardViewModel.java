@@ -6,15 +6,19 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class DashboardViewModel extends ViewModel {
-    public final String TITLE_LABEL = "Sell Stock";
-    public final String AMOUNT_LABEL = "Enter amount";
-    public final String PURCHASE_BUTTON_LABEL = "Sell";
-    public final String CANCEL_BUTTON_LABEL = "Cancel";
+    public final String TITLE_LABEL = "Dashboard";
+    public final String WELCOME_LABEL = "Welcome!";
+    public final String PURCHASE_BUTTON_LABEL = "Buy";
+    public final String SELL_BUTTON_LABEL = "Sell";
+    public final String NEWS_BUTTON_LABEL = "News";
+    public final String RESET_BUTTON_LABEL = "Reset";
+    public final String QUIT_BUTTON_LABEL = "Quit";
+    public final String TRANSACTION_HISTORY_BUTTON_LABEL = "View Transaction History";
 
     private DashboardState state = new DashboardState();
 
     public DashboardViewModel() {
-        super("Sell Stock");
+        super("Dashboard");
     }
 
     public void setState(DashboardState state) {
