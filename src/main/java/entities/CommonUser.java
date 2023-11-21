@@ -70,6 +70,7 @@ public class CommonUser implements User {
     public HashMap<String, TransactionHistory> getHistory() {
         return history;
     }
+    // String is TICKER
 
     @Override
     public Double getBalance() {
