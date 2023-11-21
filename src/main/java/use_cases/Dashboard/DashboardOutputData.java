@@ -6,11 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DashboardOutputData {
-    private HashMap<String, Double> userstats;
-    private List<PortfolioInformation> portfolioInformations;
+    private HashMap<String, Double> userStats;
+    private List<PortfolioInformation> portfolioInformation;
 
-    public DashboardOutputData(HashMap<String, Double> userstats, List<PortfolioInformation> portfolioInformations) {
-        this.userstats = userstats;
-        this.portfolioInformations = portfolioInformations;
+    public DashboardOutputData(HashMap<String, Double> userstats, List<PortfolioInformation> portfolioInformation) {
+        this.userStats = userstats;
+        this.portfolioInformation = portfolioInformation;
+    }
+
+    public HashMap<String, Double> getUserStats() {
+        return this.userStats;
+    }
+
+    public List<PortfolioInformation> getPortfolioInformations() {
+        return this.portfolioInformation;
     }
 }
