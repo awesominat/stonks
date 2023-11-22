@@ -12,7 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "Dashboard";
+    public final String viewName = "dashboard";
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 

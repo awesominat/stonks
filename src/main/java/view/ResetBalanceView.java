@@ -25,7 +25,7 @@ public class ResetBalanceView extends JPanel implements ActionListener, Property
         this.resetBalanceViewModel = resetBalanceViewModel;
         this.resetBalanceViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Sell Stock");
+        JLabel title = new JLabel("reset");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttons = new JPanel();
