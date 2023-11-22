@@ -12,7 +12,7 @@ public class ResetBalanceViewModel extends ViewModel {
     private ResetBalanceState state = new ResetBalanceState();
 
     public ResetBalanceViewModel() {
-        super("Reset Balance");
+        super("reset");
     }
 
     public void setState(ResetBalanceState state) {

@@ -14,7 +14,7 @@ import java.beans.PropertyChangeListener;
 
 public class BuyView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "Buy Stock";
+    public final String viewName = "buy";
     private final BuyViewModel buyViewModel;
 
     /**
