@@ -11,7 +11,7 @@ import java.beans.PropertyChangeListener;
 
 public class ResetBalanceView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "Reset Balance";
+    public final String viewName = "reset";
     private final ResetBalanceViewModel resetBalanceViewModel;
     private final JLabel statusErrorField = new JLabel();
     ;
@@ -25,7 +25,7 @@ public class ResetBalanceView extends JPanel implements ActionListener, Property
         this.resetBalanceViewModel = resetBalanceViewModel;
         this.resetBalanceViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("reset");
+        JLabel title = new JLabel(resetBalanceViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttons = new JPanel();
