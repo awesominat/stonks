@@ -12,7 +12,6 @@ public class DashboardViewModel extends ViewModel {
     public final String SELL_BUTTON_LABEL = "Sell";
     public final String NEWS_BUTTON_LABEL = "News";
     public final String RESET_BUTTON_LABEL = "Reset";
-    public final String QUIT_BUTTON_LABEL = "Quit";
     public final String TRANSACTION_HISTORY_BUTTON_LABEL = "View Transaction History";
 
     private DashboardState state = new DashboardState();

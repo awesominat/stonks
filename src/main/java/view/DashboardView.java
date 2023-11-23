@@ -1,7 +1,11 @@
 package view;
 
+import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
+import interface_adapters.GetNews.GetNewsViewModel;
+import interface_adapters.ResetBalance.ResetBalanceViewModel;
+import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 
 import javax.swing.*;
@@ -14,6 +18,10 @@ import java.beans.PropertyChangeListener;
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
     private final DashboardViewModel dashboardViewModel;
+    private final BuyViewModel buyViewModel;
+    private final SellViewModel sellViewModel;
+    private final GetNewsViewModel getNewsViewModel;
+    private final ResetBalanceViewModel resetBalanceViewModel;
     private final ViewManagerModel viewManagerModel;
 
     // Buttons to be displayed along the left side of the screen for various options the user has.
@@ -21,17 +29,25 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     final JButton sell;
     final JButton news;
     final JButton reset;
-    final JButton quit;
     final JButton history;
 
     /**
      * The homepage (dashboard) window with a title, a welcome message, a panel of action buttons, statistics about
      * the user, and information about stocks the user has invested in.
      */
-    public DashboardView(DashboardViewModel dashboardViewModel, ViewManagerModel viewManagerModel) {
+    public DashboardView(DashboardViewModel dashboardViewModel,
+                         BuyViewModel buyViewModel,
+                         SellViewModel sellViewModel,
+                         GetNewsViewModel getNewsViewModel,
+                         ResetBalanceViewModel resetBalanceViewModel,
+                         ViewManagerModel viewManagerModel) {
 
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
+        this.buyViewModel = buyViewModel;
+        this.sellViewModel = sellViewModel;
+        this.getNewsViewModel = getNewsViewModel;
+        this.resetBalanceViewModel = resetBalanceViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         JLabel title = new JLabel(dashboardViewModel.TITLE_LABEL);
@@ -49,8 +65,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         buttons.add(news);
         reset = new JButton(dashboardViewModel.RESET_BUTTON_LABEL);
         buttons.add(reset);
-        quit = new JButton(dashboardViewModel.QUIT_BUTTON_LABEL);
-        buttons.add(quit);
         history = new JButton(dashboardViewModel.TRANSACTION_HISTORY_BUTTON_LABEL);
         buttons.add(history);
 
@@ -59,9 +73,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(buy)) {
-                            // TODO: Note that some viewNames are capitalized and some are not. Check this carefully!
-                            // (Also some are longer/multi-word while others are single-word).
-                            viewManagerModel.setActiveView("Buy");
+                            buyViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(buyViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }
                     }
@@ -72,7 +85,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(sell)) {
-                            viewManagerModel.setActiveView("sell");
+                            sellViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(sellViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }
                     }
@@ -83,7 +97,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(news)) {
-                            viewManagerModel.setActiveView("Get Company News");
+                            sellViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(sellViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }
                     }
@@ -94,19 +109,9 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(reset)) {
-                            viewManagerModel.setActiveView("Reset Balance");
+                            resetBalanceViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(resetBalanceViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
-                        }
-                    }
-                }
-        );
-
-        quit.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(quit)) {
-                            // TODO: Implement quit.
-                            return;
                         }
                     }
                 }
@@ -116,23 +121,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(history)) {
-                            viewManagerModel.setActiveView("Transaction History");
-                            viewManagerModel.firePropertyChanged();
+                            // TODO: implement once Transaction History has either a use case or a view
+                            return;
                         }
                     }
                 }
         );
 
-        // TODO: Display user stats.
+        // TODO: Display user stats, once they are available.
 
         // TODO: Display table of information about stocks owned by the user.
-
-        // Pay attention to the input from the buttons in this view.
-        buy.addActionListener(this);
-        sell.addActionListener(this);
-        news.addActionListener(this);
-        reset.addActionListener(this);
-        quit.addActionListener(this);
 
         // NOTE: may or may not be necessary
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
