@@ -1,7 +1,6 @@
 package use_cases.Buy;
 
 import entities.*;
-import use_cases.Buy.BuyOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 
@@ -25,11 +24,16 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
     public void execute(BuyInputData buyInputData) {
         String ticker = buyInputData.getTicker();
         Double amount = buyInputData.getAmount();
+        Boolean amountFormatError = buyInputData.isAmountFormatError();
 
         User user = userDataAccessObject.get();
 
         Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
 
+        if (amountFormatError) {
+            buyPresenter.prepareFailView("Please enter a decimal value");
+            return;
+        }
         if (!user.hasEnough(currentPrice * amount)) {
             buyPresenter.prepareFailView("You are broke. no money. no balance. no stock. no equity.");
             return;

@@ -2,22 +2,22 @@ package app;
 
 import data_access.FileUserDataAccessObject;
 import drivers.Finnhub;
-import entities.CommonUser;
 import entities.CommonUserFactory;
 import entities.User;
-import use_cases.Buy.BuyOutputBoundary;
+import interface_adapters.Buy.BuyController;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;
-import use_cases.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
 import use_cases.Buy.BuyInputData;
 import use_cases.Buy.BuyInteractor;
+import use_cases.Buy.BuyOutputBoundary;
 import use_cases.Sell.SellInputData;
 import use_cases.Sell.SellInteractor;
+import use_cases.Sell.SellOutputBoundary;
 import view.BuyView;
 
 import java.io.IOException;
@@ -30,16 +30,20 @@ public class buySellTesting {
         // then it sells 5 as one transaction
         // and sells off the final 5, since this selling was all done instantaneously, the price of AAPL didn't change
         // so you're back at 10k, your starting balance
-        User newUser = new CommonUser();
-        userDataAccessObject.save();
+        User newUser = userDataAccessObject.get();
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");
-        BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
-        SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
+
+
+        BuyViewModel buyViewModel = new BuyViewModel();
+        BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyViewModel());
         APIAccessInterface Finnhub = new Finnhub();
-
-
         BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject, buyPresenter, Finnhub);
+        BuyController buyController = new BuyController(buyInteractor);
+
+        BuyView buyView = new BuyView(buyController, buyViewModel);
+
+        SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
         buyInteractor.execute(buyInputData);
 
         System.out.println(newUser.getBalance());
