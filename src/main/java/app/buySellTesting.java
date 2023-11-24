@@ -33,7 +33,7 @@ public class buySellTesting {
         User newUser = new CommonUser();
         userDataAccessObject.save();
 
-        BuyInputData buyInputData = new BuyInputData(10.0, "AAPL", "zain");
+        BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");
         BuyOutputBoundary buyPresenter = new BuyPresenter(new ViewManagerModel(), new BuyView(new BuyViewModel()));
         SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
         APIAccessInterface Finnhub = new Finnhub();

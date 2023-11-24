@@ -63,8 +63,8 @@ public class testSellView {
 
         APIAccessInterface driverAPI = new Finnhub();
 
-        BuyInputData buyInputData = new BuyInputData(10.0, "AAPL", "zain");
-        BuyInputData buyInputData2 = new BuyInputData(10.0, "MSFT", "zain");
+        BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");
+        BuyInputData buyInputData2 = new BuyInputData(10.0, "MSFT");
         BuyViewModel buyViewModel = new BuyViewModel();
         BuyView buyView = new BuyView(buyViewModel);
         BuyOutputBoundary buyPresenter = new BuyPresenter(viewManagerModel, buyView);

@@ -23,7 +23,6 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
     @Override
     public void execute(BuyInputData buyInputData) {
-        String username = buyInputData.getUsername();
         String ticker = buyInputData.getTicker();
         Double amount = buyInputData.getAmount();
 

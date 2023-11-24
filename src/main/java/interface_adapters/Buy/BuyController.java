@@ -10,9 +10,9 @@ public class BuyController {
         this.buyInteractor = buyInteractor;
     }
 
-    public void execute(Double amount, String ticker, String username) {
+    public void execute(Double amount, String ticker) {
         // TODO Ricky
-        BuyInputData buyInputData = new BuyInputData(amount, ticker, username);
+        BuyInputData buyInputData = new BuyInputData(amount, ticker);
         buyInteractor.execute(buyInputData);
     }
 }
