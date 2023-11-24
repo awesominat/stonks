@@ -1,7 +1,6 @@
 package use_cases.ResetBalance;
 
 import entities.*;
-import use_cases.ResetBalance.ResetBalanceOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 
@@ -21,9 +20,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         this.driverAPI = driverAPI;
     }
     @Override
-    public void execute(ResetBalanceInputData sellInputData) {
-        String username = sellInputData.getUsername();
-
+    public void execute() {
         User user = userDataAccessObject.get();
         Double curBalance = user.getBalance();
         Double amountToAdd = 10000.0;
