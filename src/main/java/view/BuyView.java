@@ -17,14 +17,8 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     public final String viewName = "buy";
     private final BuyViewModel buyViewModel;
 
-    /**
-     * The username chosen by the user
-     */
     final JTextField amountInputField = new JTextField(15);
     private final JLabel amountErrorField = new JLabel();
-    /**
-     * The password
-     */
     final JButton purchase;
     final JButton cancel;
 
