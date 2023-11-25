@@ -1,9 +1,6 @@
 package use_cases.GetTransactionHistory;
 
 import entities.*;
-import use_cases.BaseStockInteractor;
-import use_cases.Dashboard.DashboardDataAccessInterface;
-import use_cases.Dashboard.DashboardOutputBoundary;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -40,27 +37,41 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
             listOfTransactions.add(historyTransactionsForStock.getTransactions());
         }
 
-        // List of Transactions of a Particular Stock (List of Transaction)
-        List<List<Object>> listOfTransactionFacts = new ArrayList<>();
 
-        for (List<Transaction> transactions: listOfTransactions){
-            for (Transaction transaction: transactions) {
-                String type = transaction.getType().toString();
-                Double amount = transaction.getAmount();
-                Double pricePurchasedAt = transaction.getPricePoint().getPrice();
-                LocalDate date = transaction.getPricePoint().getTimeStamp();
+        HashMap<String, List<List<Object>>> userRecord = new HashMap<>();
+        for (String stock: stocks) {
+            // List of Transactions of a Particular Stock (List of Transaction)
+            List<List<Object>> listOfTransactionFacts = new ArrayList<>();
 
-                List<Object> Transaction = new ArrayList<>();
-                Transaction.add(type);
-                Transaction.add(amount);
-                Transaction.add(pricePurchasedAt);
-                Transaction.add(date);
-                listOfTransactionFacts.add(Transaction);
+            for (List<Transaction> transactions : listOfTransactions) {
+
+                for (Transaction transaction : transactions) {
+
+                    String type = transaction.getType().toString();
+                    Double amount = transaction.getAmount();
+                    Double pricePurchasedAt = transaction.getPricePoint().getPrice();
+                    LocalDate date = transaction.getPricePoint().getTimeStamp();
+
+                    // List containing Transaction Facts
+                    List<Object> Transaction = new ArrayList<>();
+
+                    Transaction.add(type);
+                    Transaction.add(amount);
+                    Transaction.add(pricePurchasedAt);
+                    Transaction.add(date);
+                    listOfTransactionFacts.add(Transaction);
+
+                }
+
             }
+            userRecord.put(stock, listOfTransactionFacts);
+
         }
 
-        GetTransactionHistoryOutputData transactionHistory = new GetTransactionHistoryOutputData(stocks,
-                listOfTransactionFacts);
+
+
+
+        GetTransactionHistoryOutputData transactionHistory = new GetTransactionHistoryOutputData(userRecord);
 
         getTransactionHistoryPresenter.prepareSuccessView(transactionHistory);
 
