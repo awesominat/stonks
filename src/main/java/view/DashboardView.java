@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapters.Buy.BuyViewModel;
+import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
@@ -17,6 +18,7 @@ import java.beans.PropertyChangeListener;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
+    private final DashboardController dashboardController;
     private final DashboardViewModel dashboardViewModel;
     private final BuyViewModel buyViewModel;
     private final SellViewModel sellViewModel;
@@ -25,6 +27,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final ViewManagerModel viewManagerModel;
 
     // Buttons to be displayed along the left side of the screen for various options the user has.
+    final JButton refresh;
     final JButton buy;
     final JButton sell;
     final JButton news;
@@ -36,6 +39,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
      * the user, and information about stocks the user has invested in.
      */
     public DashboardView(DashboardViewModel dashboardViewModel,
+                         DashboardController dashboardController,
                          BuyViewModel buyViewModel,
                          SellViewModel sellViewModel,
                          GetNewsViewModel getNewsViewModel,
@@ -43,6 +47,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          ViewManagerModel viewManagerModel) {
 
         this.viewManagerModel = viewManagerModel;
+        this.dashboardController = dashboardController;
         this.dashboardViewModel = dashboardViewModel;
         this.buyViewModel = buyViewModel;
         this.sellViewModel = sellViewModel;
@@ -57,6 +62,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         // Create all the buttons in this view.
         JPanel buttons = new JPanel();
+        refresh = new JButton(dashboardViewModel.REFRESH_BUTTON_LABEL);
+        buttons.add(refresh);
         buy = new JButton(dashboardViewModel.PURCHASE_BUTTON_LABEL);
         buttons.add(buy);
         sell = new JButton(dashboardViewModel.SELL_BUTTON_LABEL);
@@ -69,6 +76,18 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         buttons.add(history);
 
         // Create an anonymous subclass of ActionListener and instantiate it.
+        refresh.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(refresh)) {
+                            DashboardState currentState = dashboardViewModel.getState();
+                            dashboardController.execute();
+                            dashboardViewModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
+
         buy.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -137,6 +156,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         // Make the various display items visible to the user on the display.
         this.add(title);
+        this.add(welcome);
         this.add(buttons);
     }
 
@@ -149,10 +169,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        String event_name = evt.getPropertyName();
-//        DashboardState state = (DashboardState) evt.getNewValue();
-        // TODO: Determine whether this method needs to be implemented at all.
-        return;
+        String event_name = evt.getPropertyName();
+        DashboardState state = (DashboardState) evt.getNewValue();
     }
 
 }
