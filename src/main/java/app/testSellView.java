@@ -4,31 +4,31 @@ import data_access.FileUserDataAccessObject;
 import drivers.Finnhub;
 import entities.CommonUser;
 import entities.CommonUserFactory;
+import entities.User;
+import interface_adapters.Buy.BuyController;
 import interface_adapters.Buy.BuyPresenter;
-import interface_adapters.Buy.BuyState;
 import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardPresenter;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.Sell.SellController;
-import use_cases.Buy.BuyInputData;
-import use_cases.Buy.BuyInteractor;
-import use_cases.Buy.BuyOutputBoundary;
-import use_cases.Dashboard.DashboardDataAccessInterface;
-import use_cases.Dashboard.DashboardInteractor;
-import use_cases.Dashboard.DashboardOutputBoundary;
-import use_cases.Sell.SellOutputBoundary;
 import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
+import use_cases.Buy.BuyInputData;
+import use_cases.Buy.BuyInteractor;
+import use_cases.Buy.BuyOutputBoundary;
+import use_cases.Dashboard.DashboardInteractor;
+import use_cases.Dashboard.DashboardOutputBoundary;
 import use_cases.Sell.SellInputBoundary;
 import use_cases.Sell.SellInteractor;
+import use_cases.Sell.SellOutputBoundary;
 import view.BuyView;
+import view.SellView;
 import view.ViewManager;
+
 import javax.swing.*;
 import java.awt.*;
-import view.SellView;
-import entities.User;
 import java.io.IOException;
 
 public class testSellView {
@@ -66,9 +66,13 @@ public class testSellView {
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");
         BuyInputData buyInputData2 = new BuyInputData(10.0, "MSFT");
         BuyViewModel buyViewModel = new BuyViewModel();
-        BuyView buyView = new BuyView(buyViewModel);
-        BuyOutputBoundary buyPresenter = new BuyPresenter(viewManagerModel, buyView);
+
+
+        BuyOutputBoundary buyPresenter = new BuyPresenter(viewManagerModel, buyViewModel);
         BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject, buyPresenter, driverAPI);
+        BuyController buyController = new BuyController(buyInteractor);
+
+        BuyView buyView = new BuyView(buyController, buyViewModel);
         buyInteractor.execute(buyInputData);
         buyInteractor.execute(buyInputData2);
 
