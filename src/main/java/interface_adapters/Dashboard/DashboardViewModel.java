@@ -13,6 +13,7 @@ public class DashboardViewModel extends ViewModel {
     public final String NEWS_BUTTON_LABEL = "News";
     public final String RESET_BUTTON_LABEL = "Reset";
     public final String TRANSACTION_HISTORY_BUTTON_LABEL = "View Transaction History";
+    public final String REFRESH_BUTTON_LABEL = "Refresh";
 
     private DashboardState state = new DashboardState();
 
