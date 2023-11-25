@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapters.Buy.BuyController;
 import interface_adapters.Buy.BuyState;
 import interface_adapters.Buy.BuyViewModel;
 
@@ -19,13 +20,17 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
     final JTextField amountInputField = new JTextField(15);
     private final JLabel amountErrorField = new JLabel();
+    final JTextField tickerInputField = new JTextField(15);
+    private final JLabel tickerErrorField = new JLabel();
     final JButton purchase;
     final JButton cancel;
+    BuyController buyController;
 
     /**
      * A window with a title and a JButton.
      */
-    public BuyView(BuyViewModel buyViewModel) {
+    public BuyView(BuyController buyController, BuyViewModel buyViewModel) {
+        this.buyController = buyController;
         this.buyViewModel = buyViewModel;
         this.buyViewModel.addPropertyChangeListener(this);
 
@@ -33,7 +38,9 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         LabelTextPanel amountInfo = new LabelTextPanel(
-                new JLabel("Username"), amountInputField);
+                new JLabel("Amount"), amountInputField);
+        LabelTextPanel tickerInfo = new LabelTextPanel(
+                new JLabel("Ticker"), tickerInputField);
 
         JPanel buttons = new JPanel();
         purchase = new JButton(buyViewModel.PURCHASE_BUTTON_LABEL);
@@ -41,14 +48,37 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         cancel = new JButton(buyViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
 
-        purchase.addActionListener(this);
+        purchase.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        BuyState buyState = buyViewModel.getState();
+                        buyController.execute(buyState.getAmount(), buyState.getTicker());
+                    }
+                }
+        );
         cancel.addActionListener(this);
 
-        amountInfo.addKeyListener(new KeyListener() {
+        amountInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 BuyState currentState = buyViewModel.getState();
-                currentState.setAmount(amountInputField.getText());
+                currentState.setAmount(amountInputField.getText() + e.getKeyChar());
+                buyViewModel.setState(currentState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+
+        tickerInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                BuyState currentState = buyViewModel.getState();
+                currentState.setTicker(tickerInputField.getText() + e.getKeyChar());
                 buyViewModel.setState(currentState);
             }
 
@@ -61,6 +91,8 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(title);
+        this.add(tickerInfo);
+        this.add(tickerErrorField);
         this.add(amountInfo);
         this.add(amountErrorField);
         this.add(buttons);
@@ -77,6 +109,13 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     public void propertyChange(PropertyChangeEvent evt) {
         BuyState state = (BuyState) evt.getNewValue();
         setFields(state);
+
+        String amountError = state.getAmountError();
+        if (amountError != null) {
+            JOptionPane.showMessageDialog(this, amountError);
+            state.setAmountError(null);
+            buyViewModel.setState(state);
+        }
     }
 
     private void setFields(BuyState state) {

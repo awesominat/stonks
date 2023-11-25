@@ -3,11 +3,20 @@ package interface_adapters.Buy;
 public class BuyState {
     private String amount = "";
     private String amountError = null;
+    private String ticker = "";
 
-    public BuyState(String amount, String amountError) {
-        // TODO: Ricky
+    public BuyState(String amount, String amountError, String ticker) {
         this.amount = amount;
         this.amountError = amountError;
+        this.ticker = ticker;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
     }
 
     public String getAmount() {

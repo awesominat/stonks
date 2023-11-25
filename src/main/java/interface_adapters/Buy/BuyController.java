@@ -10,9 +10,13 @@ public class BuyController {
         this.buyInteractor = buyInteractor;
     }
 
-    public void execute(Double amount, String ticker) {
-        // TODO Ricky
-        BuyInputData buyInputData = new BuyInputData(amount, ticker);
-        buyInteractor.execute(buyInputData);
+    public void execute(String amount, String ticker) {
+        try {
+            BuyInputData buyInputData = new BuyInputData(Double.parseDouble(amount), ticker);
+            buyInteractor.execute(buyInputData);
+        } catch (NumberFormatException ex) {
+            BuyInputData buyInputData = new BuyInputData(ticker);
+            buyInteractor.execute(buyInputData);
+        }
     }
 }
