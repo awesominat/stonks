@@ -1,30 +1,16 @@
 package interface_adapters.GetTransactionHistory;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GetTransactionHistoryState {
-    private List<String> stockFullNameList;
+    private HashMap<String, List<List<Object>>> userRecord;
 
-    private List<List<Object>> listOfTransactionFacts;
-
-    // Check with Zain or Gursi
-//    public GetTransactionHistoryState(List<String> stockFullNameList, List<List<Object>> listOfTransactionFacts){
-//        this.listOfTransactionFacts = listOfTransactionFacts;
-//        this.stockFullNameList = stockFullNameList;
-//    }
-    public List<List<Object>> getListOfTransactionFacts() {
-        return listOfTransactionFacts;
+    public HashMap<String, List<List<Object>>> getUserRecord() {
+        return userRecord;
     }
 
-    public List<String> getStockFullNameList() {
-        return stockFullNameList;
-    }
-
-    public void setListOfTransactionFacts(List<List<Object>> listOfTransactionFacts) {
-        this.listOfTransactionFacts = listOfTransactionFacts;
-    }
-
-    public void setStockFullNameList(List<String> stockFullNameList) {
-        this.stockFullNameList = stockFullNameList;
+    public void setUserRecord(HashMap<String, List<List<Object>>> userRecord) {
+        this.userRecord = userRecord;
     }
 }
