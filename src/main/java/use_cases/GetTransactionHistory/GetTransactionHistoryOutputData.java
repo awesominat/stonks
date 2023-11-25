@@ -1,34 +1,20 @@
 package use_cases.GetTransactionHistory;
 
-import entities.TransactionHistory;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GetTransactionHistoryOutputData {
-    private List<String> stocks;
-    private List<List<Object>> listOfTransactionFacts;
+    private HashMap<String, List<List<Object>>> userRecord;
 
-    public GetTransactionHistoryOutputData(List<String> stocks, List<List<Object>> listOfTransactionFacts) {
-        this.stocks = stocks;
-        this.listOfTransactionFacts = listOfTransactionFacts;
+    public GetTransactionHistoryOutputData(HashMap<String, List<List<Object>>> userRecord) {
+        this.userRecord = userRecord;
     }
 
-    public void setStocks(List<String> stocks) {
-        this.stocks = stocks;
+    public void setUserRecord(HashMap<String, List<List<Object>>> userRecord) {
+        this.userRecord = userRecord;
     }
 
-    public List<String> getStocks() {
-        return this.stocks;
-    }
-
-    public void setListOfTransactionFacts(List<List<Object>> listOfTransactionFacts) {
-        this.listOfTransactionFacts = listOfTransactionFacts;
-    }
-
-    public List<List<Object>> getListOfTransactionFacts() {
-        return this.listOfTransactionFacts;
+    public HashMap<String, List<List<Object>>> getUserRecord() {
+        return userRecord;
     }
 }
