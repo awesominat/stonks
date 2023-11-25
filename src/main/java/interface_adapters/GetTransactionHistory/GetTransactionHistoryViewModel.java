@@ -11,7 +11,7 @@ public class GetTransactionHistoryViewModel extends ViewModel {
 
     public final String STOCK_NAME = "Stock";
 
-    public final String TRANSACTIONS = "Transaction History";
+    public final String TRANSACTIONS = "Transaction Record";
 
     private GetTransactionHistoryState state = new GetTransactionHistoryState();
 
