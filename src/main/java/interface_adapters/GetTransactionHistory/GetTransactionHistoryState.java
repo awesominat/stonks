@@ -13,5 +13,4 @@ public class GetTransactionHistoryState {
     public void setUserRecord(HashMap<String, List<List<Object>>> userRecord) {
         this.userRecord = userRecord;
     }
-
 }
