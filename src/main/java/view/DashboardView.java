@@ -1,13 +1,17 @@
 package view;
 
-import interface_adapters.Buy.BuyViewModel;
+// Imports for dashboard
 import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
+import interface_adapters.ViewManagerModel;
+
+// Imports to allow dashboard to switch to other views
+import interface_adapters.Buy.BuyViewModel;
+import interface_adapters.Sell.SellViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.ResetBalance.ResetBalanceViewModel;
-import interface_adapters.Sell.SellViewModel;
-import interface_adapters.ViewManagerModel;
+import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +28,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final SellViewModel sellViewModel;
     private final GetNewsViewModel getNewsViewModel;
     private final ResetBalanceViewModel resetBalanceViewModel;
+    private final GetTransactionHistoryViewModel historyViewModel;
     private final ViewManagerModel viewManagerModel;
 
     // Buttons to be displayed along the left side of the screen for various options the user has.
@@ -44,6 +49,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          SellViewModel sellViewModel,
                          GetNewsViewModel getNewsViewModel,
                          ResetBalanceViewModel resetBalanceViewModel,
+                         GetTransactionHistoryViewModel historyViewModel,
                          ViewManagerModel viewManagerModel) {
 
         this.viewManagerModel = viewManagerModel;
@@ -53,6 +59,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.sellViewModel = sellViewModel;
         this.getNewsViewModel = getNewsViewModel;
         this.resetBalanceViewModel = resetBalanceViewModel;
+        this.historyViewModel = historyViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         JLabel title = new JLabel(dashboardViewModel.TITLE_LABEL);
@@ -116,9 +123,12 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(news)) {
-                            sellViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(sellViewModel.getViewName());
+                            getNewsViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(getNewsViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
+
+                            // TODO: Do we then have to call GetNewsController.execute() to obtain
+                            //  the needed information?
                         }
                     }
                 }
@@ -140,8 +150,12 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(history)) {
-                            // TODO: implement once Transaction History has either a use case or a view
-                            return;
+                            historyViewModel.firePropertyChanged();
+                            viewManagerModel.setActiveView(historyViewModel.getViewName());
+                            viewManagerModel.firePropertyChanged();
+
+                            // TODO: Do we then need to call GetTransactionHistoryController.execute()
+                            //  to obtain the needed information?
                         }
                     }
                 }
