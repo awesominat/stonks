@@ -24,16 +24,25 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
     public void execute(BuyInputData buyInputData) {
         String ticker = buyInputData.getTicker();
         Double amount = buyInputData.getAmount();
-        Boolean amountFormatError = buyInputData.isAmountFormatError();
 
         User user = userDataAccessObject.get();
 
-        Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
-
-        if (amountFormatError) {
-            buyPresenter.prepareFailView("Please enter a decimal value");
+        if (amount == null) {
+            try {
+                CompanyInformation companyInformation = driverAPI.getCompanyProfile(ticker);
+                Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
+                BuySearchOutputData result = new BuySearchOutputData(ticker, companyInformation, currentPrice, user.getBalance());
+                buyPresenter.prepareSuccessView(result);
+            } catch (RuntimeException e) { // this should be its own exception, TickerNotFoundException
+                buyPresenter.prepareFailView("Incorrect ticker.");
+            }
+            return;
+        } else if (amount <= 0) {
+            buyPresenter.prepareFailView("Please enter a decimal value greater than 0");
             return;
         }
+
+        Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
         if (!user.hasEnough(currentPrice * amount)) {
             buyPresenter.prepareFailView("You are broke. no money. no balance. no stock. no equity.");
             return;
@@ -48,7 +57,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
         userDataAccessObject.save();
 
-        BuyOutputData result = new BuyOutputData(buyInputData.getAmount(), buyInputData.getTicker());
+        BuyOutputData result = new BuyOutputData(buyInputData.getTicker(), user.getBalance(), amount);
         buyPresenter.prepareSuccessView(result);
     }
 }

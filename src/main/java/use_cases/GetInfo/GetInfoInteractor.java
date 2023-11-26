@@ -27,15 +27,14 @@ public class GetInfoInteractor implements GetInfoInputBoundary {
 
         try {
             // Make API call
-            CompanyInformation company_info = driverAPI.getCompanyProfile(ticker);
+            CompanyInformation companyInformation = driverAPI.getCompanyProfile(ticker);
 
             // Save API output using OutputData format for the GetNews use case
-            GetInfoOutputData result = new GetInfoOutputData(ticker, company_info);
+            GetInfoOutputData result = new GetInfoOutputData(ticker, companyInformation);
 
             getInfoPresenter.prepareSuccessView(result);
 
         } catch (RuntimeException e) {
-//            e.printStackTrace();
             getInfoPresenter.prepareFailView("API call failed.");
         }
     }

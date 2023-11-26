@@ -10,8 +10,6 @@ import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardPresenter;
 import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.Sell.SellController;
-import interface_adapters.Sell.SellPresenter;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
@@ -20,11 +18,6 @@ import use_cases.Buy.BuyInteractor;
 import use_cases.Buy.BuyOutputBoundary;
 import use_cases.Dashboard.DashboardInteractor;
 import use_cases.Dashboard.DashboardOutputBoundary;
-import use_cases.Sell.SellDataAccessInterface;
-import use_cases.Sell.SellInputBoundary;
-import use_cases.Sell.SellInteractor;
-import use_cases.Sell.SellOutputBoundary;
-import view.BuyView;
 import view.SellView;
 import view.ViewManager;
 
@@ -66,7 +59,6 @@ public class testSellView {
         BuyOutputBoundary buyPresenter = new BuyPresenter(viewManagerModel, buyViewModel);
         BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject, buyPresenter, driverAPI);
         BuyController buyController = new BuyController(buyInteractor);
-        BuyView buyView = new BuyView(buyController, buyViewModel);
 
         // simulating buying two stocks
         BuyInputData buyInputDataAPPL = new BuyInputData(10.0, "AAPL");

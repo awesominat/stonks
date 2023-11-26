@@ -6,6 +6,7 @@ import entities.CommonUserFactory;
 import interface_adapters.Buy.BuyController;
 import interface_adapters.Buy.BuyPresenter;
 import interface_adapters.Buy.BuyViewModel;
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
 import use_cases.Buy.BuyInteractor;
@@ -19,7 +20,7 @@ import java.io.IOException;
 
 public class testBuyView {
     public static void main(String[] args) throws IOException {
-        JFrame application = new JFrame("Buy View");
+        JFrame application = new JFrame("Buy Stock");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         CardLayout cardLayout = new CardLayout();
@@ -30,6 +31,7 @@ public class testBuyView {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
         BuyViewModel buyViewModel = new BuyViewModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
 
         FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
         userDataAccessObject.save();
@@ -42,7 +44,7 @@ public class testBuyView {
 
         BuyController buyController = new BuyController(buyInteractor);
 
-        BuyView buyView = new BuyView(buyController, buyViewModel);
+        BuyView buyView = new BuyView(buyController, buyViewModel, viewManagerModel, dashboardViewModel);
 
         views.add(buyView, buyView.viewName);
 
