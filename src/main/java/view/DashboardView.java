@@ -182,10 +182,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String event_name = evt.getPropertyName();
-        DashboardState state = (DashboardState) evt.getNewValue();
-
         dashboardController.execute();
+        DashboardState state = dashboardViewModel.getState();
 
         // TODO: Display user stats, once they are available.
 
