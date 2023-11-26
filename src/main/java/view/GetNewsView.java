@@ -68,6 +68,7 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         search.addActionListener(
                 evt -> {
                     GetNewsState currentState = getNewsViewModel.getState();
+
                     getNewsController.execute(currentState.getTicker());
 
                     // TODO: show news items (perhaps not implemented here)
@@ -75,7 +76,7 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
-        tickerInput.addKeyListener(new KeyListener() {
+        tickerInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 GetNewsState currentState = getNewsViewModel.getState();
@@ -84,10 +85,14 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+
+            }
         });
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -121,26 +126,17 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         topPanel.add(Box.createHorizontalGlue(), gbc);
         this.add(topPanel, BorderLayout.NORTH);
 
-        bottomPanel = new JPanel(new GridBagLayout());
-
         gbc.gridx = 0;
-//        bottomPanel.add(amountInput, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.weightx = 0;
-//        bottomPanel.add(balanceField, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.weightx = 0;
-//        purchase.setPreferredSize(new Dimension(350, 40));
-//        bottomPanel.add(purchase, gbc);
-
-
-        this.add(bottomPanel, BorderLayout.SOUTH);
 
         middlePanel = new JPanel(new GridBagLayout());
         table = new JTable();
@@ -155,11 +151,7 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         add(middlePanel);
 
         middlePanel.setVisible(false);
-        bottomPanel.setVisible(false);
 
-//        this.add(tickerInput);
-//        this.add(back);
-//        this.add(search);
     }
 
     /**

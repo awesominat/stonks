@@ -108,6 +108,8 @@ public class Finnhub implements APIAccessInterface {
         String url = "https://finnhub.io/api/v1/company-news?symbol=" + ticker + "&from=" + from + "&to=" + to +
                 "&token=" + APIKEY;
 
+        System.out.println(url);
+
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
