@@ -34,6 +34,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     final JButton sell;
     final JButton back;
     final JTable table;
+    final JLabel currentBalance;
 
     public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
         this.sellController = sellController;
@@ -41,6 +42,9 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         this.dashboardViewModel = dashboardViewModel;
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
+
+        currentBalance = new JLabel();
+        currentBalance.setFont(new Font("Serif", Font.PLAIN, 30));
 
         JLabel title = new JLabel("Sell Stocks");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -116,6 +120,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
 
         this.add(title);
+        this.add(currentBalance);
         this.add(table);
         this.add(stockSelectionLabel);
         this.add(stockInputField);
@@ -167,6 +172,9 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             }
         }
         table.setModel(new TableModel(ownedStocksAmounts));
+
+        Double userBalance = dashboardState.getUserStats().get("balance");
+        currentBalance.setText(String.format("Current Balance: %.3f", userBalance));
     }
 
 }
