@@ -8,11 +8,11 @@ import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardPresenter;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
+import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapters.ResetBalance.ResetBalanceViewModel;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
-import use_cases.Buy.BuyInteractor;
 import use_cases.Dashboard.DashboardInteractor;
 import use_cases.Dashboard.DashboardOutputBoundary;
 import view.DashboardView;
@@ -54,6 +54,8 @@ public class testDashboardView {
                 new SellViewModel(),
                 new GetNewsViewModel(),
                 new ResetBalanceViewModel(),
+                // Uncomment the below once improving-dashboard-view is merged into main
+//                new GetTransactionHistoryViewModel(),
                 viewManagerModel
         );
 
