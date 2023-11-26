@@ -212,7 +212,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         BuyState state = (BuyState) evt.getNewValue();
         setFields(state);
 
-        if (state.getStockInfo() != null && state.getRenderNewInfo()) {
+        if (state.getStockInfo() != null && state.getRenderNewInfo() != null) {
             table.setModel(new TableModel(state.getStockInfo()));
 
             balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
@@ -221,19 +221,9 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
             middlePanel.setVisible(true);
             bottomPanel.setVisible(true);
-
-//            validate();
-//            revalidate();
-//            repaint();
-//            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-//            if (topFrame != null) {
-//                topFrame.repaint();
-//            }
-            state.setRenderNewInfo(false);
+            state.setRenderNewInfo(null);
             buyViewModel.setState(state);
         }
-        System.out.println(state.getAmount());
-//        if (state.getAmount())
         if (state.getBoughtStock() != null) {
             balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
             updateBalanceLabelColor();
@@ -241,7 +231,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
             JOptionPane.showMessageDialog(this, String.format(buyViewModel.JUST_BOUGHT_MESSAGE,
                     state.getAmount(), state.getTicker()));
-            state.setBoughtStock(false);
+            state.setBoughtStock(null);
             buyViewModel.setState(state);
         }
         String amountError = state.getAmountError();
