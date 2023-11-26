@@ -5,7 +5,8 @@ import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardPresenter;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.ResetBalance.ResetBalanceViewModel;
+import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapters.ResetBalance.ResetBalanceController;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
@@ -26,7 +27,8 @@ public class DashboardUseCaseFactory {
             BuyViewModel buyViewModel,
             SellViewModel sellViewModel,
             GetNewsViewModel getNewsViewModel,
-            ResetBalanceViewModel resetBalanceViewModel,
+            ResetBalanceController resetBalanceController,
+            GetTransactionHistoryViewModel getTransactionHistoryViewModel,
             DashboardDataAccessInterface dashboardDataAccessInterface,
             APIAccessInterface apiAccessInterface
     ) {
@@ -42,7 +44,8 @@ public class DashboardUseCaseFactory {
                 buyViewModel,
                 sellViewModel,
                 getNewsViewModel,
-                resetBalanceViewModel,
+                resetBalanceController,
+                getTransactionHistoryViewModel,
                 viewManagerModel
         );
     }

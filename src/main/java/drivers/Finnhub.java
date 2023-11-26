@@ -173,6 +173,7 @@ public class Finnhub implements APIAccessInterface {
             LocalDate now = LocalDate.now();
             Double result;
 
+            System.out.println(responseBody);
             if (responseBody.get("c") instanceof BigDecimal) {
                 result = ((BigDecimal) responseBody.get("c")).doubleValue();
             } else {

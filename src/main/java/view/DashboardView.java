@@ -4,6 +4,7 @@ package view;
 import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
+import interface_adapters.ResetBalance.ResetBalanceController;
 import interface_adapters.ViewManagerModel;
 
 // Imports to allow dashboard to switch to other views
@@ -27,7 +28,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final BuyViewModel buyViewModel;
     private final SellViewModel sellViewModel;
     private final GetNewsViewModel getNewsViewModel;
-    private final ResetBalanceViewModel resetBalanceViewModel;
+    private final ResetBalanceController resetBalanceController;
     private final GetTransactionHistoryViewModel historyViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -48,7 +49,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          BuyViewModel buyViewModel,
                          SellViewModel sellViewModel,
                          GetNewsViewModel getNewsViewModel,
-                         ResetBalanceViewModel resetBalanceViewModel,
+                         ResetBalanceController resetBalanceController,
                          GetTransactionHistoryViewModel historyViewModel,
                          ViewManagerModel viewManagerModel) {
 
@@ -58,7 +59,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.buyViewModel = buyViewModel;
         this.sellViewModel = sellViewModel;
         this.getNewsViewModel = getNewsViewModel;
-        this.resetBalanceViewModel = resetBalanceViewModel;
+        this.resetBalanceController = resetBalanceController;
         this.historyViewModel = historyViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -138,9 +139,11 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(reset)) {
-                            resetBalanceViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(resetBalanceViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
+                            resetBalanceController.execute();
+                            dashboardViewModel.firePropertyChanged();
+
+                            // TODO: add reset balance pop-up
+
                         }
                     }
                 }
@@ -161,10 +164,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
-        // TODO: Display user stats, once they are available.
-
-        // TODO: Display table of information about stocks owned by the user.
-
         // NOTE: may or may not be necessary
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -183,8 +182,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String event_name = evt.getPropertyName();
-        DashboardState state = (DashboardState) evt.getNewValue();
+        dashboardController.execute();
+        DashboardState state = dashboardViewModel.getState();
+
+        // TODO: Display user stats, once they are available.
+
+        // TODO: Display table of information about stocks owned by the user.
+
     }
 
 }

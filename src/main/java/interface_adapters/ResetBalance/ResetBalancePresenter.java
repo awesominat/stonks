@@ -6,11 +6,11 @@ import use_cases.ResetBalance.ResetBalanceOutputBoundary;
 import view.ResetBalanceView;
 
 public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
-    private final ResetBalanceView resetBalanceViewModel;
+    private final ResetBalanceViewModel resetBalanceViewModel;
     private ViewManagerModel viewManagerModel;
 
     public ResetBalancePresenter(ViewManagerModel viewManagerModel,
-                                 ResetBalanceView resetBalanceViewModel) {
+                                 ResetBalanceViewModel resetBalanceViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.resetBalanceViewModel = resetBalanceViewModel;
     }
