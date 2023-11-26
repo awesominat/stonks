@@ -41,7 +41,10 @@ public class buySellTesting {
         BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject, buyPresenter, Finnhub);
         BuyController buyController = new BuyController(buyInteractor);
 
-        BuyView buyView = new BuyView(buyController, buyViewModel);
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
+
+        BuyView buyView = new BuyView(buyController, buyViewModel, viewManagerModel, dashboardViewModel);
 
         SellOutputBoundary sellPresenter = new SellPresenter(new ViewManagerModel(), new SellViewModel(), new DashboardViewModel());
         buyInteractor.execute(buyInputData);

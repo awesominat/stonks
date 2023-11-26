@@ -1,12 +1,14 @@
 package use_cases.Buy;
 
 public class BuyOutputData {
-    public Double amount;
-    public String ticker;
+    private String ticker;
+    private Double newBalance;
+    private Double amount;
 
-    public BuyOutputData(Double amount, String ticker) {
-        this.amount = amount;
+    public BuyOutputData(String ticker, Double newBalance, Double amount) {
         this.ticker = ticker;
+        this.newBalance = newBalance;
+        this.amount = amount;
     }
 
     public Double getAmount() {
@@ -15,5 +17,9 @@ public class BuyOutputData {
 
     public String getTicker() {
         return ticker;
+    }
+
+    public Double getNewBalance() {
+        return newBalance;
     }
 }

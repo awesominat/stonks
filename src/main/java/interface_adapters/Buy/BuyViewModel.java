@@ -9,8 +9,11 @@ public class BuyViewModel extends ViewModel {
 // TODO: Ricky
     public final String TITLE_LABEL = "Buy Stock";
     public final String AMOUNT_LABEL = "Enter amount";
+    public final String BACK_BUTTON_LABEL = "Back";
+    public final String SEARCH_BUTTON_LABEL = "Search";
     public final String PURCHASE_BUTTON_LABEL = "Purchase";
     public final String CANCEL_BUTTON_LABEL = "Cancel";
+    public final String JUST_BOUGHT_MESSAGE = "Congratulations, you have just bought %s stock(s) of %s!";
 
     private BuyState state = new BuyState();
 
