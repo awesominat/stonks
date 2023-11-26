@@ -19,8 +19,9 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
-
     public final String viewName = "sell";
+
+    private final SellController sellController;
     private final SellViewModel sellViewModel;
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
@@ -30,7 +31,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     final JButton sell;
     final JButton back;
-    private final SellController sellController;
 
     public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
         this.sellController = sellController;
@@ -45,15 +45,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         JLabel stockSelectionLabel = new JLabel("Select an owned stock");
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
                 new JLabel("Select amount to sell"), amountInputField);
-
-        // Get owned stocks list from dashboard for dropdown menu on sell page
-        DashboardState dashboardState = dashboardViewModel.getState();
-        List<String> ownedStocks = dashboardState.getOwnedTickers();
-        for (String s: ownedStocks) {
-            stockInputField.addItem(s);
-        }
-
-        // Check if an error occurs and display an error pane
 
 
         JPanel buttons = new JPanel();
@@ -133,6 +124,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // Display any potential errors
         SellState state = (SellState) evt.getNewValue();
         String amountError = state.getAmountError();
         if (amountError != null) {
@@ -140,6 +132,16 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         }
         state.setAmountError(null);
         sellViewModel.setState(state);
+
+        // Get owned stocks list from dashboard for dropdown menu on sell page
+        DashboardState dashboardState = dashboardViewModel.getState();
+        List<String> ownedStocks = dashboardState.getOwnedTickers();
+        stockInputField.removeAllItems();
+        if (ownedStocks != null && !ownedStocks.isEmpty()) {
+            for (String s: ownedStocks) {
+                stockInputField.addItem(s);
+            }
+        }
     }
 
 }
