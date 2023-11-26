@@ -13,6 +13,7 @@ public interface User {
     boolean hasEnough(Double amount);
     void addToHistory(String stockName, TransactionHistory entry);
     void spendBalance(Double difference);
+    void setBalance(Double amount);
     void addBalance(Double addition);
     Double getBalance();
 }

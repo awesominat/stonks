@@ -1,11 +1,12 @@
 package view;
-import interface_adapters.Dashboard.DashboardState;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryState;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryController;
+
+import drivers.TableModel;
+import interface_adapters.Buy.BuyController;
+import interface_adapters.Buy.BuyState;
+import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.Sell.SellController;
-import interface_adapters.Sell.SellViewModel;
+import interface_adapters.GetTransactionHistory.GetTransactionHistoryController;
+import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapters.ViewManagerModel;
 
 import javax.swing.*;
@@ -13,67 +14,88 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
-public class TransactionHistoryView extends JFrame implements ActionListener, PropertyChangeListener {
+public class TransactionHistoryView extends JPanel implements ActionListener, PropertyChangeListener {
+
     public final String viewName = "transactionHistory";
-    private final JTable table;
     private final GetTransactionHistoryViewModel getTransactionHistoryViewModel;
-    private final DashboardViewModel dashboardViewModel;
-    private final ViewManagerModel viewManagerModel;
-
-    private final GetTransactionHistoryController  getTransactionHistoryController;
-
-    public TransactionHistoryView(GetTransactionHistoryViewModel getTransactionHistoryViewModel,
-                              GetTransactionHistoryController getTransactionHistoryController,
-                              ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
+    JTable table;
+    final JButton back;
+    GetTransactionHistoryController getTransactionHistoryController;
+    public TransactionHistoryView(GetTransactionHistoryController getTransactionHistoryController,
+                                  GetTransactionHistoryViewModel getTransactionHistoryViewModel,
+                                  ViewManagerModel viewManagerModel,
+                                  DashboardViewModel dashboardViewModel
+    ) {
         this.getTransactionHistoryController = getTransactionHistoryController;
-        this.viewManagerModel = viewManagerModel;
         this.getTransactionHistoryViewModel = getTransactionHistoryViewModel;
-        this.dashboardViewModel = dashboardViewModel;
+        setPreferredSize(new Dimension(800, 400));
 
-        // Set up the JFrame
-        JLabel title = new JLabel("Transaction History");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        this.getTransactionHistoryController.execute();
+        back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
 
-        // Create a table model
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Stock");
-        model.addColumn("Transaction Type");
-        model.addColumn("Amount");
-        model.addColumn("Price");
-        model.addColumn("Date");
+        back.addActionListener(
+                evt -> {
+                    dashboardViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
+                }
+        );
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
 
-        GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
-        for (Map.Entry<String, List<List<Object>>> entry : state.getUserRecord().entrySet()) {
-            String stock = entry.getKey();
-            List<List<Object>> dataList = entry.getValue();
+        DefaultTableModel tableModel = new DefaultTableModel();
 
-            for (List<Object> rowData : dataList) {
-                model.addRow(new Object[]{stock, rowData.get(0), rowData.get(1), rowData.get(2), rowData.get(3)});
+        // Add columns to the model
+        tableModel.addColumn("Stock");  // The key string
+        tableModel.addColumn("Transaction Type");
+        tableModel.addColumn("Amount");
+        tableModel.addColumn("Price");
+        tableModel.addColumn("Date");
+
+        // Populate the model with data
+        HashMap<String, List<List<String>>> userRecord = getTransactionHistoryViewModel.getState().getUserRecord();
+        System.out.println(userRecord);
+        for (HashMap.Entry<String, List<List<String>>> entry : userRecord.entrySet()) {
+            String key = entry.getKey();
+            List<List<String>> dataList = entry.getValue();
+
+            for (List<String> rowData : dataList) {
+                tableModel.addRow(new Object[]{key, rowData.get(0), rowData.get(1), rowData.get(2), rowData.get(3)});
             }
         }
+//        for (HashMap.Entry<String, List<List<String>>> entry : userRecord.entrySet()) {
+//            String key = entry.getKey();
+//            List<List<String>> dataList = entry.getValue();
+//            for (List<String> stringList : dataList) {
+//                Object[] rowData = new Object[5];
+//                rowData[0] = key;
+//                for (int i = 0; i < stringList.size(); i++) {
+//                    rowData[i + 1] = stringList.get(i);
+//                }
+//                tableModel.addRow(rowData);
+//            }
+//        }
 
-        this.table = new JTable(model);
+        // Create the table using the model
+        table = new JTable(tableModel);
 
         // Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(table);
 
-        // Add the scroll pane to the JFrame
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
-
-        // Display the JFrame
-        setLocationRelativeTo(null);
-        setVisible(true);
+        // Set layout and add components
+        setLayout(new BorderLayout());
+        add(back, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
-
-    @Override
+//    @Override
     public void actionPerformed(ActionEvent e) {
 
     }

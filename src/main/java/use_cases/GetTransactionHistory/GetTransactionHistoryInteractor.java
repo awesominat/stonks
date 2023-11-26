@@ -38,22 +38,22 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
         }
 
 
-        HashMap<String, List<List<Object>>> userRecord = new HashMap<>();
+        HashMap<String, List<List<String>>> userRecord = new HashMap<>();
         for (String stock: stocks) {
             // List of Transactions of a Particular Stock (List of Transaction)
-            List<List<Object>> listOfTransactionFacts = new ArrayList<>();
+            List<List<String>> listOfTransactionFacts = new ArrayList<>();
 
             for (List<Transaction> transactions : listOfTransactions) {
 
                 for (Transaction transaction : transactions) {
 
                     String type = transaction.getType().toString();
-                    Double amount = transaction.getAmount();
-                    Double pricePurchasedAt = transaction.getPricePoint().getPrice();
-                    LocalDate date = transaction.getPricePoint().getTimeStamp();
+                    String amount = transaction.getAmount().toString();
+                    String pricePurchasedAt = transaction.getPricePoint().getPrice().toString();
+                    String date = transaction.getPricePoint().getTimeStamp().toString();
 
                     // List containing Transaction Facts
-                    List<Object> Transaction = new ArrayList<>();
+                    List<String> Transaction = new ArrayList<>();
 
                     Transaction.add(type);
                     Transaction.add(amount);

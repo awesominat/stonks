@@ -33,8 +33,6 @@ public class testGetNewsView {
         new ViewManager(views, cardLayout, viewManagerModel);
         GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
 
-//        FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
-//        userDataAccessObject.save();
 
         APIAccessInterface driverAPI = new Finnhub();
 
