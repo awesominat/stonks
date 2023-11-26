@@ -54,8 +54,7 @@ public class testDashboardView {
                 new SellViewModel(),
                 new GetNewsViewModel(),
                 new ResetBalanceViewModel(),
-                // Uncomment the below once improving-dashboard-view is merged into main
-//                new GetTransactionHistoryViewModel(),
+                new GetTransactionHistoryViewModel(),
                 viewManagerModel
         );
 
