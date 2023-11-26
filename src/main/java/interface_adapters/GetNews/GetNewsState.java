@@ -17,6 +17,8 @@ public class GetNewsState {
 
     public void setTicker(String ticker) {this.ticker = ticker;}
 
-    // Due to the copy constructor, the default constructor must be explicit. So we overload it.
+    // Due to the ViewModel's default constructor call, we must explicitly define the default constructor.
+    //  So, we overload the copy constructor.
     public GetNewsState() {}
+
 }
