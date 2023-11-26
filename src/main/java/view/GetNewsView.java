@@ -34,7 +34,6 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     final JButton back;
     JPanel topPanel;
     JPanel middlePanel;
-    JPanel bottomPanel;
 
     public GetNewsView(GetNewsViewModel getNewsViewModel,
                        GetNewsController getNewsController,
@@ -70,9 +69,6 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
                     GetNewsState currentState = getNewsViewModel.getState();
 
                     getNewsController.execute(currentState.getTicker());
-
-                    // TODO: show news items (perhaps not implemented here)
-
                 }
         );
 
@@ -170,9 +166,12 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
             table.setModel(new TableModel(state.getNewsItem()));
 
             middlePanel.setVisible(true);
-            bottomPanel.setVisible(true);
             state.setRenderNewInfo(null);
             getNewsViewModel.setState(state);
+
+            // TODO: fix this property change so that the table is scrollable,
+            //  allowing the user to see multiple news items
+
         }
 
         String tickerError = state.getTickerError();
