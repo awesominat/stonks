@@ -1,17 +1,23 @@
 package interface_adapters.GetTransactionHistory;
 
+import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.GetTransactionHistory.GetTransactionHistoryOutputBoundary;
 import use_cases.GetTransactionHistory.GetTransactionHistoryOutputData;
 
+import java.util.Vector;
+
 public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutputBoundary {
     private final GetTransactionHistoryViewModel getTransactionHistoryViewModel;
+    private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public GetTransactionHistoryPresenter(GetTransactionHistoryViewModel getTransactionHistoryViewModel,
-                                          ViewManagerModel viewManagerModel){
+    public GetTransactionHistoryPresenter(ViewManagerModel viewManagerModel,
+                                          GetTransactionHistoryViewModel getTransactionHistoryViewModel,
+                                          DashboardViewModel dashboardViewModel){
 
         this.getTransactionHistoryViewModel = getTransactionHistoryViewModel;
+        this.dashboardViewModel = dashboardViewModel;
         this.viewManagerModel = viewManagerModel;
 
     }
@@ -24,9 +30,10 @@ public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutp
         // fire the property changed for getTransactionHistory view model
         getTransactionHistoryViewModel.firePropertyChanged();
 
-        // set active view to be dashboard
+        // set active view to be transaction history
         viewManagerModel.setActiveView(getTransactionHistoryViewModel.getViewName());
-        // fire the property changed for view manager model such that the view changes to dashboard
+        // fire the property changed for view manager model such that the view changes to
+        // transaction history
         viewManagerModel.firePropertyChanged();
     }
 
