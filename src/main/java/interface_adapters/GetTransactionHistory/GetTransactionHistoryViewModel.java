@@ -16,7 +16,7 @@ public class GetTransactionHistoryViewModel extends ViewModel {
     private GetTransactionHistoryState state = new GetTransactionHistoryState();
 
     public GetTransactionHistoryViewModel() {
-        super("transaction-history");
+        super("transactionHistory");
     }
 
     public void setState(GetTransactionHistoryState state) {
