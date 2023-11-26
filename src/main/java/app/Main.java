@@ -110,6 +110,15 @@ public class Main {
         );
         views.add(getNewsView, getNewsView.viewName);
 
+        TransactionHistoryView transactionHistoryView = GetTransactionHistoryUseCaseFactory.create(
+                viewManagerModel,
+                getTransactionHistoryViewModel,
+                dashboardViewModel,
+                fileUserDataAccessObject,
+                apiAccessInterface
+        );
+        views.add(transactionHistoryView, transactionHistoryView.viewName);
+
         // Set start screen to dashboard and display application
         viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         dashboardViewModel.firePropertyChanged();
