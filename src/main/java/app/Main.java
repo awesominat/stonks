@@ -9,10 +9,13 @@ import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapters.ResetBalance.ResetBalanceController;
+import interface_adapters.ResetBalance.ResetBalancePresenter;
+import interface_adapters.ResetBalance.ResetBalanceViewModel;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
+import use_cases.ResetBalance.ResetBalanceInteractor;
 import view.*;
 
 import javax.swing.*;
@@ -47,8 +50,20 @@ public class Main {
         BuyViewModel buyViewModel = new BuyViewModel();
         SellViewModel sellViewModel = new SellViewModel();
         GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
-        ResetBalanceController resetBalanceController = new ResetBalanceController();
         GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
+
+        // DashboardView requires a ResetBalanceController, the simulation of which requires a bunch of other objects.
+        ResetBalanceViewModel resetBalanceViewModel = new ResetBalanceViewModel();
+        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(
+                viewManagerModel,
+                resetBalanceViewModel
+        );
+        ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(
+                fileUserDataAccessObject,
+                resetBalancePresenter,
+                apiAccessInterface
+        );
+        ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 
 
         // Dashboard view init
