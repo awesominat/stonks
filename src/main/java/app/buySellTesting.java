@@ -25,11 +25,6 @@ import java.io.IOException;
 public class buySellTesting {
     public static void main(String[] args) throws IOException, InterruptedException {
         FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
-
-        // this code should purchase 10 pieces of apple stock, ticker AAPL
-        // then it sells 5 as one transaction
-        // and sells off the final 5, since this selling was all done instantaneously, the price of AAPL didn't change
-        // so you're back at 10k, your starting balance
         User newUser = userDataAccessObject.get();
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");

@@ -53,6 +53,11 @@ public class CommonUser implements User {
         this.balance += addition;
     }
 
+    @Override
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
     public CommonUser(HashMap<String, Double> portfolio, HashMap<String,
             TransactionHistory> history, Double balance) {
         this.portfolio = portfolio;
