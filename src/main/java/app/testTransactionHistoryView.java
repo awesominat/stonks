@@ -28,26 +28,88 @@ import use_cases.GetTransactionHistory.GetTransactionHistoryInputBoundary;
 import use_cases.GetTransactionHistory.GetTransactionHistoryInteractor;
 import use_cases.GetTransactionHistory.GetTransactionHistoryOutputBoundary;
 import use_cases.Sell.SellInputBoundary;
-//import use_cases.Sell.SellInteractor;
-//import use_cases.Sell.SellOutputBoundary;
-//import view.BuyView;
-//import view.SellView;
-//import view.TransactionHistoryView;
-//import view.ViewManager;
-//
-//import javax.swing.*;
-//import java.awt.*;
-//import java.io.IOException;
-//
-//public class testTransactionHistoryView {
-//    public static void main(String[] args) throws IOException {
-//        // Build the main program window, the main panel containing the
-//        // various cards, and the layout, and stitch them together.
-//
-//        // The main application window.
-//        JFrame application = new JFrame("Sell View");
-//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//
+import use_cases.Sell.SellInteractor;
+import use_cases.Sell.SellOutputBoundary;
+import view.BuyView;
+import view.SellView;
+import view.TransactionHistoryView;
+import view.ViewManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
+public class testTransactionHistoryView {
+    public static void main(String[] args) throws IOException {
+        // Build the main program window, the main panel containing the
+        // various cards, and the layout, and stitch them together.
+
+        // The main application window.
+        JFrame application = new JFrame("View Transaction History");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
+        CardLayout cardLayout = new CardLayout();
+
+        JPanel views = new JPanel(cardLayout);
+        application.add(views);
+
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        new ViewManager(views, cardLayout, viewManagerModel);
+        BuyViewModel buyViewModel = new BuyViewModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
+
+        FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject(
+                "./user.json",
+                new CommonUserFactory()
+        );
+        userDataAccessObject.save();
+
+        APIAccessInterface driverAPI = new Finnhub();
+
+        BuyOutputBoundary buyPresenter = new BuyPresenter(viewManagerModel, buyViewModel);
+
+        BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject,
+                buyPresenter,
+                driverAPI);
+
+        BuyController buyController = new BuyController(buyInteractor);
+        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
+
+        GetTransactionHistoryPresenter getTransactionHistoryPresenter = new GetTransactionHistoryPresenter(
+                viewManagerModel,
+                getTransactionHistoryViewModel,
+                dashboardViewModel
+        );
+
+        GetTransactionHistoryInteractor getTransactionHistoryInteractor = new GetTransactionHistoryInteractor(
+                userDataAccessObject,
+                getTransactionHistoryPresenter
+        );
+
+        GetTransactionHistoryController getTransactionHistoryController = new GetTransactionHistoryController(
+                getTransactionHistoryInteractor
+        );
+
+//        GetTransactionHistoryViewModel getTransactionHistoryViewModel,
+//        GetTransactionHistoryController getTransactionHistoryController,
+//        ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel
+
+        TransactionHistoryView buyView = new TransactionHistoryView(
+                getTransactionHistoryController,
+                getTransactionHistoryViewModel,
+                viewManagerModel,
+                dashboardViewModel
+        );
+
+        views.add(buyView, buyView.viewName);
+
+        viewManagerModel.setActiveView(buyView.viewName);
+        viewManagerModel.firePropertyChanged();
+
+        application.pack();
+        application.setVisible(true);
+
 //        CardLayout cardLayout = new CardLayout();
 //
 //        // The various View objects. Only one view is visible at a time.
@@ -62,7 +124,7 @@ import use_cases.Sell.SellInputBoundary;
 //        // This information will be changed by a presenter object that is reporting the
 //        // results from the use case. The ViewModels are observable, and will
 //        // be observed by the Views.
-//        GetTransactionHistoryViewModel sellViewModel = new GetTransactionHistoryViewModel();
+//        GetTransactionHistoryViewModel transactionHistoryViewModel = new GetTransactionHistoryViewModel();
 //
 //        FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
 //        User newUser = new CommonUser();
@@ -80,7 +142,6 @@ import use_cases.Sell.SellInputBoundary;
 //        BuyInteractor buyInteractor = new BuyInteractor(userDataAccessObject, buyPresenter, driverAPI);
 //        BuyController buyController = new BuyController(buyInteractor);
 //
-//        BuyView buyView = new BuyView(buyController, buyViewModel);
 //        buyInteractor.execute(buyInputData);
 //        buyInteractor.execute(buyInputData2);
 //
@@ -94,7 +155,7 @@ import use_cases.Sell.SellInputBoundary;
 ////        SellController sellController = new SellController(sellInteractor);
 //
 //        GetTransactionHistoryOutputBoundary getTransactionHistoryPresenter = new GetTransactionHistoryPresenter(viewManagerModel,
-//                sellViewModel, dashboardViewModel);
+//                transactionHistoryViewModel, dashboardViewModel);
 //        GetTransactionHistoryInputBoundary getTransactionHistoryInteractor = new GetTransactionHistoryInteractor(
 //                userDataAccessObject, getTransactionHistoryPresenter);
 //        GetTransactionHistoryController getTransactionHistoryController = new GetTransactionHistoryController(getTransactionHistoryInteractor);
@@ -103,13 +164,13 @@ import use_cases.Sell.SellInputBoundary;
 ////        SellView sellView = new SellView(sellViewModel, sellController, viewManagerModel, dashboardViewModel);
 ////        views.add(sellView, sellView.viewName);
 //
-//        TransactionHistoryView historyView = new TransactionHistoryView(sellViewModel, getTransactionHistoryController, viewManagerModel, dashboardViewModel);
+//        TransactionHistoryView historyView = new TransactionHistoryView(transactionHistoryViewModel, getTransactionHistoryController, viewManagerModel, dashboardViewModel);
 //        views.add(historyView ,historyView.viewName);
 //        viewManagerModel.setActiveView(historyView.viewName);
 //        viewManagerModel.firePropertyChanged();
 //
 //        application.pack();
 //        application.setVisible(true);
-//    }
-//}
+    }
+}
 

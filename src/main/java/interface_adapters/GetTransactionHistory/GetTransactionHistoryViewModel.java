@@ -13,6 +13,8 @@ public class GetTransactionHistoryViewModel extends ViewModel {
 
     public final String TRANSACTIONS = "Transaction Record";
 
+    public final String BACK_BUTTON_LABEL = "Back";
+
     private GetTransactionHistoryState state = new GetTransactionHistoryState();
 
     public GetTransactionHistoryViewModel() {
