@@ -25,9 +25,10 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         dashboardState.setOwnedFullNames(dashboardOutputData.getFullNamesInformation());
         dashboardState.setUserStats(dashboardOutputData.getUserStats());
 
+        // below code should not be necessary, since all switches to dashboard view are followed by a viewManagerModel call
         // set active view to be dashboard
-        viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+//        viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         // fire the property changed for view manager model such that the view changes to dashboard
-        viewManagerModel.firePropertyChanged();
+//        viewManagerModel.firePropertyChanged();
     }
 }

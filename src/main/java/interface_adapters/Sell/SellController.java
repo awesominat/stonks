@@ -15,7 +15,7 @@ public class SellController {
             SellInputData sellInputData = new SellInputData(Double.parseDouble(amount), ticker);
             sellInteractor.execute(sellInputData);
         } catch (NumberFormatException ex) {
-            SellInputData sellInputData = new SellInputData(ticker);
+            SellInputData sellInputData = new SellInputData(-1.0, ticker);
             sellInteractor.execute(sellInputData);
         }
     }

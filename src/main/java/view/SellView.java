@@ -1,5 +1,6 @@
 package view;
 
+import drivers.TableModel;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.ViewManagerModel;
@@ -16,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -31,6 +33,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     final JButton sell;
     final JButton back;
+    final JTable table;
 
     public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
         this.sellController = sellController;
@@ -39,19 +42,23 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Sell Screen");
+        JLabel title = new JLabel("Sell Stocks");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel stockSelectionLabel = new JLabel("Select an owned stock");
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
                 new JLabel("Select amount to sell"), amountInputField);
 
+        stockInputField.setMaximumSize(new Dimension(100,100));
+        stockInputField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttons = new JPanel();
         back = new JButton("Back");
         buttons.add(back);
         sell = new JButton("Sell Stocks");
         buttons.add(sell);
+        table = new JTable();
+        table.setPreferredSize(new Dimension(30, 200));
 
         sell.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
@@ -109,6 +116,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
 
         this.add(title);
+        this.add(table);
         this.add(stockSelectionLabel);
         this.add(stockInputField);
         this.add(stockAmountInfo);
@@ -126,6 +134,13 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     public void propertyChange(PropertyChangeEvent evt) {
         // Display any potential errors
         SellState state = (SellState) evt.getNewValue();
+
+        String sellSuccess = state.getSellSuccess();
+        if (sellSuccess != null) {
+            JOptionPane.showMessageDialog(this, sellSuccess);
+        }
+        state.setSellSuccess(null);
+
         String amountError = state.getAmountError();
         if (amountError != null) {
             JOptionPane.showMessageDialog(this, amountError);
@@ -142,6 +157,16 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 stockInputField.addItem(s);
             }
         }
+
+        // Show table of stocks and amounts owned
+        HashMap<String, String> ownedStocksAmounts = new HashMap<String, String>();
+        List<Double> ownedAmounts = dashboardState.getOwnedAmounts();
+        if (ownedStocks != null && ownedAmounts != null && !ownedAmounts.isEmpty() && !ownedStocks.isEmpty()) {
+            for (int i = 0; i<ownedStocks.size(); i++) {
+                ownedStocksAmounts.put(ownedStocks.get(i), String.valueOf(ownedAmounts.get(i)));
+            }
+        }
+        table.setModel(new TableModel(ownedStocksAmounts));
     }
 
 }

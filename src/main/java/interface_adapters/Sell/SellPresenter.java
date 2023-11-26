@@ -20,8 +20,12 @@ public class SellPresenter implements SellOutputBoundary {
 
     @Override
     public void prepareSuccessView(SellOutputData response) {
+        SellState sellState = sellViewModel.getState();
+        String sellSuccess = String.format("Congratulations! Sold %.2f stocks of ", response.getAmount()) + response.getTicker();
+        sellState.setSellSuccess(sellSuccess);
         dashboardViewModel.firePropertyChanged();
-        viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+        sellViewModel.firePropertyChanged();
+        viewManagerModel.setActiveView(sellViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 
