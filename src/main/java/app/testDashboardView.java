@@ -9,12 +9,15 @@ import interface_adapters.Dashboard.DashboardPresenter;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapters.ResetBalance.ResetBalanceController;
+import interface_adapters.ResetBalance.ResetBalancePresenter;
 import interface_adapters.ResetBalance.ResetBalanceViewModel;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
 import use_cases.Dashboard.DashboardInteractor;
 import use_cases.Dashboard.DashboardOutputBoundary;
+import use_cases.ResetBalance.ResetBalanceInteractor;
 import view.DashboardView;
 import view.ViewManager;
 
@@ -23,6 +26,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public class testDashboardView {
+
     public static void main(String[] args) throws IOException {
         JFrame application = new JFrame("Dashboard View");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -41,20 +45,32 @@ public class testDashboardView {
 
         APIAccessInterface driverAPI = new Finnhub();
 
+        // Initialize all the necessary objects to simulate the DashboardView.
         DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(viewManagerModel, dashboardViewModel);
-
         DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, driverAPI);
-
         DashboardController dashboardController = new DashboardController(dashboardInteractor);
 
+        // DashboardView requires a ResetBalanceController, the simulation of which requires a bunch of other objects.
+        ResetBalanceViewModel resetBalanceViewModel = new ResetBalanceViewModel();
+        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(viewManagerModel, resetBalanceViewModel);
+        ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(userDataAccessObject, resetBalancePresenter, driverAPI);
+        ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
+
+        // Initialize necessary ViewModels.
+        BuyViewModel buyViewModel = new BuyViewModel();
+        SellViewModel sellViewModel = new SellViewModel();
+        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
+        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
+
+        // Create the DashboardView to be simulated.
         DashboardView dashboardView = new DashboardView(
                 dashboardViewModel,
                 dashboardController,
-                new BuyViewModel(),
-                new SellViewModel(),
-                new GetNewsViewModel(),
-                new ResetBalanceViewModel(),
-                new GetTransactionHistoryViewModel(),
+                buyViewModel,
+                sellViewModel,
+                getNewsViewModel,
+                resetBalanceController,
+                getTransactionHistoryViewModel,
                 viewManagerModel
         );
 
@@ -66,4 +82,5 @@ public class testDashboardView {
         application.pack();
         application.setVisible(true);
     }
+
 }

@@ -140,8 +140,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(reset)) {
                             resetBalanceController.execute();
+                            dashboardViewModel.firePropertyChanged();
 
-                            // TODO: make pop-up
+                            // TODO: add reset balance pop-up
+
                         }
                     }
                 }
