@@ -34,6 +34,28 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     JPanel bottomPanel;
     private final JLabel balanceField = new JLabel();
     BuyController buyController;
+    private void updateBalanceLabelColor() {
+        BuyState state = buyViewModel.getState();
+        if (state == null || state.getCurBalance() == null || state.getStockInfo() == null) {
+            return;
+        }
+
+        Double currentBalance = state.getCurBalance();
+        Double purchaseAmount;
+        try {
+            purchaseAmount = Double.parseDouble(amountInputField.getText());
+        } catch (NumberFormatException e) {
+            purchaseAmount = 0.0;
+        }
+
+        Double stockPrice = Double.valueOf(state.getStockInfo().get("price"));
+
+        if (currentBalance >= purchaseAmount * stockPrice) {
+            balanceField.setForeground(Color.GREEN);
+        } else {
+            balanceField.setForeground(Color.RED);
+        }
+    }
     public BuyView(BuyController buyController, BuyViewModel buyViewModel, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
         this.buyController = buyController;
         this.buyViewModel = buyViewModel;
@@ -87,7 +109,8 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             public void keyPressed(KeyEvent e) {}
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
         amountInputField.addKeyListener(new KeyListener() {
             @Override
@@ -95,6 +118,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
                 BuyState currentState = buyViewModel.getState();
                 currentState.setAmount(amountInputField.getText() + e.getKeyChar());
                 buyViewModel.setState(currentState);
+                updateBalanceLabelColor();
             }
 
             @Override
@@ -192,6 +216,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             table.setModel(new TableModel(state.getStockInfo()));
 
             balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
+            updateBalanceLabelColor();
             balanceField.setToolTipText(String.valueOf(state.getCurBalance()));
 
             middlePanel.setVisible(true);
@@ -207,8 +232,11 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             state.setRenderNewInfo(false);
             buyViewModel.setState(state);
         }
+        System.out.println(state.getAmount());
+//        if (state.getAmount())
         if (state.getBoughtStock() != null) {
             balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
+            updateBalanceLabelColor();
             balanceField.setToolTipText(String.valueOf(state.getCurBalance()));
 
             JOptionPane.showMessageDialog(this, String.format(buyViewModel.JUST_BOUGHT_MESSAGE,
