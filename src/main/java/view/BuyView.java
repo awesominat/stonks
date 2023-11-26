@@ -20,6 +20,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
     public final String viewName = "buy";
     private final BuyViewModel buyViewModel;
+    private final BuyController buyController;
 
     private final JLabel amountErrorField = new JLabel();
     final JTextField tickerInputField = new JTextField(15);
@@ -33,7 +34,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     JPanel middlePanel;
     JPanel bottomPanel;
     private final JLabel balanceField = new JLabel();
-    BuyController buyController;
+
     private void updateBalanceLabelColor() {
         BuyState state = buyViewModel.getState();
         if (state == null || state.getCurBalance() == null || state.getStockInfo() == null) {
