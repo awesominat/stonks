@@ -78,11 +78,10 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         super.addToHistory(
                 userHistory,
                 ticker,
-                user,
-                amount,
                 currentPrice,
                 transaction
         );
+
         userDataAccessObject.save();
 
         BuyOutputData result = new BuyOutputData(

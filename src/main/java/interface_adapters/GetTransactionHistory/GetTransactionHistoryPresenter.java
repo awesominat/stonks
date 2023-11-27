@@ -29,7 +29,6 @@ public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutp
         GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
 
         state.setUserRecord(getTransactionHistoryOutputData.getUserRecord());
-        System.out.println(state.getUserRecord().toString());
         getTransactionHistoryViewModel.setState(state);
 
         viewManagerModel.setActiveView(getTransactionHistoryViewModel.getViewName());

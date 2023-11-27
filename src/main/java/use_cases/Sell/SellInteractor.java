@@ -63,8 +63,6 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             super.addToHistory(
                     userHistory,
                     ticker,
-                    user,
-                    amount,
                     currentPrice,
                     transaction
             );

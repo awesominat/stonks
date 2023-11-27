@@ -29,7 +29,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     }
 
     @Override
-    public void execute() {
+    public void execute(DashboardInputData dashboardInputData) {
         User user = userDataAccessObject.get();
 
         HashMap<String, Double> portfolio = user.getPortfolio();
@@ -45,7 +45,11 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
             String key = entry.getKey();
             Double value = entry.getValue();
 
-            prices.put(key, driverAPI.getCurrentPrice(key).getPrice());
+            if (dashboardInputData.getAoiRefresh()) {
+                prices.put(key, driverAPI.getCurrentPrice(key).getPrice());
+            } else {
+                prices.put(key, history.get(key).getStock().getLastSeenPrice());
+            }
             totalAssets += value * prices.get(key);
 
             PortfolioInformation emptyInfo = new PortfolioInformation();
