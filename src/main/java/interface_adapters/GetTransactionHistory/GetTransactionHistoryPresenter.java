@@ -23,17 +23,15 @@ public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutp
     }
     @Override
     public void prepareSuccessView(GetTransactionHistoryOutputData getTransactionHistoryOutputData) {
-        // Get the current getTransactionHistoryViewModel's state
-        GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
-        // Alter the state such that it updates to the new UserRecord
-        state.setUserRecord(getTransactionHistoryOutputData.getUserRecord());
-        // fire the property changed for getTransactionHistory view model
-        getTransactionHistoryViewModel.firePropertyChanged();
 
-        // set active view to be transaction history
+        GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
+
+        state.setUserRecord(getTransactionHistoryOutputData.getUserRecord());
+        System.out.println(state.getUserRecord().toString());
+        getTransactionHistoryViewModel.setState(state);
+
         viewManagerModel.setActiveView(getTransactionHistoryViewModel.getViewName());
-        // fire the property changed for view manager model such that the view changes to
-        // transaction history
+
         viewManagerModel.firePropertyChanged();
     }
 

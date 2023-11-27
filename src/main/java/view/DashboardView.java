@@ -156,7 +156,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                             historyViewModel.firePropertyChanged();
                             viewManagerModel.setActiveView(historyViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
-
+                            System.out.println("History button pressed");
                             // TODO: Do we then need to call GetTransactionHistoryController.execute()
                             //  to obtain the needed information?
                         }
