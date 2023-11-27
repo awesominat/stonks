@@ -10,7 +10,10 @@ public class GetNewsInteractor implements GetNewsInputBoundary {
     GetNewsOutputBoundary getNewsPresenter;
     APIAccessInterface driverAPI;
 
-    public GetNewsInteractor(GetNewsOutputBoundary getNewsPresenter, APIAccessInterface driverAPI) {
+    public GetNewsInteractor(
+            GetNewsOutputBoundary getNewsPresenter,
+            APIAccessInterface driverAPI
+    ) {
         this.getNewsPresenter = getNewsPresenter;
         this.driverAPI = driverAPI;
     }

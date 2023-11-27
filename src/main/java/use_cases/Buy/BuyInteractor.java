@@ -12,8 +12,11 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
     BuyOutputBoundary buyPresenter;
     APIAccessInterface driverAPI;
 
-    public BuyInteractor(BuyDataAccessInterface userDataAccessInterface,
-                         BuyOutputBoundary buyPresenter, APIAccessInterface driverAPI) {
+    public BuyInteractor(
+            BuyDataAccessInterface userDataAccessInterface,
+            BuyOutputBoundary buyPresenter,
+            APIAccessInterface driverAPI
+    ) {
         super(driverAPI);
         this.userDataAccessObject = userDataAccessInterface;
         this.buyPresenter = buyPresenter;
@@ -38,7 +41,13 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
                     currentlyHeld = portfolio.get(ticker);
                 }
 
-                BuySearchOutputData result = new BuySearchOutputData(ticker, companyInformation, currentPrice, currentlyHeld, user.getBalance());
+                BuySearchOutputData result = new BuySearchOutputData(
+                        ticker,
+                        companyInformation,
+                        currentPrice,
+                        currentlyHeld,
+                        user.getBalance()
+                );
                 buyPresenter.prepareSuccessView(result);
             } catch (RuntimeException e) { // this should be its own exception, TickerNotFoundException
                 buyPresenter.prepareFailView("Incorrect ticker.");
@@ -58,13 +67,29 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         user.spendBalance(currentPrice * amount);
         HashMap<String, TransactionHistory> userHistory = user.getHistory();
 
-        Transaction transaction = new BuyTransaction(amount, new PricePoint(LocalDate.now(), currentPrice));
+        Transaction transaction = new BuyTransaction(
+                amount,
+                new PricePoint(
+                        LocalDate.now(),
+                        currentPrice
+                ));
 
         super.updatePortfolio(user, ticker, amount);
-        super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
+        super.addToHistory(
+                userHistory,
+                ticker,
+                user,
+                amount,
+                currentPrice,
+                transaction
+        );
         userDataAccessObject.save();
 
-        BuyOutputData result = new BuyOutputData(buyInputData.getTicker(), user.getBalance(), amount);
+        BuyOutputData result = new BuyOutputData(
+                buyInputData.getTicker(),
+                user.getBalance(),
+                amount);
+
         buyPresenter.prepareSuccessView(result);
     }
 }

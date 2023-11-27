@@ -12,9 +12,11 @@ public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutp
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public GetTransactionHistoryPresenter(ViewManagerModel viewManagerModel,
-                                          GetTransactionHistoryViewModel getTransactionHistoryViewModel,
-                                          DashboardViewModel dashboardViewModel){
+    public GetTransactionHistoryPresenter(
+            ViewManagerModel viewManagerModel,
+            GetTransactionHistoryViewModel getTransactionHistoryViewModel,
+            DashboardViewModel dashboardViewModel
+    ){
 
         this.getTransactionHistoryViewModel = getTransactionHistoryViewModel;
         this.dashboardViewModel = dashboardViewModel;

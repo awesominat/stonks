@@ -10,9 +10,6 @@ public class GetTransactionHistoryController {
         this.getTransactionHistoryInteractor = getTransactionHistoryInteractor;
     }
 
-    // Executing the controller should call the Interactor's execute method and
-    // no data is getting passed to the interactor as it's just a button press.
-    // Thus, it would be handled in the view.
     public void execute(){
         getTransactionHistoryInteractor.execute();
     }

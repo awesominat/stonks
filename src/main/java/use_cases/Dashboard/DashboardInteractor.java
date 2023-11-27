@@ -17,8 +17,11 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     DashboardOutputBoundary dashboardPresenter;
     APIAccessInterface driverAPI;
 
-    public DashboardInteractor(DashboardDataAccessInterface userDataAccessInterface,
-                               DashboardOutputBoundary dashboardPresenter, APIAccessInterface driverAPI) {
+    public DashboardInteractor(
+            DashboardDataAccessInterface userDataAccessInterface,
+            DashboardOutputBoundary dashboardPresenter,
+            APIAccessInterface driverAPI
+    ) {
         super(driverAPI);
         this.userDataAccessObject = userDataAccessInterface;
         this.dashboardPresenter = dashboardPresenter;
