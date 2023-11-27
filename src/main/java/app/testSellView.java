@@ -16,6 +16,7 @@ import use_cases.APIAccessInterface;
 import use_cases.Buy.BuyInputData;
 import use_cases.Buy.BuyInteractor;
 import use_cases.Buy.BuyOutputBoundary;
+import use_cases.Dashboard.DashboardInputData;
 import use_cases.Dashboard.DashboardInteractor;
 import use_cases.Dashboard.DashboardOutputBoundary;
 import view.SellView;
@@ -70,7 +71,7 @@ public class testSellView {
         // Initialize dashboard use case stuff because dashboard state must be updated for stocks to show up on sell page
         DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(viewManagerModel, dashboardViewModel);
         DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, driverAPI);
-        dashboardInteractor.execute();
+        dashboardInteractor.execute(new DashboardInputData());
 
         views.add(sellView, sellView.viewName);
         viewManagerModel.setActiveView(sellView.viewName);
