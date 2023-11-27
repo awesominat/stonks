@@ -156,6 +156,8 @@ public class Finnhub implements APIAccessInterface {
 
     @Override
     public PricePoint getCurrentPrice(String ticker) {
+        ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
+
         String url = "https://finnhub.io/api/v1/quote?symbol=" + ticker + "&token=" + APIKEY;
 
         OkHttpClient client = new OkHttpClient().newBuilder()
