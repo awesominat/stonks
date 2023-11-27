@@ -10,8 +10,10 @@ public class BuyPresenter implements BuyOutputBoundary {
     private final BuyViewModel buyViewModel;
     private ViewManagerModel viewManagerModel;
 
-    public BuyPresenter(ViewManagerModel viewManagerModel,
-                           BuyViewModel buyViewModel) {
+    public BuyPresenter(
+            ViewManagerModel viewManagerModel,
+            BuyViewModel buyViewModel
+    ) {
         this.viewManagerModel = viewManagerModel;
         this.buyViewModel = buyViewModel;
     }
@@ -38,8 +40,6 @@ public class BuyPresenter implements BuyOutputBoundary {
         state.setTicker(response.getTicker());
 
         buyViewModel.firePropertyChanged();
-//        viewManagerModel.setActiveView(buyViewModel.getViewName());
-//        viewManagerModel.firePropertyChanged();
     }
 
     @Override

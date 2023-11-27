@@ -5,7 +5,10 @@ public class BuyOutputData {
     private Double newBalance;
     private Double amount;
 
-    public BuyOutputData(String ticker, Double newBalance, Double amount) {
+    public BuyOutputData(
+            String ticker,
+            Double newBalance,
+            Double amount) {
         this.ticker = ticker;
         this.newBalance = newBalance;
         this.amount = amount;

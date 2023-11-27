@@ -79,7 +79,6 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         back = new JButton(getNewsViewModel.BACK_BUTTON_LABEL);
         search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
 
-        // Create stock search bar.
         LabelTextPanel tickerInput = new LabelTextPanel(
                 new JLabel("Stock ticker"), tickerInputField);
         tickerInput.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -213,10 +212,14 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
             getNewsViewModel.setState(state);
         }
 
+
         String tickerError = state.getTickerError();
 
         if (tickerError != null) {
-            JOptionPane.showMessageDialog(this, tickerError);
+            JOptionPane.showMessageDialog(
+                    this,
+                    tickerError
+            );
             state.setTickerError(null);
             getNewsViewModel.setState(state);
         }

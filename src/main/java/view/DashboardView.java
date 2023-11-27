@@ -1,18 +1,16 @@
 package view;
 
 // Imports for dashboard
+
+import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.ResetBalance.ResetBalanceController;
-import interface_adapters.ViewManagerModel;
-
-// Imports to allow dashboard to switch to other views
-import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Sell.SellViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.ResetBalance.ResetBalanceViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapters.ResetBalance.ResetBalanceController;
+import interface_adapters.Sell.SellViewModel;
+import interface_adapters.ViewManagerModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,8 +86,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(refresh)) {
-                            DashboardState currentState = dashboardViewModel.getState();
-                            dashboardController.execute();
+                            dashboardController.execute(true);
                             dashboardViewModel.firePropertyChanged();
                         }
                     }

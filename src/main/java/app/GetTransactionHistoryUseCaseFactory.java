@@ -39,8 +39,7 @@ public class GetTransactionHistoryUseCaseFactory {
                 viewManagerModel,
                 getTransactionHistoryViewModel,
                 dashboardViewModel,
-                getTransactionHistoryDataAccessInterface,
-                apiAccessInterface
+                getTransactionHistoryDataAccessInterface
         );
             return new TransactionHistoryView(
                     getTransactionHistoryController,
@@ -54,8 +53,7 @@ public class GetTransactionHistoryUseCaseFactory {
             ViewManagerModel viewManagerModel,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
             DashboardViewModel dashboardViewModel,
-            GetTransactionHistoryDataAccessInterface getTransactionHistoryDataAccessInterface,
-            APIAccessInterface apiAccessInterface
+            GetTransactionHistoryDataAccessInterface getTransactionHistoryDataAccessInterface
     ) {
         GetTransactionHistoryOutputBoundary getTransactionHistoryOutputPresenter = new GetTransactionHistoryPresenter(
                 viewManagerModel,

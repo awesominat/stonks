@@ -9,6 +9,8 @@ import interface_adapters.Sell.SellViewModel;
 import interface_adapters.Sell.SellState;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,11 +34,17 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     final JTextField amountInputField = new JTextField(3);
 
     final JButton sell;
+    final JButton refresh;
     final JButton back;
     final JTable table;
     final JLabel currentBalance;
 
-    public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
+    public SellView(
+            SellViewModel sellViewModel,
+            SellController sellController,
+            ViewManagerModel viewManagerModel,
+            DashboardViewModel dashboardViewModel
+    ) {
         this.sellController = sellController;
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
@@ -61,10 +69,12 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         buttons.add(back);
         sell = new JButton("Sell Stocks");
         buttons.add(sell);
+        refresh = new JButton("Refresh");
+        buttons.add(refresh);
         table = new JTable();
         table.setPreferredSize(new Dimension(30, 200));
 
-        sell.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        sell.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(sell)) {
@@ -74,12 +84,23 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                                     currentState.getAmount(),
                                     currentState.getStockSelected()
                             );
+                            sellViewModel.firePropertyChanged();
                         }
                     }
                 }
         );
 
-        back.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        refresh.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(sell)) {
+                            sellViewModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
+
+        back.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(back)) {
@@ -121,7 +142,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
         this.add(title);
         this.add(currentBalance);
-        this.add(table);
+        this.add(new JScrollPane(table));
         this.add(stockSelectionLabel);
         this.add(stockInputField);
         this.add(stockAmountInfo);
@@ -137,9 +158,8 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("reached view for sell");
-        // Display any potential errors
-        SellState state = (SellState) evt.getNewValue();
+        sellController.execute();
+        SellState state = sellViewModel.getState();
 
         String sellSuccess = state.getSellSuccess();
         if (sellSuccess != null) {
@@ -154,9 +174,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         state.setAmountError(null);
         sellViewModel.setState(state);
 
-        // Get owned stocks list from dashboard for dropdown menu on sell page
-        DashboardState dashboardState = dashboardViewModel.getState();
-        List<String> ownedStocks = dashboardState.getOwnedTickers();
+        List<String> ownedStocks = state.getOwnedStocks();
         stockInputField.removeAllItems();
         if (ownedStocks != null && !ownedStocks.isEmpty()) {
             for (String s: ownedStocks) {
@@ -164,17 +182,27 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             }
         }
 
-        // Show table of stocks and amounts owned
-        HashMap<String, String> ownedStocksAmounts = new HashMap<String, String>();
-        List<Double> ownedAmounts = dashboardState.getOwnedAmounts();
-        if (ownedStocks != null && ownedAmounts != null && !ownedAmounts.isEmpty() && !ownedStocks.isEmpty()) {
-            for (int i = 0; i<ownedStocks.size(); i++) {
-                ownedStocksAmounts.put(ownedStocks.get(i), String.valueOf(ownedAmounts.get(i)));
-            }
-        }
-        table.setModel(new TableModel(ownedStocksAmounts));
+        List<Double> ownedAmounts = state.getOwnedAmounts();
+        List<Double> sellPrices = state.getSellAmounts();
 
-        Double userBalance = dashboardState.getUserStats().get("balance");
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Stock");
+        tableModel.addColumn("Amount Owned");
+        tableModel.addColumn("Sell Price (Single Unit)");
+        tableModel.addColumn("Sell Price (All Units)");
+
+        for (int i = 0; i < ownedStocks.size(); i++) {
+            String stockTicker = ownedStocks.get(i);
+            Double amountOwned = ownedAmounts.get(i);
+            Double sellPriceSingle = sellPrices.get(i);
+            Double sellPriceAll = sellPriceSingle * amountOwned;
+            tableModel.addRow(new Object[] {stockTicker, amountOwned, sellPriceSingle, sellPriceAll});
+        }
+        table.setModel(tableModel);
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(Color.LIGHT_GRAY);
+
+        Double userBalance = state.getBalance();
         currentBalance.setText(String.format("Current Balance: %.3f", userBalance));
     }
 
