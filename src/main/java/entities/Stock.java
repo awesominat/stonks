@@ -8,9 +8,8 @@ public class Stock {
     final private String fullName;
     final private String ticker;
 
-    public Stock(Double lastSeenPrice, List<PricePoint> priceHistory, String fullName, String ticker) {
+    public Stock(Double lastSeenPrice, String fullName, String ticker) {
         this.lastSeenPrice = lastSeenPrice;
-        this.priceHistory = priceHistory;
         this.fullName = fullName;
         this.ticker = ticker;
     }
