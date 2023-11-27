@@ -16,13 +16,20 @@ public class GetNewsPresenter implements GetNewsOutputBoundary {
     @Override
     public void prepareSuccessView(GetNewsOutputData response) {
         // TODO: On success, show articles in a list (aka. table)
+        GetNewsState state = getNewsViewModel.getState();
+
+        state.setRenderNewInfo(true);
+        state.setNewsItems(response.getNewsItems());
+        state.setTicker(response.getTicker());
+
+        getNewsViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        // TODO
         GetNewsState state = getNewsViewModel.getState();
         state.setTickerError(error);
         getNewsViewModel.firePropertyChanged();
     }
+
 }

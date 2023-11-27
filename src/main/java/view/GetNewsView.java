@@ -1,5 +1,9 @@
 package view;
 
+import java.util.Map;
+import java.util.List;
+
+import drivers.TableModel;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsController;
 import interface_adapters.GetNews.GetNewsState;
@@ -12,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -25,9 +31,15 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     /**
      * Text fields, labels, and buttons
      */
-    final JTextField tickerIn = new JTextField(4);
+    final JTextField tickerInputField = new JTextField(5);
+    private final JLabel tickerErrorField = new JLabel();
+    JTable table;
     final JButton search;
     final JButton back;
+    JPanel topPanel;
+    JPanel middlePanel;
+    JTabbedPane newsTabs;
+    ImageIcon icon;
 
     public GetNewsView(GetNewsViewModel getNewsViewModel,
                        GetNewsController getNewsController,
@@ -40,66 +52,108 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         this.getNewsViewModel = getNewsViewModel;
         this.getNewsViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel(getNewsViewModel.TITLE_LABEL);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setAlignmentY(Component.TOP_ALIGNMENT);
+        setPreferredSize(new Dimension(800, 400));
+
+        back = new JButton(getNewsViewModel.BACK_BUTTON_LABEL);
+        search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
 
         // Create stock search bar.
-        LabelTextPanel tickerField = new LabelTextPanel(
-                new JLabel("Stock ticker"), tickerIn);
-        tickerField.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel back_panel = new JPanel();
-        back = new JButton(getNewsViewModel.BACK_BUTTON_LABEL);
-        back_panel.add(back);
-
-        JPanel search_panel = new JPanel();
-        search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
-        search_panel.add(search);
+        LabelTextPanel tickerInput = new LabelTextPanel(
+                new JLabel("Stock ticker"), tickerInputField);
+        tickerInput.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         back.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(back)) {
-                            dashboardViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(dashboardViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
-                        }
-                    }
+                evt -> {
+                    dashboardViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                 }
         );
 
         search.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(search)) {
-                            GetNewsState currentState = getNewsViewModel.getState();
-                            getNewsController.execute(currentState.getTicker());
-                        }
-                    }
+                evt -> {
+                    GetNewsState currentState = getNewsViewModel.getState();
+
+                    getNewsController.execute(currentState.getTicker());
                 }
         );
 
-        tickerField.addKeyListener(new KeyListener() {
+        tickerInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 GetNewsState currentState = getNewsViewModel.getState();
-                currentState.setTicker(tickerIn.getText() + e.getKeyChar());
+                currentState.setTicker(tickerInputField.getText() + e.getKeyChar());
                 getNewsViewModel.setState(currentState);
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
-        });
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            public void keyReleased(KeyEvent e) {
 
-        this.add(title);
-        this.add(tickerField);
-        this.add(back_panel);
-        this.add(search_panel);
+            }
+        });
+
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        topPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        topPanel.add(back, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(Box.createHorizontalGlue(), gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        topPanel.add(tickerInput, gbc);
+
+        gbc.gridx = 3;
+        gbc.weightx = 0;
+        topPanel.add(search);
+
+        topPanel.add(tickerErrorField);
+
+        gbc.gridx = 4;
+        gbc.weightx = 1.24;
+        topPanel.add(Box.createHorizontalGlue(), gbc);
+        this.add(topPanel, BorderLayout.NORTH);
+
+        gbc.gridx = 0;
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 0;
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 0;
+
+        middlePanel = new JPanel(new GridBagLayout());
+        newsTabs = new JTabbedPane();
+        icon = new ImageIcon("images/news.png");
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+//        gbc.weighty = 10000;
+        middlePanel.add(newsTabs, gbc);
+        add(middlePanel);
+
+        middlePanel.setVisible(false);
+
     }
 
     /**
@@ -113,8 +167,39 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     public void propertyChange(PropertyChangeEvent evt) {
         GetNewsState state = (GetNewsState) evt.getNewValue();
         setFields(state);
+
+        List<Map<String, String>> newsItems = state.getNewsItems();
+
+        if (newsItems != null && state.getRenderNewInfo() != null) {
+
+            for (int i = 0; i < 5; i++) {
+                Map<String, String> newsItem = newsItems.get(i);
+
+                JTable table = new JTable();
+                table.setPreferredSize(new Dimension(100, 200));
+                table.setModel(new TableModel(newsItem));
+
+                newsTabs.addTab(String.format("Article %d", i + 1), icon, table);
+            }
+
+            middlePanel.setVisible(true);
+            state.setRenderNewInfo(null);
+            getNewsViewModel.setState(state);
+
+        }
+
+        String tickerError = state.getTickerError();
+
+        if (tickerError != null) {
+            JOptionPane.showMessageDialog(this, tickerError);
+            state.setTickerError(null);
+            getNewsViewModel.setState(state);
+        }
+
     }
 
-    private void setFields(GetNewsState state) {}
+    private void setFields(GetNewsState state) {
+        tickerInputField.setText(state.getTicker());
+    }
 
 }

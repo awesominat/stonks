@@ -9,29 +9,28 @@ import java.util.HashMap;
 
 public class GetNewsOutputData {
     String ticker;
-    List<Map<String, String>> news_items;
+    List<Map<String, String>> newsItems;
 
-    public GetNewsOutputData(String ticker, List<CompanyNews> company_news_items) {
+    public GetNewsOutputData(String ticker, List<CompanyNews> companyNewsItems) {
         this.ticker = ticker;
-        this.news_items = new ArrayList<Map<String, String>>();
+        this.newsItems = new ArrayList<Map<String, String>>();
 
-        for (CompanyNews company_news : company_news_items) {
-            Map<String, String> news_item = new HashMap<>();
+        for (CompanyNews companyNews : companyNewsItems) {
+            Map<String, String> newsItem = new HashMap<>();
 
-            news_item.put("category", company_news.getCategory());
-            news_item.put("datetime", company_news.getDatetime().toString());
-            news_item.put("headline", company_news.getHeadline());
-            news_item.put("url", company_news.getUrl());
-            news_item.put("summary", company_news.getSummary());
+            newsItem.put("category", companyNews.getCategory());
+            newsItem.put("datetime", companyNews.getDatetime().toString());
+            newsItem.put("headline", companyNews.getHeadline());
+            newsItem.put("url", companyNews.getUrl());
+            newsItem.put("summary", companyNews.getSummary());
 
-            this.news_items.add(news_item);
+            this.newsItems.add(newsItem);
         }
+
     }
 
     public String getTicker() {return ticker;}
 
-    public List<Map<String, String>> getNewsItems() {return news_items;}
+    public List<Map<String, String>> getNewsItems() {return newsItems;}
 
-    // TODO decide whether this is necessary
-    // public Map<String, String> getNewsItem(int idx) {return news_items.get(idx);}
 }
