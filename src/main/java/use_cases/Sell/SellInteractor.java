@@ -67,9 +67,6 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                     transaction
             );
 
-            super.updatePortfolio(user, ticker, currentlyOwned - amount);
-            super.addToHistory(userHistory, ticker, currentPrice, transaction);
-
             userDataAccessObject.save();
 
             SellOutputData result = new SellOutputData(
