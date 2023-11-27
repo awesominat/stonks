@@ -75,6 +75,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
                 ));
 
         super.updatePortfolio(user, ticker, amount);
+
         super.addToHistory(
                 userHistory,
                 ticker,

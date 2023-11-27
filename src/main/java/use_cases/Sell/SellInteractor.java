@@ -74,7 +74,9 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                     sellInputData.getTicker()
             );
 
+
             sellPresenter.prepareSuccessView(result);
+
 
         } else {
             User user = userDataAccessObject.get();

@@ -85,6 +85,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         HashMap<String, List<List<String>>> userRecord = state.getUserRecord();
 
+      
         for (HashMap.Entry<String, List<List<String>>> entry : userRecord.entrySet()) {
             String key = entry.getKey();
             List<List<String>> dataList = entry.getValue();
