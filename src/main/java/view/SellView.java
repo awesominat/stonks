@@ -137,6 +137,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("reached view for sell");
         // Display any potential errors
         SellState state = (SellState) evt.getNewValue();
 
