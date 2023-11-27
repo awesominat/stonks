@@ -6,7 +6,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class BuyViewModel extends ViewModel {
-// TODO: Ricky
     public final String TITLE_LABEL = "Buy Stock";
     public final String AMOUNT_LABEL = "Enter amount";
     public final String BACK_BUTTON_LABEL = "Back";

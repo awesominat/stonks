@@ -8,13 +8,28 @@ public class SellState {
     private String amount = null;
     private String sellSuccess = null;
     private List<String> ownedStocks = null;
+    private List<Double> ownedAmounts = null;
+    private List<Double> sellAmounts = null;
+    private Double balance = null;
 
-    public SellState(String stockSelected, String amount, String amountError, List<String> ownedStocks, String sellSuccess) {
+    public SellState(
+            String stockSelected,
+            String amount,
+            String amountError,
+            List<String> ownedStocks,
+            String sellSuccess,
+            List<Double> ownedAmounts,
+            Double balance,
+            List<Double> sellAmounts
+    ) {
         this.amountError = amountError;
         this.amount = amount;
         this.stockSelected = stockSelected;
         this.ownedStocks = ownedStocks;
         this.sellSuccess = sellSuccess;
+        this.ownedAmounts = ownedAmounts;
+        this.balance = balance;
+        this.sellAmounts = sellAmounts;
     }
 
     public String getAmountError() {
@@ -55,6 +70,30 @@ public class SellState {
 
     public String getSellSuccess() {
         return sellSuccess;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setOwnedAmounts(List<Double> ownedAmounts) {
+        this.ownedAmounts = ownedAmounts;
+    }
+
+    public List<Double> getSellAmounts() {
+        return sellAmounts;
+    }
+
+    public void setSellAmounts(List<Double> sellAmounts) {
+        this.sellAmounts = sellAmounts;
+    }
+
+    public List<Double> getOwnedAmounts() {
+        return ownedAmounts;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit. Hence overloading.

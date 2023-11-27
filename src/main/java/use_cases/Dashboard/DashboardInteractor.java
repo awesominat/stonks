@@ -17,8 +17,11 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     DashboardOutputBoundary dashboardPresenter;
     APIAccessInterface driverAPI;
 
-    public DashboardInteractor(DashboardDataAccessInterface userDataAccessInterface,
-                               DashboardOutputBoundary dashboardPresenter, APIAccessInterface driverAPI) {
+    public DashboardInteractor(
+            DashboardDataAccessInterface userDataAccessInterface,
+            DashboardOutputBoundary dashboardPresenter,
+            APIAccessInterface driverAPI
+    ) {
         super(driverAPI);
         this.userDataAccessObject = userDataAccessInterface;
         this.dashboardPresenter = dashboardPresenter;
@@ -26,13 +29,14 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     }
 
     @Override
-    public void execute() {
+    public void execute(DashboardInputData dashboardInputData) {
         User user = userDataAccessObject.get();
 
         HashMap<String, Double> portfolio = user.getPortfolio();
         List<PortfolioInformation> portfolioInformations = new ArrayList<>();
 
         Double accountBalance = user.getBalance();
+        HashMap<String, TransactionHistory> history = user.getHistory();
         double totalAssets = 0;
 
         HashMap<String, Double> prices = new HashMap<>();
@@ -41,15 +45,17 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
             String key = entry.getKey();
             Double value = entry.getValue();
 
-            prices.put(key, driverAPI.getCurrentPrice(key).getPrice());
+            if (dashboardInputData.getAoiRefresh()) {
+                prices.put(key, driverAPI.getCurrentPrice(key).getPrice());
+            } else {
+                prices.put(key, history.get(key).getStock().getLastSeenPrice());
+            }
             totalAssets += value * prices.get(key);
-
-            CompanyInformation companyInformation = driverAPI.getCompanyProfile(key);
 
             PortfolioInformation emptyInfo = new PortfolioInformation();
             emptyInfo.setAmount(value);
             emptyInfo.setTicker(key);
-            emptyInfo.setFullName(companyInformation.getName());
+            emptyInfo.setFullName(history.get(key).getStock().getFullName());
 
             portfolioInformations.add(emptyInfo);
         }
@@ -58,7 +64,6 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         double totalProfit = 0;
         double sumAggregateVolume = 0;
 
-        HashMap<String, TransactionHistory> history = user.getHistory();
         LocalDate now = LocalDate.now();
 
         for (Map.Entry<String, TransactionHistory> entry : history.entrySet()) {

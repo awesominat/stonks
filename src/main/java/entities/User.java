@@ -16,4 +16,5 @@ public interface User {
     void setBalance(Double amount);
     void addBalance(Double addition);
     Double getBalance();
+    void clearPortfolio();
 }
