@@ -25,6 +25,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         Double curBalance = user.getBalance();
         Double amountToAdd = 10000.0;
         user.setBalance(amountToAdd);
+        user.clearPortfolio();
 
         // honestly, maybe consider adding a TopupTransaction
         HashMap<String, TransactionHistory> userHistory = user.getHistory();
