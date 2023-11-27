@@ -1,7 +1,9 @@
 package view;
 
+import java.util.Map;
+import java.util.List;
+
 import drivers.TableModel;
-import interface_adapters.Buy.BuyState;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsController;
 import interface_adapters.GetNews.GetNewsState;
@@ -14,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -34,6 +38,8 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     final JButton back;
     JPanel topPanel;
     JPanel middlePanel;
+    JTabbedPane newsTabs;
+    ImageIcon icon;
 
     public GetNewsView(GetNewsViewModel getNewsViewModel,
                        GetNewsController getNewsController,
@@ -135,15 +141,15 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         gbc.weightx = 0;
 
         middlePanel = new JPanel(new GridBagLayout());
-        table = new JTable();
-        table.setPreferredSize(new Dimension(100, 200));
-//        table.setMinimumSize(new Dimension(100, 100));
+        newsTabs = new JTabbedPane();
+        icon = new ImageIcon("images/news.png");
+
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1;
 //        gbc.weighty = 10000;
-        middlePanel.add(table, gbc);
+        middlePanel.add(newsTabs, gbc);
         add(middlePanel);
 
         middlePanel.setVisible(false);
@@ -162,15 +168,23 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         GetNewsState state = (GetNewsState) evt.getNewValue();
         setFields(state);
 
-        if (state.getNewsItems() != null && state.getRenderNewInfo() != null) {
-            table.setModel(new TableModel(state.getNewsItem()));
+        List<Map<String, String>> newsItems = state.getNewsItems();
+
+        if (newsItems != null && state.getRenderNewInfo() != null) {
+
+            for (int i = 0; i < 5; i++) {
+                Map<String, String> newsItem = newsItems.get(i);
+
+                JTable table = new JTable();
+                table.setPreferredSize(new Dimension(100, 200));
+                table.setModel(new TableModel(newsItem));
+
+                newsTabs.addTab(String.format("Article %d", i + 1), icon, table);
+            }
 
             middlePanel.setVisible(true);
             state.setRenderNewInfo(null);
             getNewsViewModel.setState(state);
-
-            // TODO: fix this property change so that the table is scrollable,
-            //  allowing the user to see multiple news items
 
         }
 
