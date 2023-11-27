@@ -30,14 +30,10 @@ public class buySellTest {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
         BuyDataAccessInterface userDataAccessObject = Mockito.mock(BuyDataAccessInterface.class);
 
-        List<PricePoint> lastMonthPrices = new ArrayList<>();
-        lastMonthPrices.add(new PricePoint(LocalDate.now(), 100.0));
-
         Mockito.when(userDataAccessObject.get()).thenReturn(new CommonUser());
         Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
                 "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
-        Mockito.when(mockApi.getLastMonthPrices("AAPL")).thenReturn(lastMonthPrices);
 
         BuyInputData buyInputData = new BuyInputData(10.0, "AAPL");
 
@@ -62,9 +58,6 @@ public class buySellTest {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
         SellDataAccessInterface userDataAccessObject = Mockito.mock(SellDataAccessInterface.class);
 
-        List<PricePoint> lastMonthPrices = new ArrayList<>();
-        lastMonthPrices.add(new PricePoint(LocalDate.now(), 100.0));
-
         User mockUser = new CommonUser();
         mockUser.addToPortfolio("AAPL", 10.0);
 
@@ -73,7 +66,6 @@ public class buySellTest {
         Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
                 "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
-        Mockito.when(mockApi.getLastMonthPrices("AAPL")).thenReturn(lastMonthPrices);
 
         SellInputData sellInputData = new SellInputData(10.0, "AAPL");
 

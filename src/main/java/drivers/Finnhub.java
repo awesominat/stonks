@@ -173,7 +173,6 @@ public class Finnhub implements APIAccessInterface {
             LocalDate now = LocalDate.now();
             Double result;
 
-            System.out.println(responseBody);
             if (responseBody.get("c") instanceof BigDecimal) {
                 result = ((BigDecimal) responseBody.get("c")).doubleValue();
             } else {
@@ -181,62 +180,6 @@ public class Finnhub implements APIAccessInterface {
             }
 
             return new PricePoint(now, result);
-        }
-        catch (IOException | JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<PricePoint> getLastMonthPrices(String ticker) {
-        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
-        Instant instantNow = now.toInstant();
-        long unixTimeNow = instantNow.getEpochSecond();
-        ZonedDateTime oneMonthAgo = now.minusMonths(1);
-        Instant instantOneMonthAgo = oneMonthAgo.toInstant();
-        long unixTimeOneMonthAgo = instantOneMonthAgo.getEpochSecond();
-
-        String url = "https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=" + RESOLUTION + "&from=" + unixTimeOneMonthAgo + "&to=" + unixTimeNow + "&token=" + APIKEY;
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader("Content-Type", "application/json")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            assert response.body() != null;
-            JSONObject responseBody = new JSONObject(response.body().string());
-
-            JSONArray openPrices = responseBody.getJSONArray("o");
-            JSONArray timeStamps = responseBody.getJSONArray("t");
-            List<PricePoint> ret = new ArrayList<PricePoint>();
-
-            for (int i = 0; i < openPrices.length(); i ++) {
-                Object curTimeStamp = timeStamps.get(i);
-                Integer intTimeStamp = (Integer) curTimeStamp;
-                Long longTimeStamp = intTimeStamp.longValue();
-
-                Instant instant = Instant.ofEpochSecond(((Integer) timeStamps.get(i)).longValue());
-                ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-                LocalDate localDate = zdt.toLocalDate();
-
-                Object priceObj = openPrices.get(i);
-                double priceValue;
-
-                if (priceObj instanceof BigDecimal) {
-                    priceValue = ((BigDecimal) priceObj).doubleValue();
-                } else if (priceObj instanceof Integer) {
-                    priceValue = (double) (int) priceObj;
-                } else {
-                    throw new IllegalArgumentException("Unsupported type in openPrices: " + priceObj.getClass());
-                }
-                ret.add(new PricePoint(localDate, priceValue));
-            }
-            return ret;
         }
         catch (IOException | JSONException e) {
             throw new RuntimeException(e);

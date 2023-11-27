@@ -16,9 +16,8 @@ public abstract class BaseStockInteractor {
 
     protected TransactionHistory initHistory(User user, String ticker,
                                              Double amount, Double boughtAt, Transaction transaction) {
-        List<PricePoint> lastMonthPrices = apiAccessInterface.getLastMonthPrices(ticker);
         CompanyInformation companyInformation = apiAccessInterface.getCompanyProfile(ticker);
-        Stock newStock = new Stock(boughtAt, lastMonthPrices, companyInformation.getName(), ticker);
+        Stock newStock = new Stock(boughtAt, companyInformation.getName(), ticker);
 
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
