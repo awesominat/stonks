@@ -31,7 +31,14 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
             try {
                 CompanyInformation companyInformation = driverAPI.getCompanyProfile(ticker);
                 Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
-                BuySearchOutputData result = new BuySearchOutputData(ticker, companyInformation, currentPrice, user.getBalance());
+
+                HashMap<String, Double> portfolio = user.getPortfolio();
+                Double currentlyHeld = 0.0;
+                if (portfolio.containsKey(ticker)) {
+                    currentlyHeld = portfolio.get(ticker);
+                }
+
+                BuySearchOutputData result = new BuySearchOutputData(ticker, companyInformation, currentPrice, currentlyHeld, user.getBalance());
                 buyPresenter.prepareSuccessView(result);
             } catch (RuntimeException e) { // this should be its own exception, TickerNotFoundException
                 buyPresenter.prepareFailView("Incorrect ticker.");

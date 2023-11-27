@@ -9,8 +9,9 @@ public class BuySearchOutputData {
     private String ticker;
     private Map<String, String> stringMap;
     private Double curBalance;
+    private Double currentlyHeld;
 
-    public BuySearchOutputData(String ticker, CompanyInformation companyInformation, Double currentPrice, Double curBalance) {
+    public BuySearchOutputData(String ticker, CompanyInformation companyInformation, Double currentPrice, Double currentlyHeld, Double curBalance) {
         this.ticker = ticker;
         this.curBalance = curBalance;
 
@@ -21,6 +22,7 @@ public class BuySearchOutputData {
         stringMap.put("weburl", companyInformation.getWeburl());
         stringMap.put("ipo", companyInformation.getIpo());
         stringMap.put("price", String.valueOf(currentPrice));
+        stringMap.put("currently held", String.valueOf(currentlyHeld));
     }
 
     public String getTicker() {

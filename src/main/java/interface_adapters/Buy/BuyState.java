@@ -9,6 +9,7 @@ public class BuyState {
     private Map<String, String> stockInfo;
     private Boolean renderNewInfo;
     private Boolean boughtStock;
+    private Double currentlyHeld;
     private Double curBalance;
 
     public Boolean getRenderNewInfo() {
@@ -25,6 +26,14 @@ public class BuyState {
 
     public void setBoughtStock(Boolean boughtStock) {
         this.boughtStock = boughtStock;
+    }
+
+    public Double getCurrentlyHeld() {
+        return currentlyHeld;
+    }
+
+    public void setCurrentlyHeld(Double currentlyHeld) {
+        this.currentlyHeld = currentlyHeld;
     }
 
     public void setCurBalance(Double curBalance) {
