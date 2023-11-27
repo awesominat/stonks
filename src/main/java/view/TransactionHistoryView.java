@@ -1,9 +1,5 @@
 package view;
 
-import drivers.TableModel;
-import interface_adapters.Buy.BuyController;
-import interface_adapters.Buy.BuyState;
-import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryController;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryState;
@@ -15,8 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -83,7 +77,6 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         // Populate the model with data
         HashMap<String, List<List<String>>> userRecord = state.getUserRecord();
-//        System.out.println(userRecord);
         for (HashMap.Entry<String, List<List<String>>> entry : userRecord.entrySet()) {
             String key = entry.getKey();
             List<List<String>> dataList = entry.getValue();
