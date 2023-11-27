@@ -1,12 +1,20 @@
 package use_cases.Sell;
 
+import java.util.List;
+
 public class SellInputData {
     public Double amount;
     public String ticker;
+    public boolean executeTypeSell;
 
     public SellInputData(Double amount, String ticker) {
         this.amount = amount;
         this.ticker = ticker;
+        this.executeTypeSell = true;
+    }
+
+    public SellInputData() {
+        this.executeTypeSell = false;
     }
 
     public Double getAmount() {
@@ -17,4 +25,7 @@ public class SellInputData {
         return ticker;
     }
 
+    public boolean isExecuteTypeSell() {
+        return executeTypeSell;
+    }
 }

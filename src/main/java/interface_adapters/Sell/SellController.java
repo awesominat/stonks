@@ -3,6 +3,8 @@ package interface_adapters.Sell;
 import use_cases.Sell.SellInputBoundary;
 import use_cases.Sell.SellInputData;
 
+import java.util.List;
+
 public class SellController {
     final private SellInputBoundary sellInteractor;
 
@@ -19,4 +21,11 @@ public class SellController {
             sellInteractor.execute(sellInputData);
         }
     }
+
+    public void execute() {
+        SellInputData sellInputData = new SellInputData();
+        sellInteractor.execute(sellInputData);
+    }
+
+
 }
