@@ -36,7 +36,6 @@ public class testGetNewsView {
 
         APIAccessInterface driverAPI = new Finnhub();
 
-        // The error indicated below stems from something that is fixed by PR #105.
         GetNewsOutputBoundary getNewsPresenter = new GetNewsPresenter(viewManagerModel, getNewsViewModel);
 
         GetNewsInteractor getNewsInteractor = new GetNewsInteractor(getNewsPresenter, driverAPI);

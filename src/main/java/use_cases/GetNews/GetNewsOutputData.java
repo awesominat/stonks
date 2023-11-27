@@ -11,7 +11,11 @@ public class GetNewsOutputData {
     String ticker;
     List<Map<String, String>> newsItems;
 
-    public GetNewsOutputData(String ticker, List<CompanyNews> companyNewsItems) {
+    public GetNewsOutputData(
+            String ticker,
+            List<CompanyNews> companyNewsItems
+    ) {
+
         this.ticker = ticker;
         this.newsItems = new ArrayList<Map<String, String>>();
 

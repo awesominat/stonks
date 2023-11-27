@@ -10,7 +10,10 @@ public class DashboardOutputData {
     private HashMap<String, Double> userStats;
     private List<PortfolioInformation> portfolioInformation;
 
-    public DashboardOutputData(HashMap<String, Double> userstats, List<PortfolioInformation> portfolioInformation) {
+    public DashboardOutputData(
+            HashMap<String, Double> userstats,
+            List<PortfolioInformation> portfolioInformation
+    ) {
         this.userStats = userstats;
         this.portfolioInformation = portfolioInformation;
     }

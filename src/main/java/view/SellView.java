@@ -39,7 +39,12 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     final JTable table;
     final JLabel currentBalance;
 
-    public SellView(SellViewModel sellViewModel, SellController sellController, ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
+    public SellView(
+            SellViewModel sellViewModel,
+            SellController sellController,
+            ViewManagerModel viewManagerModel,
+            DashboardViewModel dashboardViewModel
+    ) {
         this.sellController = sellController;
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
@@ -69,7 +74,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         table = new JTable();
         table.setPreferredSize(new Dimension(30, 200));
 
-        sell.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        sell.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(sell)) {
@@ -85,7 +90,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 }
         );
 
-        refresh.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        refresh.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(sell)) {
@@ -95,7 +100,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 }
         );
 
-        back.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        back.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(back)) {
@@ -153,10 +158,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // grab updated stock prices, owned amounts, sell amounts
         sellController.execute();
-
-        // grab updated state from view model
         SellState state = sellViewModel.getState();
 
         String sellSuccess = state.getSellSuccess();
@@ -172,7 +174,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         state.setAmountError(null);
         sellViewModel.setState(state);
 
-        // Get owned stocks list from dashboard for dropdown menu on sell page
         List<String> ownedStocks = state.getOwnedStocks();
         stockInputField.removeAllItems();
         if (ownedStocks != null && !ownedStocks.isEmpty()) {
@@ -190,7 +191,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         tableModel.addColumn("Sell Price (Single Unit)");
         tableModel.addColumn("Sell Price (All Units)");
 
-        // Show table of stocks and amounts owned
         for (int i = 0; i < ownedStocks.size(); i++) {
             String stockTicker = ownedStocks.get(i);
             Double amountOwned = ownedAmounts.get(i);
