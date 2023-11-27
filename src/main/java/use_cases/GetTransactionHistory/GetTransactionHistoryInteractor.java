@@ -13,8 +13,9 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
     final GetTransactionHistoryDataAccessInterface userDataAccessObject;
     GetTransactionHistoryOutputBoundary getTransactionHistoryPresenter;
 
-    public GetTransactionHistoryInteractor(GetTransactionHistoryDataAccessInterface userDataAccessObject,
-                                           GetTransactionHistoryOutputBoundary getTransactionHistoryPresenter) {
+    public GetTransactionHistoryInteractor(
+            GetTransactionHistoryDataAccessInterface userDataAccessObject,
+            GetTransactionHistoryOutputBoundary getTransactionHistoryPresenter) {
         this.userDataAccessObject = userDataAccessObject;
         this.getTransactionHistoryPresenter = getTransactionHistoryPresenter;
     }

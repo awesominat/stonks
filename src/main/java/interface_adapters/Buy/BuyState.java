@@ -76,7 +76,6 @@ public class BuyState {
         this.amountError = amountError;
     }
 
-    // Because of the previous copy constructor, the default constructor must be explicit. Hence overloading.
     public BuyState() {
 
     }
