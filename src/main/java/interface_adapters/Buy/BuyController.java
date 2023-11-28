@@ -24,4 +24,8 @@ public class BuyController {
         BuyInputData buyInputData = new BuyInputData(ticker);
         buyInteractor.execute(buyInputData);
     }
+    public void execute() {
+        BuyInputData buyInputData = new BuyInputData();
+        buyInteractor.execute(buyInputData);
+    }
 }

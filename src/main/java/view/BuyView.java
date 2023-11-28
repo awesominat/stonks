@@ -22,10 +22,8 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     private final BuyViewModel buyViewModel;
     private final BuyController buyController;
 
-    private final JLabel amountErrorField = new JLabel();
     final JTextField tickerInputField = new JTextField(15);
     final JTextField amountInputField = new JTextField(15);
-    private final JLabel tickerErrorField = new JLabel();
     JTable table;
     final JButton purchase;
     final JButton search;
@@ -155,8 +153,6 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         gbc.weightx = 0;
         topPanel.add(search);
 
-        topPanel.add(tickerErrorField);
-
         gbc.gridx = 4;
         gbc.weightx = 1.24;
         topPanel.add(Box.createHorizontalGlue(), gbc);
@@ -200,22 +196,20 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
     }
 
-    /**
-     * React to a button click that results in evt.
-     */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        buyController.execute();
         BuyState state = (BuyState) evt.getNewValue();
         setFields(state);
 
+        balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
+        balanceField.setToolTipText(String.valueOf(state.getCurBalance()));
         if (state.getStockInfo() != null && state.getRenderNewInfo() != null) {
             table.setModel(new TableModel(state.getStockInfo()));
-
-            balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
 
             updateBalanceLabelColor();
 
@@ -227,11 +221,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             buyViewModel.setState(state);
         }
         if (state.getBoughtStock() != null) {
-            balanceField.setText("Current Balance: " + String.format("%.2f", state.getCurBalance()));
-
             updateBalanceLabelColor();
-
-            balanceField.setToolTipText(String.valueOf(state.getCurBalance()));
 
             JOptionPane.showMessageDialog(
                     this, String.format(
