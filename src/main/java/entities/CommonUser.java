@@ -58,8 +58,11 @@ public class CommonUser implements User {
         this.balance = balance;
     }
 
-    public CommonUser(HashMap<String, Double> portfolio, HashMap<String,
-            TransactionHistory> history, Double balance) {
+    public CommonUser(
+            HashMap<String, Double> portfolio,
+            HashMap<String, TransactionHistory> history,
+            Double balance
+    ) {
         this.portfolio = portfolio;
         this.history = history;
         this.balance = balance;

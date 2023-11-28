@@ -11,13 +11,9 @@ public class GetNewsOutputData {
     String ticker;
     List<Map<String, String>> newsItems;
 
-    public GetNewsOutputData(
-            String ticker,
-            List<CompanyNews> companyNewsItems
-    ) {
-
+    public GetNewsOutputData(String ticker, List<CompanyNews> companyNewsItems) {
         this.ticker = ticker;
-        this.newsItems = new ArrayList<Map<String, String>>();
+        this.newsItems = new ArrayList<>();
 
         for (CompanyNews companyNews : companyNewsItems) {
             Map<String, String> newsItem = new HashMap<>();
@@ -30,11 +26,14 @@ public class GetNewsOutputData {
 
             this.newsItems.add(newsItem);
         }
-
     }
 
-    public String getTicker() {return ticker;}
+    public String getTicker() {
+        return ticker;
+    }
 
-    public List<Map<String, String>> getNewsItems() {return newsItems;}
+    public List<Map<String, String>> getNewsItems() {
+        return newsItems;
+    }
 
 }
