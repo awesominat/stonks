@@ -11,7 +11,6 @@ import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapters.ResetBalance.ResetBalanceController;
 import interface_adapters.ResetBalance.ResetBalancePresenter;
-import interface_adapters.ResetBalance.ResetBalanceViewModel;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 import use_cases.APIAccessInterface;
@@ -51,8 +50,7 @@ public class testDashboardView {
         DashboardController dashboardController = new DashboardController(dashboardInteractor);
 
         // DashboardView requires a ResetBalanceController, the simulation of which requires a bunch of other objects.
-        ResetBalanceViewModel resetBalanceViewModel = new ResetBalanceViewModel();
-        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(viewManagerModel, resetBalanceViewModel);
+        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(viewManagerModel);
         ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(userDataAccessObject, resetBalancePresenter, driverAPI);
         ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 
