@@ -30,4 +30,11 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         state.setUserStats(response.getUserStats());
     }
 
+    @Override
+    public void prepareFailView(String error) {
+        DashboardState state = dashboardViewModel.getState();
+        state.setError(error);
+        dashboardViewModel.firePropertyChanged();
+    }
+
 }

@@ -12,6 +12,7 @@ public class DashboardState {
     private List<Double> ownedAmounts;
     private List<Double> prices;
     private Boolean renderNewInfo;
+    private String error = null;
 
     public DashboardState(
             HashMap<String, Double> userStats,
@@ -25,6 +26,14 @@ public class DashboardState {
         this.ownedAmounts = ownedAmounts;
         this.ownedFullNames = ownedFullNames;
         this.prices = prices;
+    }
+
+    public String getError() {
+        return this.error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     public void setRenderNewInfo(Boolean renderNewInfo) {
@@ -75,18 +84,17 @@ public class DashboardState {
 
         // Handle case where userStats is initialized (without causing error when it is not).
         if (this.userStats != null) {
-            statsOut.put("Balance", String.valueOf(userStats.get("balance")));
-            statsOut.put("Stock Holdings Net Worth", String.valueOf(userStats.get("totalAssets")));
+            statsOut.put("Balance", String.format("%.2f", userStats.get("balance")));
+            statsOut.put("Stock Holdings Net Worth", String.format("%.2f", userStats.get("totalAssets")));
             Double daysSinceLastTopup = userStats.get("daysSinceLastTopup");
             statsOut.put("Days Since Last Top-Up",
-                    (daysSinceLastTopup < 0) ? "Never Topped Up" : String.valueOf(daysSinceLastTopup));
-            statsOut.put("Total Profit", String.valueOf(userStats.get("totalProfit")));
-            statsOut.put("Aggregate Volume", String.valueOf(userStats.get("aggregateVolume")));
-            statsOut.put("Total Assets", String.valueOf(userStats.get("balance") + userStats.get("totalAssets")));
+                    (daysSinceLastTopup < 0) ? "Never Topped Up" : String.format("%.0f", daysSinceLastTopup));
+            statsOut.put("Total Profit", String.format("%.2f", userStats.get("totalProfit")));
+            statsOut.put("Aggregate Volume", String.format("%.2f", userStats.get("aggregateVolume")));
+            statsOut.put("Total Assets", String.format("%.2f", userStats.get("balance") + userStats.get("totalAssets")));
         } else {
             throw new IllegalArgumentException();
         }
-
         return statsOut;
     }
 

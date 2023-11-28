@@ -211,7 +211,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         middlePanel.setVisible(true);
         bottomPanel.setVisible(true);
 
-//        dashboardViewModel.getState().setRenderNewInfo(true);
+        this.dashboardController.execute();
+        this.dashboardViewModel.firePropertyChanged();
     }
 
     /**
@@ -223,7 +224,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DashboardState state = (DashboardState) evt.getNewValue();
+//        DashboardState state = (DashboardState) evt.getNewValue();
+        DashboardState state = dashboardViewModel.getState();
         setFields(state);
 
         // Avoid executing full use case unless necessary
@@ -287,11 +289,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             gbc.weightx = 1;
 
             // Use Scroll Pane to make the table look nicer
-            JScrollPane ownedStocksScrollPane = new JScrollPane(ownedStocksTable);
-            bottomPanel.add(ownedStocksScrollPane, gbc);
+            bottomPanel.add(new JScrollPane(ownedStocksTable), gbc);
 
-            middlePanel.setVisible(true);
-            bottomPanel.setVisible(true);
             // Reset the setRenderNewInfo property
             state.setRenderNewInfo(null);
             dashboardViewModel.setState(state);
