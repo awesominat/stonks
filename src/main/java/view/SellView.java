@@ -134,7 +134,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         });
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-
         this.add(title);
         this.add(currentBalance);
         this.add(new JScrollPane(table));

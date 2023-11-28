@@ -6,8 +6,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class DashboardViewModel extends ViewModel {
-    public final String TITLE_LABEL = "Dashboard";
-    public final String WELCOME_LABEL = "Welcome!";
     public final String PURCHASE_BUTTON_LABEL = "Buy";
     public final String SELL_BUTTON_LABEL = "Sell";
     public final String NEWS_BUTTON_LABEL = "News";

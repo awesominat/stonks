@@ -73,7 +73,6 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         search.addActionListener(
                 evt -> {
                     GetNewsState currentState = getNewsViewModel.getState();
-
                     getNewsController.execute(currentState.getTicker());
                 }
         );
