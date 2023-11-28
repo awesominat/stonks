@@ -17,7 +17,8 @@ public class DashboardState {
             HashMap<String, Double> userStats,
             List<String> ownedTickers,
             List<String> ownedFullNames,
-            List<Double> ownedAmounts
+            List<Double> ownedAmounts,
+            List<Double> prices
     ) {
         this.userStats = userStats;
         this.ownedTickers = ownedTickers;
