@@ -30,7 +30,6 @@ public class FileUserDataAccessObject implements BuyDataAccessInterface, SellDat
 
     public FileUserDataAccessObject(String jsonPath, UserFactory userFactory) throws IOException {
         jsonFile = new File(jsonPath);
-        System.out.println(jsonFile.length());
         if (jsonFile.length() == 0) {
             user = new CommonUser();
             save();

@@ -11,8 +11,11 @@ public class SellPresenter implements SellOutputBoundary {
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public SellPresenter(ViewManagerModel viewManagerModel,
-                         SellViewModel sellViewModel, DashboardViewModel dashboardViewModel) {
+    public SellPresenter(
+            ViewManagerModel viewManagerModel,
+            SellViewModel sellViewModel,
+            DashboardViewModel dashboardViewModel
+    ) {
         this.viewManagerModel = viewManagerModel;
         this.sellViewModel = sellViewModel;
         this.dashboardViewModel = dashboardViewModel;

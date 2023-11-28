@@ -82,4 +82,9 @@ public class CommonUser implements User {
         return balance;
     }
 
+    @Override
+    public void clearPortfolio() {
+        this.portfolio.clear();
+    }
+
 }

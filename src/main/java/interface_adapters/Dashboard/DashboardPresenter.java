@@ -15,6 +15,7 @@ public class DashboardPresenter implements DashboardOutputBoundary {
     }
 
     @Override
+<<<<<<< HEAD
     public void prepareSuccessView(DashboardOutputData response) {
         // Get the current dashboardViewModel's state
         DashboardState state = dashboardViewModel.getState();
@@ -28,5 +29,13 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         state.setOwnedFullNames(response.getFullNamesInformation());
         state.setPrices(response.getPriceInformation());
         state.setUserStats(response.getUserStats());
+=======
+    public void prepareSuccessView(DashboardOutputData dashboardOutputData) {
+        DashboardState dashboardState = dashboardViewModel.getState();
+        dashboardState.setOwnedAmounts(dashboardOutputData.getAmountInformation());
+        dashboardState.setOwnedTickers(dashboardOutputData.getTickerInformation());
+        dashboardState.setOwnedFullNames(dashboardOutputData.getFullNamesInformation());
+        dashboardState.setUserStats(dashboardOutputData.getUserStats());
+>>>>>>> origin
     }
 }

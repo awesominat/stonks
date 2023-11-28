@@ -14,13 +14,11 @@ public abstract class BaseStockInteractor {
         this.apiAccessInterface = apiAccessInterface;
     }
 
-    protected TransactionHistory initHistory(User user, String ticker,
-                                             Double amount, Double boughtAt, Transaction transaction) {
+    protected TransactionHistory initHistory(String ticker, Double boughtAt) {
         CompanyInformation companyInformation = apiAccessInterface.getCompanyProfile(ticker);
         Stock newStock = new Stock(boughtAt, companyInformation.getName(), ticker);
 
         List<Transaction> transactions = new ArrayList<>();
-        transactions.add(transaction);
 
         return new TransactionHistory(newStock, transactions);
     }
@@ -33,10 +31,10 @@ public abstract class BaseStockInteractor {
     }
 
     protected void addToHistory(HashMap<String, TransactionHistory> userHistory, String ticker,
-                                User user, Double amount, Double currentPrice, Transaction transaction) {
+                                Double currentPrice, Transaction transaction) {
         TransactionHistory transactionHistory;
         if (!userHistory.containsKey(ticker)) {
-            transactionHistory = initHistory(user, ticker, amount, currentPrice, transaction);
+            transactionHistory = initHistory(ticker, currentPrice);
         } else {
             transactionHistory = userHistory.get(ticker);
         }

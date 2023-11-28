@@ -11,7 +11,13 @@ public class BuySearchOutputData {
     private Double curBalance;
     private Double currentlyHeld;
 
-    public BuySearchOutputData(String ticker, CompanyInformation companyInformation, Double currentPrice, Double currentlyHeld, Double curBalance) {
+    public BuySearchOutputData(
+            String ticker,
+            CompanyInformation companyInformation,
+            Double currentPrice,
+            Double currentlyHeld,
+            Double curBalance
+    ) {
         this.ticker = ticker;
         this.curBalance = curBalance;
 

@@ -1,7 +1,6 @@
 package use_cases.Sell;
 
 import entities.*;
-import use_cases.Sell.SellOutputBoundary;
 import use_cases.APIAccessInterface;
 import use_cases.BaseStockInteractor;
 
@@ -15,8 +14,11 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
     SellOutputBoundary sellPresenter;
     APIAccessInterface driverAPI;
 
-    public SellInteractor(SellDataAccessInterface userDataAccessInterface,
-                          SellOutputBoundary sellPresenter, APIAccessInterface driverAPI) {
+    public SellInteractor(
+            SellDataAccessInterface userDataAccessInterface,
+            SellOutputBoundary sellPresenter,
+            APIAccessInterface driverAPI
+    ) {
         super(driverAPI);
         this.userDataAccessObject = userDataAccessInterface;
         this.sellPresenter = sellPresenter;
@@ -46,14 +48,35 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             user.addBalance(currentPrice * amount);
             HashMap<String, TransactionHistory> userHistory = user.getHistory();
 
-            Transaction transaction = new SellTransaction(amount, new PricePoint(LocalDate.now(), currentPrice));
+            Transaction transaction = new SellTransaction(
+                    amount,
+                    new PricePoint(
+                            LocalDate.now(),
+                            currentPrice));
 
-            super.updatePortfolio(user, ticker, currentlyOwned - amount);
-            super.addToHistory(userHistory, ticker, user, amount, currentPrice, transaction);
+            super.updatePortfolio(
+                    user,
+                    ticker,
+                    currentlyOwned - amount
+            );
+
+            super.addToHistory(
+                    userHistory,
+                    ticker,
+                    currentPrice,
+                    transaction
+            );
+
             userDataAccessObject.save();
 
-            SellOutputData result = new SellOutputData(sellInputData.getAmount(), sellInputData.getTicker());
+            SellOutputData result = new SellOutputData(
+                    sellInputData.getAmount(),
+                    sellInputData.getTicker()
+            );
+
+
             sellPresenter.prepareSuccessView(result);
+
 
         } else {
             User user = userDataAccessObject.get();
@@ -72,7 +95,13 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                 sellAmounts.add(stockPrice);
             }
 
-            SellOutputData result = new SellOutputData(ownedStocks, ownedAmounts, sellAmounts, balance);
+            SellOutputData result = new SellOutputData(
+                    ownedStocks,
+                    ownedAmounts,
+                    sellAmounts,
+                    balance
+            );
+
             sellPresenter.prepareSuccessView(result);
         }
     }

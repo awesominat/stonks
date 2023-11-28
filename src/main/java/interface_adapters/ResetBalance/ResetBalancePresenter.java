@@ -10,21 +10,16 @@ public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
     private ViewManagerModel viewManagerModel;
 
     public ResetBalancePresenter(ViewManagerModel viewManagerModel,
-                                 ResetBalanceViewModel resetBalanceViewModel) {
+                                 ResetBalanceViewModel resetBalanceViewModel
+    ) {
         this.viewManagerModel = viewManagerModel;
         this.resetBalanceViewModel = resetBalanceViewModel;
     }
     @Override
     public void prepareSuccessView(ResetBalanceOutputData response) {
-        // TODO
-        // On Success switch to Portfolio View
     }
 
     @Override
     public void prepareFailView(String error) {
-        // TODO
-//        BuyState buyState = buyViewModel.getState();
-//        BuyState.setProcessError(error);
-//        buyViewModel.firePropertyChanged();
     }
 }

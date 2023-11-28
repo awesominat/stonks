@@ -11,11 +11,14 @@ import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.ViewManagerModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
@@ -33,13 +36,32 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
      */
     final JTextField tickerInputField = new JTextField(5);
     private final JLabel tickerErrorField = new JLabel();
-    JTable table;
     final JButton search;
     final JButton back;
     JPanel topPanel;
     JPanel middlePanel;
     JTabbedPane newsTabs;
     ImageIcon icon;
+
+    // Custom cell renderer to allow displaying a clipped preview of a larger String using tooltip
+    private static class ClippedPreviewTableCellRenderer extends DefaultTableCellRenderer {
+        private static final int MAX_PREVIEW_LENGTH = 60;
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (value != null) {
+                String text = value.toString();
+                if (text.length() > MAX_PREVIEW_LENGTH) {
+                    String previewText = text.substring(0, MAX_PREVIEW_LENGTH) + " ...";
+                    setToolTipText("<html><p width='300'>" + text + "</p></html>");
+                    setText(previewText);
+                }
+            }
+            return c;
+        }
+    }
 
     public GetNewsView(GetNewsViewModel getNewsViewModel,
                        GetNewsController getNewsController,
@@ -57,7 +79,6 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         back = new JButton(getNewsViewModel.BACK_BUTTON_LABEL);
         search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
 
-        // Create stock search bar.
         LabelTextPanel tickerInput = new LabelTextPanel(
                 new JLabel("Stock ticker"), tickerInputField);
         tickerInput.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -86,14 +107,10 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
+            public void keyPressed(KeyEvent e) {}
 
             @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
+            public void keyReleased(KeyEvent e) {}
         });
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -169,32 +186,42 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
 
         List<Map<String, String>> newsItems = state.getNewsItems();
 
+        // Handle event where new news items have been fetched
         if (newsItems != null && state.getRenderNewInfo() != null) {
+            // Remove all existing tabs before adding new ones.
+            newsTabs.removeAll();
 
+            // Iterate through each of the five news items retrieved by the use case
             for (int i = 0; i < 5; i++) {
                 Map<String, String> newsItem = newsItems.get(i);
 
                 JTable table = new JTable();
-                table.setPreferredSize(new Dimension(100, 200));
+                table.setPreferredSize(new Dimension(150, 250));
                 table.setModel(new TableModel(newsItem));
 
+                // Set a cell renderer for the second column that uses tooltip to show full String values.
+                table.getColumnModel().getColumn(1).setCellRenderer(new ClippedPreviewTableCellRenderer());
+
                 newsTabs.addTab(String.format("Article %d", i + 1), icon, table);
+                newsTabs.setIconAt(i, icon);
             }
 
             middlePanel.setVisible(true);
             state.setRenderNewInfo(null);
             getNewsViewModel.setState(state);
-
         }
+
 
         String tickerError = state.getTickerError();
 
         if (tickerError != null) {
-            JOptionPane.showMessageDialog(this, tickerError);
+            JOptionPane.showMessageDialog(
+                    this,
+                    tickerError
+            );
             state.setTickerError(null);
             getNewsViewModel.setState(state);
         }
-
     }
 
     private void setFields(GetNewsState state) {

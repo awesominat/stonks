@@ -24,35 +24,28 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // Java swing setup code
         JFrame application = new JFrame("Stonks");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         CardLayout cardLayout = new CardLayout();
         JPanel views = new JPanel(cardLayout);
         application.add(views);
-
-        // Common stuff
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
         APIAccessInterface apiAccessInterface = new Finnhub();
-
         FileUserDataAccessObject fileUserDataAccessObject = new FileUserDataAccessObject(
                 "./user.json",
                 new CommonUserFactory()
         );
-        User user = new CommonUser();
         fileUserDataAccessObject.save();
 
-        // All view models (since multiple views can reference view models that do not belong to them
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         BuyViewModel buyViewModel = new BuyViewModel();
         SellViewModel sellViewModel = new SellViewModel();
         GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
         GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
-        // DashboardView requires a ResetBalanceController, the simulation of which requires a bunch of other objects.
         ResetBalanceViewModel resetBalanceViewModel = new ResetBalanceViewModel();
         ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(
                 viewManagerModel,
@@ -65,8 +58,6 @@ public class Main {
         );
         ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 
-
-        // Dashboard view init
         DashboardView dashboardView = DashboardUseCaseFactory.create(
                 viewManagerModel,
                 dashboardViewModel,
@@ -80,7 +71,6 @@ public class Main {
         );
         views.add(dashboardView, dashboardView.viewName);
 
-        // Buy view init
         BuyView buyView = BuyStockUseCaseFactory.create(
                 viewManagerModel,
                 buyViewModel,
@@ -90,7 +80,6 @@ public class Main {
         );
         views.add(buyView, buyView.viewName);
 
-        // Sell view init
         SellView sellView = SellStockUseCaseFactory.create(
                 viewManagerModel,
                 sellViewModel,
@@ -100,7 +89,6 @@ public class Main {
         );
         views.add(sellView, sellView.viewName);
 
-        // Get News view init
         GetNewsView getNewsView = GetNewsUseCaseFactory.create(
                 viewManagerModel,
                 getNewsViewModel,
@@ -119,7 +107,6 @@ public class Main {
         );
         views.add(transactionHistoryView, transactionHistoryView.viewName);
 
-        // Set start screen to dashboard and display application
         viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         dashboardViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();
