@@ -9,10 +9,7 @@ public class DashboardController {
         this.dashboardInteractor = dashboardInteractor;
     }
 
-    public void execute() {
-        dashboardInteractor.execute(new DashboardInputData());
-    }
-    public void execute(Boolean forceRefresh) {
-        dashboardInteractor.execute(new DashboardInputData(forceRefresh));
+    public void execute(Boolean refreshPressed) {
+        dashboardInteractor.execute(new DashboardInputData(refreshPressed));
     }
 }

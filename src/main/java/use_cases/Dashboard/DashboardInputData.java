@@ -1,20 +1,17 @@
 package use_cases.Dashboard;
 
 public class DashboardInputData {
-    private Boolean apiRefresh;
+    private Boolean refreshPressed;
 
-    public DashboardInputData(Boolean apiRefresh) {
-        this.apiRefresh = apiRefresh;
-    }
-    public DashboardInputData() {
-        this.apiRefresh = false;
+    public DashboardInputData(Boolean refreshPressed) {
+        this.refreshPressed = refreshPressed;
     }
 
-    public Boolean getApiRefresh() {
-        return apiRefresh;
+    public Boolean getRefreshPressed() {
+        return refreshPressed;
     }
 
-    public void setApiRefresh(Boolean apiRefresh) {
-        this.apiRefresh = apiRefresh;
+    public void setRefreshPressed(Boolean refreshPressed) {
+        this.refreshPressed = refreshPressed;
     }
 }

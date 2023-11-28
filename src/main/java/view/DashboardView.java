@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
@@ -109,7 +110,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         // Create an anonymous subclass of ActionListener and instantiate it.
         refresh.addActionListener(
                 evt -> {
-                    dashboardController.execute();
+                    dashboardController.execute(true);
                     dashboardViewModel.firePropertyChanged();
                 }
         );
@@ -142,7 +143,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 evt -> {
                     resetBalanceController.execute();
                     dashboardViewModel.firePropertyChanged();
-
                     // TODO: add reset balance pop-up
                 }
         );
@@ -203,6 +203,24 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         gbc.fill = GridBagConstraints.NONE;
         topPanel.add(balanceLabel, gbc);
 
+        // Add Table of User Statistics to the view in the middle panel
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        middlePanel.add(userStatsTable, gbc);
+
+        JTableHeader header = ownedStocksTable.getTableHeader();
+        header.setBackground(Color.LIGHT_GRAY);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+
+        // Use Scroll Pane to make the table look nicer
+        bottomPanel.add(new JScrollPane(ownedStocksTable), gbc);
+
         // Add panels to the view.
         add(topPanel, BorderLayout.NORTH);
         add(middlePanel);
@@ -210,9 +228,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         middlePanel.setVisible(true);
         bottomPanel.setVisible(true);
-
-        this.dashboardController.execute();
-        this.dashboardViewModel.firePropertyChanged();
     }
 
     /**
@@ -224,84 +239,95 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        DashboardState state = (DashboardState) evt.getNewValue();
+        dashboardController.execute(false);
         DashboardState state = dashboardViewModel.getState();
-        setFields(state);
 
-        // Avoid executing full use case unless necessary
-        if (state.getRenderNewInfo() != null) {
-            // Run Dashboard use case
-            dashboardController.execute();
+        // Rendering user balance
+        balanceField.setText(String.format("$%.2f", state.getUserStats().get("balance")));
 
-            // Fill data into userStatsTable
-            HashMap<String, String> userStats = state.getUserStats();
-            if (userStats != null) {
-                userStatsTable.setModel(new TableModel(userStats));
-            }
-            userStatsTable.setName("User Information");
 
-            // Execute setup for User's Stock Holdings Information table.
-            // Create new default table model for displaying stock information.
-            DefaultTableModel tableModel = new DefaultTableModel();
+        // Rendering user stats table
+        DefaultTableModel userStatsTableModel = new DefaultTableModel();
 
-            // Add columns to the stock table model
-            tableModel.addColumn("Ticker");
-            tableModel.addColumn("Full Name");
-            tableModel.addColumn("Amount");
-            tableModel.addColumn("Market Price");
-
-            // Get stock info
-            List<String> tickers = state.getOwnedTickers();
-            List<String> names = state.getOwnedFullNames();
-            List<String> amounts = state.getOwnedAmountsStrings();
-            List<String> prices = state.getPricesStrings();
-
-            // Fill in rows of stock info table.
-            if (tickers != null) {
-                for (int i = 0; i < tickers.size(); i++) {
-                    List<Object> row = new ArrayList<>();
-                    row.add(tickers.get(i));
-                    row.add(names.get(i));
-                    row.add(amounts.get(i));
-                    row.add(prices.get(i));
-                    // Cast List object `row` to Object array, then pass it as argument to `tableModel.addRow`
-                    tableModel.addRow(row.toArray());
-                }
-            }
-
-            // Create GridBagConstraints for all the additions to the main three panels about to be executed.
-            GridBagConstraints gbc = new GridBagConstraints();
-
-            // Add Table of User Statistics to the view in the middle panel
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
-            middlePanel.add(userStatsTable, gbc);
-
-            ownedStocksTable.setModel(tableModel);
-            JTableHeader header = ownedStocksTable.getTableHeader();
-            header.setBackground(Color.LIGHT_GRAY);
-
-            gbc.gridx = 0;
-            gbc.gridy = 4;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
-
-            // Use Scroll Pane to make the table look nicer
-            bottomPanel.add(new JScrollPane(ownedStocksTable), gbc);
-
-            // Reset the setRenderNewInfo property
-            state.setRenderNewInfo(null);
-            dashboardViewModel.setState(state);
+        userStatsTableModel.addColumn("Attribute");
+        userStatsTableModel.addColumn("Value");
+        for (Map.Entry<String, Double> entry: state.getUserStats().entrySet()) {
+            userStatsTableModel.addRow(new Object[] {entry.getKey(), entry.getValue()});
         }
-    }
+        userStatsTable.setModel(userStatsTableModel);
 
-    private void setFields(DashboardState state) {
-        Double balance = state.getCurBalance();
-        if (balance != null) {
-            balanceField.setText(String.format("%.2f", state.getCurBalance().floatValue()));
+
+        // Rendering owned stocks table
+        DefaultTableModel ownedStocksTableModel = new DefaultTableModel();
+
+        ownedStocksTableModel.addColumn("Ticker");
+        ownedStocksTableModel.addColumn("Amount owned");
+        ownedStocksTableModel.addColumn("Current Price");
+        ownedStocksTableModel.addColumn("Price change");
+        ownedStocksTableModel.addColumn("Percent change");
+
+        List<String> ownedTickers = state.getOwnedTickers();
+        List<Double> ownedAmounts = state.getOwnedAmounts();
+        List<List<Double>> priceStats = state.getCurrentPriceStats();
+        for (int i = 0; i < ownedTickers.size(); i++) {
+            String ticker = ownedTickers.get(i);
+            Double amount = ownedAmounts.get(i);
+            List<Double> priceStatsForTicker = priceStats.get(i);
+
+            Double currentPrice = priceStatsForTicker.get(0);
+            Double priceChange = priceStatsForTicker.get(1);
+            Double percentChange = priceStatsForTicker.get(2);
+
+            ownedStocksTableModel.addRow(new Object[] {ticker, amount, currentPrice, priceChange, percentChange});
         }
-    }
+        ownedStocksTable.setModel(ownedStocksTableModel);
 
+    }
 }
+//        setFields(state);
+//
+//        // Avoid executing full use case unless necessary
+//        if (state.getRenderNewInfo() != null) {
+//            // Run Dashboard use case
+//            dashboardController.execute();
+//
+//            // Fill data into userStatsTable
+//            HashMap<String, String> userStats = state.getUserStats();
+//            if (userStats != null) {
+//                userStatsTable.setModel(new TableModel(userStats));
+//            }
+//            userStatsTable.setName("User Information");
+//
+//            // Execute setup for User's Stock Holdings Information table.
+//            // Create new default table model for displaying stock information.
+//            DefaultTableModel tableModel = new DefaultTableModel();
+//
+//            // Add columns to the stock table model
+//            tableModel.addColumn("Ticker");
+//            tableModel.addColumn("Full Name");
+//            tableModel.addColumn("Amount");
+//            tableModel.addColumn("Market Price");
+//
+//            // Get stock info
+//            List<String> tickers = state.getOwnedTickers();
+//            List<String> names = state.getOwnedFullNames();
+//            List<String> amounts = state.getOwnedAmountsStrings();
+//            List<String> prices = state.getPricesStrings();
+//
+//            // Fill in rows of stock info table.
+//            if (tickers != null) {
+//                for (int i = 0; i < tickers.size(); i++) {
+//                    List<Object> row = new ArrayList<>();
+//                    row.add(tickers.get(i));
+//                    row.add(names.get(i));
+//                    row.add(amounts.get(i));
+//                    row.add(prices.get(i));
+//                    // Cast List object `row` to Object array, then pass it as argument to `tableModel.addRow`
+//                    tableModel.addRow(row.toArray());
+//                }
+//            }
+//
+//
+//            // Reset the setRenderNewInfo property
+//            state.setRenderNewInfo(null);
+//            dashboardViewModel.setState(state);
