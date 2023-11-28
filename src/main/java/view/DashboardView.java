@@ -110,7 +110,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         // Create an anonymous subclass of ActionListener and instantiate it.
         refresh.addActionListener(
                 evt -> {
-                    DashboardState currentState = dashboardViewModel.getState();
                     dashboardController.execute();
                     dashboardViewModel.firePropertyChanged();
                 }
@@ -163,20 +162,28 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         GridBagConstraints gbc = new GridBagConstraints();
 
         topPanel = new JPanel(new GridBagLayout());
-        JPanel intermediatePanel1 = new JPanel(new GridBagLayout());
         middlePanel = new JPanel(new GridBagLayout());
-        JPanel intermediatePanel2 = new JPanel(new GridBagLayout());
         bottomPanel = new JPanel(new GridBagLayout());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-//        buttons.setPreferredSize(new Dimension(30, 80));
         topPanel.add(buttons, gbc);
 
+        // Add the user's current balance to the view.
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 0;
+        topPanel.add(balanceField, gbc);
+
+        // Top Panel formatting stuff
         gbc.gridx = 1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(Box.createHorizontalGlue(), gbc);
+        gbc.gridx = 4;
+        gbc.weightx = 1.24;
         topPanel.add(Box.createHorizontalGlue(), gbc);
 
         // Spice up the labels a bit.
@@ -189,6 +196,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         Font fieldFont = balanceField.getFont();
         balanceField.setForeground(Color.DARK_GRAY);
         balanceField.setFont(fieldFont.deriveFont(Font.ITALIC));
+        balanceField.setSize(30, 8);
 
         gbc.gridx = 2;
         gbc.gridy = 0;
@@ -196,103 +204,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         gbc.fill = GridBagConstraints.NONE;
         topPanel.add(balanceLabel, gbc);
 
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.weightx = 0;
-        topPanel.add(balanceField, gbc);
+        // Add panels to the view.
+        add(topPanel, BorderLayout.NORTH);
+        add(middlePanel);
+        add(bottomPanel, BorderLayout.SOUTH);
 
-        // Get DashboardState after running the use case
-        dashboardController.execute();
-        DashboardState state = dashboardViewModel.getState();
-
-        HashMap<String, String> userStats = state.getUserStats();
-        if (userStats != null) {
-//            userStatsTable.setPreferredSize(new Dimension(100, 200));
-            userStatsTable.setModel(new TableModel(userStats));
-        }
-
-        userStatsTable.setName("User Information");
-
-//        userStatsTable.setMinimumSize(new Dimension(100, 100));
-
-        // Create new default table model for displaying stock information.
-        DefaultTableModel tableModel = new DefaultTableModel();
-
-        // Add columns to the model
-        tableModel.addColumn("Tickers");
-        tableModel.addColumn("Full Names");
-        tableModel.addColumn("Amounts");
-
-        List<String> tickers = state.getOwnedTickers();
-        List<String> names = state.getOwnedFullNames();
-        List<String> amounts = state.getOwnedAmountsStrings();
-
-        if (tickers != null) {
-            for (int i = 0; i < tickers.size(); i++) {
-                List<Object> row = new ArrayList<>();
-                row.add(tickers.get(i));
-                row.add(names.get(i));
-                row.add(amounts.get(i));
-                // Convert List object `row` to Object array and then pass it as argument to `tableModel.addRow`
-                tableModel.addRow(row.toArray());
-            }
-        }
-
-        // Add top panel
-        gbc.gridx = 4;
-        gbc.weightx = 1.24;
-        topPanel.add(Box.createHorizontalGlue(), gbc);
-        this.add(topPanel, BorderLayout.NORTH);
-
-//        // Add invisible intermediate panel (number one)
-//        gbc.gridx = 0;
-//        gbc.gridy = 1;
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.weightx = 1;
-//        this.add(intermediatePanel1);
-//        intermediatePanel1.setVisible(false);
-
-        // Add middle panel
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        middlePanel.add(userStatsTable, gbc);
-        this.add(middlePanel);
         middlePanel.setVisible(true);
-
-//        // Add invisible intermediate panel (number two)
-//        gbc.gridx = 0;
-//        gbc.gridy = 3;
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.weightx = 1;
-//        this.add(intermediatePanel2);
-//        intermediatePanel2.setVisible(false);
-
-//        int currentHeight = Double.valueOf(this.getPreferredSize().getHeight()).intValue();
-//        System.out.println(currentHeight);
-//        ownedStocksTable.setPreferredSize(new Dimension(this.getWidth(), currentHeight));
-//        ownedStocksTable.setPreferredSize(new Dimension(300, 200));
-        ownedStocksTable.setModel(tableModel);
-        JTableHeader header = ownedStocksTable.getTableHeader();
-        header.setBackground(Color.LIGHT_GRAY);
-//        header.setVisible(true);
-
-        // Add bottom panel
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-
-        // Use Scroll Pane to make the table look nicer
-        JScrollPane ownedStocksScrollPane = new JScrollPane(ownedStocksTable);
-        bottomPanel.add(ownedStocksScrollPane, gbc);
-        this.add(bottomPanel, BorderLayout.SOUTH);
         bottomPanel.setVisible(true);
 
-        // Note: `.floatValue()` may not be necessary
-        balanceField.setText(String.format("%.2f", state.getCurBalance().floatValue()));
+//        dashboardViewModel.getState().setRenderNewInfo(true);
     }
 
     /**
@@ -305,18 +225,85 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         DashboardState state = (DashboardState) evt.getNewValue();
-//        DashboardState state = dashboardViewModel.getState();
+        setFields(state);
 
         // Avoid executing full use case unless necessary
         if (state.getRenderNewInfo() != null) {
+            // Run Dashboard use case
             dashboardController.execute();
+
+            // Fill data into userStatsTable
+            HashMap<String, String> userStats = state.getUserStats();
+            if (userStats != null) {
+                userStatsTable.setModel(new TableModel(userStats));
+            }
+            userStatsTable.setName("User Information");
+
+            // Execute setup for User's Stock Holdings Information table.
+            // Create new default table model for displaying stock information.
+            DefaultTableModel tableModel = new DefaultTableModel();
+
+            // Add columns to the stock table model
+            tableModel.addColumn("Ticker");
+            tableModel.addColumn("Full Name");
+            tableModel.addColumn("Amount");
+            tableModel.addColumn("Market Price");
+
+            // Get stock info
+            List<String> tickers = state.getOwnedTickers();
+            List<String> names = state.getOwnedFullNames();
+            List<String> amounts = state.getOwnedAmountsStrings();
+            List<String> prices = state.getPricesStrings();
+
+            // Fill in rows of stock info table.
+            if (tickers != null) {
+                for (int i = 0; i < tickers.size(); i++) {
+                    List<Object> row = new ArrayList<>();
+                    row.add(tickers.get(i));
+                    row.add(names.get(i));
+                    row.add(amounts.get(i));
+                    row.add(prices.get(i));
+                    // Cast List object `row` to Object array, then pass it as argument to `tableModel.addRow`
+                    tableModel.addRow(row.toArray());
+                }
+            }
+
+            // Create GridBagConstraints for all the additions to the main three panels about to be executed.
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            // Add Table of User Statistics to the view in the middle panel
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            middlePanel.add(userStatsTable, gbc);
+
+            ownedStocksTable.setModel(tableModel);
+            JTableHeader header = ownedStocksTable.getTableHeader();
+            header.setBackground(Color.LIGHT_GRAY);
+
+            gbc.gridx = 0;
+            gbc.gridy = 4;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+
+            // Use Scroll Pane to make the table look nicer
+            JScrollPane ownedStocksScrollPane = new JScrollPane(ownedStocksTable);
+            bottomPanel.add(ownedStocksScrollPane, gbc);
+
+            middlePanel.setVisible(true);
+            bottomPanel.setVisible(true);
+            // Reset the setRenderNewInfo property
             state.setRenderNewInfo(null);
+            dashboardViewModel.setState(state);
         }
-        setFields(state);
     }
 
     private void setFields(DashboardState state) {
-        balanceField.setText(String.format("%.2f", state.getCurBalance().floatValue()));
+        Double balance = state.getCurBalance();
+        if (balance != null) {
+            balanceField.setText(String.format("%.2f", state.getCurBalance().floatValue()));
+        }
     }
 
 }

@@ -8,11 +8,11 @@ import java.util.List;
 
 public class DashboardOutputData {
     private HashMap<String, Double> userStats;
-    private List<PortfolioInformation> portfolioInformation;
+    private List<PortfolioInformation> portfolioInformations;
 
-    public DashboardOutputData(HashMap<String, Double> userStats, List<PortfolioInformation> portfolioInformation) {
+    public DashboardOutputData(HashMap<String, Double> userStats, List<PortfolioInformation> portfolioInformations) {
         this.userStats = userStats;
-        this.portfolioInformation = portfolioInformation;
+        this.portfolioInformations = portfolioInformations;
     }
 
     public HashMap<String, Double> getUserStats() {
@@ -20,30 +20,39 @@ public class DashboardOutputData {
     }
 
     public List<String> getTickerInformation() {
-        List<String> tickers = new ArrayList<String>();
+        List<String> tickers = new ArrayList<>();
 
-        for (PortfolioInformation pdata: portfolioInformation) {
-            tickers.add(pdata.getTicker());
+        for (PortfolioInformation portfolioInformation : portfolioInformations) {
+            tickers.add(portfolioInformation.getTicker());
         }
         return tickers;
     }
 
-
     public List<String> getFullNamesInformation() {
-        List<String> fullNames = new ArrayList<String>();
+        List<String> fullNames = new ArrayList<>();
 
-        for (PortfolioInformation pdata: portfolioInformation) {
-            fullNames.add(pdata.getFullName());
+        for (PortfolioInformation portfolioInformation: portfolioInformations) {
+            fullNames.add(portfolioInformation.getFullName());
         }
         return fullNames;
     }
 
     public List<Double> getAmountInformation() {
-        List<Double> amount = new ArrayList<Double>();
+        List<Double> amounts = new ArrayList<>();
 
-        for (PortfolioInformation pdata: portfolioInformation) {
-            amount.add(pdata.getAmount());
+        for (PortfolioInformation portfolioInformation: portfolioInformations) {
+            amounts.add(portfolioInformation.getAmount());
         }
-        return amount;
+        return amounts;
     }
+
+    public List<Double> getPriceInformation() {
+        List<Double> prices = new ArrayList<>();
+
+        for (PortfolioInformation portfolioInformation : portfolioInformations) {
+            prices.add(portfolioInformation.getPrice());
+        }
+        return prices;
+    }
+
 }

@@ -41,17 +41,20 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
             String key = entry.getKey();
             Double value = entry.getValue();
 
-            prices.put(key, driverAPI.getCurrentPrice(key).getPrice());
-            totalAssets += value * prices.get(key);
+            Double price = driverAPI.getCurrentPrice(key).getPrice();
+
+            prices.put(key, price);
+            totalAssets += value * price;
 
             CompanyInformation companyInformation = driverAPI.getCompanyProfile(key);
 
-            PortfolioInformation emptyInfo = new PortfolioInformation();
-            emptyInfo.setAmount(value);
-            emptyInfo.setTicker(key);
-            emptyInfo.setFullName(companyInformation.getName());
+            PortfolioInformation portfolioInformation = new PortfolioInformation();
+            portfolioInformation.setAmount(value);
+            portfolioInformation.setTicker(key);
+            portfolioInformation.setFullName(companyInformation.getName());
+            portfolioInformation.setPrice(price);
 
-            portfolioInformations.add(emptyInfo);
+            portfolioInformations.add(portfolioInformation);
         }
 
         double daysSinceLastTopup = -1;
@@ -89,6 +92,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
                 }
             }
         }
+
         HashMap<String, Double> userStats = new HashMap<>();
 
         userStats.put("balance", accountBalance);
