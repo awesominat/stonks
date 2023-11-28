@@ -64,6 +64,37 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     public HashMap<String, Double> buildUserStats(User user) {
         HashMap<String, Double> userStats = new HashMap<String, Double>();
         userStats.put("balance", user.getBalance());
+
+        double portfolioNetWorth = 0.0;
+        HashMap<String, TransactionHistory> history = user.getHistory();
+        for (Map.Entry<String, Double> entry: user.getPortfolio().entrySet()) {
+            String ticker = entry.getKey();
+            Double amount = entry.getValue();
+
+            TransactionHistory stockHistory = history.get(ticker);
+            Double lastPrice = stockHistory.getStock().getLastSeenPrice();
+            portfolioNetWorth += lastPrice * amount;
+        }
+        userStats.put("Portfolio net worth", portfolioNetWorth);
+        userStats.put("Net worth", user.getBalance() + portfolioNetWorth);
+
+        double daysSinceLastTopup = -1.0;
+        LocalDate now = LocalDate.now();
+        for (Map.Entry<String, TransactionHistory> entry: history.entrySet()) {
+            TransactionHistory stockHistory = entry.getValue();
+            for (Transaction transaction: stockHistory.getTransactions()) {
+                if (transaction.getType() == TransactionType.TOPUP) {
+                    PricePoint pp = transaction.getPricePoint();
+                    double daysSince = DAYS.between(now, pp.getTimeStamp());
+                    if (daysSinceLastTopup == -1) {
+                        daysSinceLastTopup = daysSince;
+                    } else {
+                        daysSinceLastTopup = Math.min(daysSince, daysSinceLastTopup);
+                    }
+                }
+            }
+        }
+        userStats.put("Days since last reset", daysSinceLastTopup);
         return userStats;
     }
 }

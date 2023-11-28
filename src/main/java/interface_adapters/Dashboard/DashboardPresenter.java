@@ -53,14 +53,11 @@ public class DashboardPresenter implements DashboardOutputBoundary {
                 }
             }
 
-            System.out.println(idxToRemove);
             for (int i: idxToRemove) {
                 stateTickers.remove(i);
                 stateAmounts.remove(i);
                 stateCurrentPrices.remove(i);
             }
-
-            System.out.println(stateTickers);
 
             state.setCurrentPriceStats(stateCurrentPrices);
             state.setOwnedAmounts(stateAmounts);
