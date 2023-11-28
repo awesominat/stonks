@@ -25,6 +25,8 @@ public abstract class BaseStockInteractor {
     protected void updatePortfolio(User user, String ticker, Double amount) {
         if (amount == 0 && user.isInPortfolio(ticker)) {
             user.removeFromPortfolio(ticker);
+        } else if (user.isInPortfolio(ticker)) {
+            user.addToPortfolio(ticker, user.getPortfolio().get(ticker) + amount);
         } else {
             user.addToPortfolio(ticker, amount);
         }
