@@ -1,25 +1,20 @@
 package use_cases.Buy;
 
 public class BuyOutputData {
-    private String ticker;
-    private Double newBalance;
-    private Double amount;
+    private final Double newBalance;
+    private Boolean executedPurchase = false;
 
-    public BuyOutputData(
-            String ticker,
-            Double newBalance,
-            Double amount) {
-        this.ticker = ticker;
+    public BuyOutputData(Double newBalance) {
         this.newBalance = newBalance;
-        this.amount = amount;
     }
 
-    public Double getAmount() {
-        return amount;
+    public BuyOutputData(Double newBalance, Boolean executedPurchase) {
+        this.newBalance = newBalance;
+        this.executedPurchase = executedPurchase;
     }
 
-    public String getTicker() {
-        return ticker;
+    public Boolean getExecutedPurchase() {
+        return executedPurchase;
     }
 
     public Double getNewBalance() {

@@ -22,13 +22,12 @@ public class BuyPresenter implements BuyOutputBoundary {
     public void prepareSuccessView(BuyOutputData response) {
         BuyState state = buyViewModel.getState();
 
-        state.setRenderNewInfo(true);
         state.setCurBalance(response.getNewBalance());
-        state.setBoughtStock(true);
-        state.setAmount(String.valueOf(response.getAmount()));
-        state.setTicker(response.getTicker());
-
-        buyViewModel.firePropertyChanged();
+        if (response.getExecutedPurchase()) {
+            state.setRenderNewInfo(true);
+            state.setBoughtStock(true);
+            buyViewModel.firePropertyChanged();
+        }
     }
     @Override
     public void prepareSuccessView(BuySearchOutputData response) {

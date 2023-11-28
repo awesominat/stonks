@@ -30,6 +30,12 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
         User user = userDataAccessObject.get();
 
+        if (ticker == null && amount == null) {
+            BuyOutputData buyOutputData = new BuyOutputData(user.getBalance());
+            buyPresenter.prepareSuccessView(buyOutputData);
+            return;
+        }
+
         if (amount == null) {
             try {
                 CompanyInformation companyInformation = driverAPI.getCompanyProfile(ticker);
@@ -85,10 +91,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
         userDataAccessObject.save();
 
-        BuyOutputData result = new BuyOutputData(
-                buyInputData.getTicker(),
-                user.getBalance(),
-                amount);
+        BuyOutputData result = new BuyOutputData(user.getBalance(), true);
 
         buyPresenter.prepareSuccessView(result);
     }
