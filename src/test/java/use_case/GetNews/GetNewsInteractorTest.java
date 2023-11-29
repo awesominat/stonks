@@ -1,10 +1,11 @@
-package use_cases.GetNews;
+package use_case.GetNews;
 
-import entities.CompanyInformation;
-import entities.CompanyNews;
-import entities.PricePoint;
+import entity.CompanyInformation;
+import entity.CompanyNews;
+import entity.PricePoint;
+import entity.StockInformation;
 import org.junit.Test;
-import use_cases.APIAccessInterface;
+import use_case.APIAccessInterface;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,6 +59,11 @@ public class GetNewsInteractorTest {
             @Override
             public PricePoint getCurrentPrice(String ticker) {
                 return new PricePoint(LocalDate.now(), 100.0);
+            }
+
+            @Override
+            public StockInformation getCurrentStockInformation(String ticker) {
+                return new StockInformation(100.0, 1.05, 0.01);
             }
         };
 

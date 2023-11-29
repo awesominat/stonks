@@ -1,4 +1,4 @@
-package entities;
+package entity;
 
 import org.junit.Before;
 import org.junit.Test;
