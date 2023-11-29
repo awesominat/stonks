@@ -41,7 +41,7 @@ public class DashboardPresenter implements DashboardOutputBoundary {
                 } else {
                     stateTickers.add(ticker);
                     stateAmounts.add(responseAmounts.get(i));
-                    stateCurrentPrices.add(Arrays.asList(0.0, 0.0, 0.0));
+                    stateCurrentPrices.add(Arrays.asList(-1.0, -1.0, -1.0));
                 }
             }
 

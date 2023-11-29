@@ -143,6 +143,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 evt -> {
                     resetBalanceController.execute();
                     dashboardViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                     // TODO: add reset balance pop-up
                 }
         );
@@ -248,11 +250,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         // Rendering user stats table
         DefaultTableModel userStatsTableModel = new DefaultTableModel();
+        HashMap<String, Double> userStats = state.getUserStats();
 
         userStatsTableModel.addColumn("Attribute");
         userStatsTableModel.addColumn("Value");
-        for (Map.Entry<String, Double> entry: state.getUserStats().entrySet()) {
-            userStatsTableModel.addRow(new Object[] {entry.getKey(), entry.getValue()});
+
+        userStatsTableModel.addRow(new Object[]{"Balance", String.format("%.2f", userStats.get("balance"))});
+        userStatsTableModel.addRow(new Object[]{"Portfolio Net worth", String.format("%.2f", userStats.get("Portfolio net worth"))});
+        userStatsTableModel.addRow(new Object[]{"Net Worth", String.format("%.2f", userStats.get("Net worth"))});
+        Double daysSinceLastReset = userStats.get("Days since last reset");
+        if (daysSinceLastReset >= 0) {
+            userStatsTableModel.addRow(new Object[]{"Days Since Last Reset", String.format("%.2f", daysSinceLastReset)});
+        } else {
+            userStatsTableModel.addRow(new Object[]{"Days Since Last Reset", "Never Reset"});
         }
         userStatsTable.setModel(userStatsTableModel);
 
@@ -278,56 +288,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             Double priceChange = priceStatsForTicker.get(1);
             Double percentChange = priceStatsForTicker.get(2);
 
-            ownedStocksTableModel.addRow(new Object[] {ticker, amount, currentPrice, priceChange, percentChange});
+            if (currentPrice < 0) {
+                ownedStocksTableModel.addRow(new Object[] {ticker, amount, "Refresh to Update", "Refresh to Update", "Refresh to Update"});
+            } else {
+                ownedStocksTableModel.addRow(new Object[] {ticker, amount, currentPrice, priceChange, percentChange});
+            }
         }
         ownedStocksTable.setModel(ownedStocksTableModel);
 
     }
 }
-//        setFields(state);
-//
-//        // Avoid executing full use case unless necessary
-//        if (state.getRenderNewInfo() != null) {
-//            // Run Dashboard use case
-//            dashboardController.execute();
-//
-//            // Fill data into userStatsTable
-//            HashMap<String, String> userStats = state.getUserStats();
-//            if (userStats != null) {
-//                userStatsTable.setModel(new TableModel(userStats));
-//            }
-//            userStatsTable.setName("User Information");
-//
-//            // Execute setup for User's Stock Holdings Information table.
-//            // Create new default table model for displaying stock information.
-//            DefaultTableModel tableModel = new DefaultTableModel();
-//
-//            // Add columns to the stock table model
-//            tableModel.addColumn("Ticker");
-//            tableModel.addColumn("Full Name");
-//            tableModel.addColumn("Amount");
-//            tableModel.addColumn("Market Price");
-//
-//            // Get stock info
-//            List<String> tickers = state.getOwnedTickers();
-//            List<String> names = state.getOwnedFullNames();
-//            List<String> amounts = state.getOwnedAmountsStrings();
-//            List<String> prices = state.getPricesStrings();
-//
-//            // Fill in rows of stock info table.
-//            if (tickers != null) {
-//                for (int i = 0; i < tickers.size(); i++) {
-//                    List<Object> row = new ArrayList<>();
-//                    row.add(tickers.get(i));
-//                    row.add(names.get(i));
-//                    row.add(amounts.get(i));
-//                    row.add(prices.get(i));
-//                    // Cast List object `row` to Object array, then pass it as argument to `tableModel.addRow`
-//                    tableModel.addRow(row.toArray());
-//                }
-//            }
-//
-//
-//            // Reset the setRenderNewInfo property
-//            state.setRenderNewInfo(null);
-//            dashboardViewModel.setState(state);
