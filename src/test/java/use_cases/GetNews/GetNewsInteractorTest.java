@@ -1,10 +1,16 @@
 package use_cases.GetNews;
 
 import drivers.Finnhub;
+import entities.CompanyInformation;
+import entities.CompanyNews;
+import entities.PricePoint;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import use_cases.APIAccessInterface;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +21,48 @@ public class GetNewsInteractorTest {
     @Test
     public void successTest() {
         GetNewsInputData inputData = new GetNewsInputData("AAPL");
-        APIAccessInterface driverAPI = new Finnhub();
+
+        // Create anonymous class that implements the APIAccessInterface
+        APIAccessInterface driverAPI = new APIAccessInterface() {
+            @Override
+            public boolean isMarketOpen() {
+                // This method is not relevant, so simply return true.
+                return true;
+            }
+
+            @Override
+            public CompanyInformation getCompanyProfile(String ticker) {
+                return new CompanyInformation(
+                        "US",
+                        "Apple Inc",
+                        "AAPL",
+                        "https://www.apple.com/",
+                        "1980-12-12"
+                );
+            }
+
+            @Override
+            public List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to) {
+                List<CompanyNews> newsOut = new ArrayList<>();
+                // Add five duplicate articles to output List.
+                for (int i = 0; i < 5; i++) {
+                    newsOut.add(new CompanyNews(
+                                    "company",
+                                    LocalDate.parse("2023-11-28"),
+                                    "The Cash-Rich Magnificent 7 For The Long Haul",
+                                    "https://finnhub.io/api/news?id=69513fc7f9f8ea2f36c36a0cd322ff4acd6983bf7dbb70d44fcc15fb475810ac",
+                                    "Wage growth, low unemployment rates, and artificial intelligence are driving the thriving U.S. economy. Click here to read my most recent analysis."
+                            )
+                    );
+                }
+                return newsOut;
+            }
+
+            @Override
+            public PricePoint getCurrentPrice(String ticker) {
+                return new PricePoint(LocalDate.now(), 100.0);
+            }
+        };
 
         // This creates a successPresenter that tests whether the test case is as we expect.
         GetNewsOutputBoundary successPresenter = new GetNewsOutputBoundary() {
