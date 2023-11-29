@@ -23,8 +23,13 @@ public abstract class BaseStockInteractor {
         return new TransactionHistory(newStock, transactions);
     }
     protected void updatePortfolio(User user, String ticker, Double amount) {
-        if (amount == 0 && user.isInPortfolio(ticker)) {
-            user.removeFromPortfolio(ticker);
+        if (user.isInPortfolio(ticker)) {
+            Double currentlyOwned = user.getStockOwned(ticker);
+            if (currentlyOwned + amount <= 0.0) {
+                user.removeFromPortfolio(ticker);
+            } else {
+                user.addToPortfolio(ticker, currentlyOwned + amount);
+            }
         } else {
             user.addToPortfolio(ticker, amount);
         }

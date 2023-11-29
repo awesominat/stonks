@@ -35,13 +35,13 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
             buyPresenter.prepareSuccessView(buyOutputData);
             return;
         }
+        HashMap<String, Double> portfolio = user.getPortfolio();
 
         if (amount == null) {
             try {
                 CompanyInformation companyInformation = driverAPI.getCompanyProfile(ticker);
                 Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
 
-                HashMap<String, Double> portfolio = user.getPortfolio();
                 Double currentlyHeld = 0.0;
                 if (portfolio.containsKey(ticker)) {
                     currentlyHeld = portfolio.get(ticker);

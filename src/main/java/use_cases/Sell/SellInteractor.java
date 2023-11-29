@@ -43,7 +43,6 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             }
 
             Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
-            Double currentlyOwned = user.getStockOwned(ticker);
 
             user.addBalance(currentPrice * amount);
             HashMap<String, TransactionHistory> userHistory = user.getHistory();
@@ -57,7 +56,7 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             super.updatePortfolio(
                     user,
                     ticker,
-                    currentlyOwned - amount
+                    -amount
             );
 
             super.addToHistory(
