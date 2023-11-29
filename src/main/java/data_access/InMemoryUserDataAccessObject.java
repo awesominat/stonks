@@ -1,15 +1,15 @@
 package data_access;
 
 
-import entities.CommonUser;
-import entities.TransactionHistory;
-import entities.User;
-import use_cases.Buy.BuyDataAccessInterface;
-import use_cases.Dashboard.DashboardDataAccessInterface;
-import use_cases.GetNews.GetNewsDataAccessInterface;
-import use_cases.GetTransactionHistory.GetTransactionHistoryDataAccessInterface;
-import use_cases.ResetBalance.ResetBalanceDataAccessInterface;
-import use_cases.Sell.SellDataAccessInterface;
+import entity.CommonUser;
+import entity.TransactionHistory;
+import entity.User;
+import use_case.Buy.BuyDataAccessInterface;
+import use_case.Dashboard.DashboardDataAccessInterface;
+import use_case.GetNews.GetNewsDataAccessInterface;
+import use_case.GetTransactionHistory.GetTransactionHistoryDataAccessInterface;
+import use_case.ResetBalance.ResetBalanceDataAccessInterface;
+import use_case.Sell.SellDataAccessInterface;
 
 import java.util.HashMap;
 

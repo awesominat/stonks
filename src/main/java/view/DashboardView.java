@@ -1,17 +1,15 @@
 package view;
 
-import drivers.TableModel;
-
 // Imports for dashboard
-import interface_adapters.Dashboard.DashboardController;
-import interface_adapters.Dashboard.DashboardState;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
-import interface_adapters.ResetBalance.ResetBalanceController;
-import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Sell.SellViewModel;
-import interface_adapters.ViewManagerModel;
+import interface_adapter.Dashboard.DashboardController;
+import interface_adapter.Dashboard.DashboardState;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetNews.GetNewsViewModel;
+import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapter.ResetBalance.ResetBalanceController;
+import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.Sell.SellViewModel;
+import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,10 +20,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+        import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";

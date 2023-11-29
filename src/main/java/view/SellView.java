@@ -1,12 +1,10 @@
 package view;
 
-import drivers.TableModel;
-import interface_adapters.Dashboard.DashboardState;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.ViewManagerModel;
-import interface_adapters.Sell.SellController;
-import interface_adapters.Sell.SellViewModel;
-import interface_adapters.Sell.SellState;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.Sell.SellController;
+import interface_adapter.Sell.SellViewModel;
+import interface_adapter.Sell.SellState;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +17,6 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {

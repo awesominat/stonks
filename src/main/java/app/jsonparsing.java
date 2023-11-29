@@ -1,7 +1,7 @@
 package app;
 
 import data_access.FileUserDataAccessObject;
-import entities.CommonUserFactory;
+import entity.CommonUserFactory;
 
 import java.io.IOException;
 
