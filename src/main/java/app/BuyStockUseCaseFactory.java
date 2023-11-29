@@ -1,15 +1,15 @@
 package app;
 
-import interface_adapters.Buy.BuyController;
-import interface_adapters.Buy.BuyPresenter;
-import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.ViewManagerModel;
-import use_cases.APIAccessInterface;
-import use_cases.Buy.BuyDataAccessInterface;
-import use_cases.Buy.BuyInputBoundary;
-import use_cases.Buy.BuyInteractor;
-import use_cases.Buy.BuyOutputBoundary;
+import interface_adapter.Buy.BuyController;
+import interface_adapter.Buy.BuyPresenter;
+import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.ViewManagerModel;
+import use_case.APIAccessInterface;
+import use_case.Buy.BuyDataAccessInterface;
+import use_case.Buy.BuyInputBoundary;
+import use_case.Buy.BuyInteractor;
+import use_case.Buy.BuyOutputBoundary;
 import view.BuyView;
 
 public class BuyStockUseCaseFactory {
