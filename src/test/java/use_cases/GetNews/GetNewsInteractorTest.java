@@ -1,15 +1,12 @@
 package use_cases.GetNews;
 
-import drivers.Finnhub;
 import entities.CompanyInformation;
 import entities.CompanyNews;
 import entities.PricePoint;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import use_cases.APIAccessInterface;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +70,11 @@ public class GetNewsInteractorTest {
                 List<Map<String, String>> newsItems = response.getNewsItems();
                 assertEquals(5, newsItems.size());
 
-                LocalDateTime now = LocalDateTime.now();
-                LocalDateTime limit = now.minusMonths(1);
+                LocalDate now = LocalDate.now();
+                LocalDate limit = now.minusMonths(1);
 
                 for (Map<String, String> newsItem : newsItems) {
-                    LocalDateTime newsDate = LocalDateTime.parse(newsItem.get("datetime"));
+                    LocalDate newsDate = LocalDate.parse(newsItem.get("datetime"));
                     assertTrue(newsDate.isAfter(limit));
                 }
             }
