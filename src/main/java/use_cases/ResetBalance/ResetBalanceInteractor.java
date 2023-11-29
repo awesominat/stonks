@@ -12,8 +12,11 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
     ResetBalanceOutputBoundary resetBalancePresenter;
     APIAccessInterface driverAPI;
 
-    public ResetBalanceInteractor(ResetBalanceDataAccessInterface userDataAccessInterface,
-                                  ResetBalanceOutputBoundary resetBalancePresenter, APIAccessInterface driverAPI) {
+    public ResetBalanceInteractor(
+            ResetBalanceDataAccessInterface userDataAccessInterface,
+            ResetBalanceOutputBoundary resetBalancePresenter,
+            APIAccessInterface driverAPI
+    ) {
         super(driverAPI);
         this.userDataAccessObject = userDataAccessInterface;
         this.resetBalancePresenter = resetBalancePresenter;
@@ -22,20 +25,31 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
     @Override
     public void execute() {
         User user = userDataAccessObject.get();
+
         Double curBalance = user.getBalance();
+
         Double amountToAdd = 10000.0;
+
         user.setBalance(amountToAdd);
+
         user.clearPortfolio();
 
-        // honestly, maybe consider adding a TopupTransaction
         HashMap<String, TransactionHistory> userHistory = user.getHistory();
 
-        Transaction transaction = new TopupTransaction(curBalance + amountToAdd, new PricePoint(LocalDate.now(), curBalance));
+        Transaction transaction = new TopupTransaction(
+                1.0,
+                new PricePoint(
+                        LocalDate.now(),
+                        amountToAdd
+                )
+        );
 
-        super.addToHistory(userHistory, "Stonks App", curBalance, transaction);
-        userDataAccessObject.save();
+        super.addToHistory(userHistory, "RESET", curBalance, transaction);
 
-        ResetBalanceOutputData result = new ResetBalanceOutputData(curBalance + amountToAdd);
+        this.userDataAccessObject.save();
+
+        ResetBalanceOutputData result = new ResetBalanceOutputData(amountToAdd);
+
         resetBalancePresenter.prepareSuccessView(result);
     }
 }

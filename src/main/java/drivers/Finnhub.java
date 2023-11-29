@@ -21,7 +21,7 @@ import java.util.List;
 public class Finnhub implements APIAccessInterface {
     String APIKEY;  // Question: should this be private or static or final or some combination of these things?
     int NUM_ARTICLES = 5;
-    String RESOLUTION = "D";
+    private final String appName = "RESET";
 
     public Finnhub() {
         File f = new File("file.txt");
@@ -34,6 +34,12 @@ public class Finnhub implements APIAccessInterface {
         }
         // Set constant attribute `APIKEY` of Finnhub object to your personal API key
         APIKEY = fileReader.readFromInputStream(inputStream);
+    }
+
+
+    @Override
+    public String getAppName() {
+        return appName;
     }
 
     @Override
