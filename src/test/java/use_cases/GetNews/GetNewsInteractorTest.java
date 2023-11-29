@@ -4,7 +4,6 @@ import drivers.Finnhub;
 import org.junit.jupiter.api.Test;
 import use_cases.APIAccessInterface;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
