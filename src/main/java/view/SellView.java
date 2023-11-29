@@ -31,7 +31,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
     final JTextField amountInputField = new JTextField(3);
 
     final JButton sell;
-    final JButton refresh;
     final JButton back;
     final JTable table;
     final JLabel currentBalance;
@@ -66,8 +65,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         buttons.add(back);
         sell = new JButton("Sell Stocks");
         buttons.add(sell);
-        refresh = new JButton("Refresh");
-        buttons.add(refresh);
         table = new JTable();
         table.setPreferredSize(new Dimension(30, 200));
 
@@ -81,16 +78,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                                     currentState.getAmount(),
                                     currentState.getStockSelected()
                             );
-                            sellViewModel.firePropertyChanged();
-                        }
-                    }
-                }
-        );
-
-        refresh.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(sell)) {
                             sellViewModel.firePropertyChanged();
                         }
                     }
@@ -192,14 +179,17 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             Double amountOwned = ownedAmounts.get(i);
             Double sellPriceSingle = sellPrices.get(i);
             Double sellPriceAll = sellPriceSingle * amountOwned;
-            tableModel.addRow(new Object[] {stockTicker, amountOwned, sellPriceSingle, sellPriceAll});
+            tableModel.addRow(new Object[] {
+                    stockTicker, String.format("%.2f", amountOwned),
+                    String.format("%.2f", sellPriceSingle), String.format("%.2f", sellPriceAll)
+            });
         }
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.LIGHT_GRAY);
 
         Double userBalance = state.getBalance();
-        currentBalance.setText(String.format("Current Balance: %.3f", userBalance));
+        currentBalance.setText(String.format("Current Balance: %.2f", userBalance));
     }
 
 }

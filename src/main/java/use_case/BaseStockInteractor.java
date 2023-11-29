@@ -25,7 +25,7 @@ public abstract class BaseStockInteractor {
     protected void updatePortfolio(User user, String ticker, Double amount) {
         if (user.isInPortfolio(ticker)) {
             Double currentlyOwned = user.getStockOwned(ticker);
-            if (currentlyOwned + amount <= 0.0) {
+            if (currentlyOwned + amount <= 0.000001) {
                 user.removeFromPortfolio(ticker);
             } else {
                 user.addToPortfolio(ticker, currentlyOwned + amount);
