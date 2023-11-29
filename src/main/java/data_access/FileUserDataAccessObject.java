@@ -21,8 +21,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class FileUserDataAccessObject implements BuyDataAccessInterface, SellDataAccessInterface,
-        ResetBalanceDataAccessInterface, DashboardDataAccessInterface, GetTransactionHistoryDataAccessInterface,
+public class FileUserDataAccessObject implements
+        BuyDataAccessInterface,
+        SellDataAccessInterface,
+        ResetBalanceDataAccessInterface,
+        DashboardDataAccessInterface,
+        GetTransactionHistoryDataAccessInterface,
         GetNewsDataAccessInterface {
 
     private File jsonFile;
@@ -54,6 +58,7 @@ public class FileUserDataAccessObject implements BuyDataAccessInterface, SellDat
 
         try (FileWriter writer = new FileWriter(jsonFile)) {
             writer.write(json);
+            System.out.println("Stored");
         } catch (IOException e) {
             e.printStackTrace();
         }

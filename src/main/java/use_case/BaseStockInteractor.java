@@ -15,12 +15,16 @@ public abstract class BaseStockInteractor {
     }
 
     protected TransactionHistory initHistory(String ticker, Double boughtAt) {
-        CompanyInformation companyInformation = apiAccessInterface.getCompanyProfile(ticker);
-        Stock newStock = new Stock(boughtAt, companyInformation.getName(), ticker);
-
-        List<Transaction> transactions = new ArrayList<>();
-
-        return new TransactionHistory(newStock, transactions);
+        if (ticker.equals(apiAccessInterface.getAppName())) {
+            Stock newStock = new Stock(boughtAt, apiAccessInterface.getAppName(), apiAccessInterface.getAppName());
+            List<Transaction> transactions = new ArrayList<>();
+            return new TransactionHistory(newStock, transactions);
+        } else {
+            CompanyInformation companyInformation = apiAccessInterface.getCompanyProfile(ticker);
+            List<Transaction> transactions = new ArrayList<>();
+            Stock newStock = new Stock(boughtAt, companyInformation.getName(), ticker);
+            return new TransactionHistory(newStock, transactions);
+        }
     }
     protected void updatePortfolio(User user, String ticker, Double amount) {
         if (user.isInPortfolio(ticker)) {
@@ -35,9 +39,15 @@ public abstract class BaseStockInteractor {
         }
     }
 
-    protected void addToHistory(HashMap<String, TransactionHistory> userHistory, String ticker,
-                                Double currentPrice, Transaction transaction) {
+    protected void addToHistory(
+            HashMap<String, TransactionHistory> userHistory,
+            String ticker,
+            Double currentPrice,
+            Transaction transaction
+    ) {
+
         TransactionHistory transactionHistory;
+
         if (!userHistory.containsKey(ticker)) {
             transactionHistory = initHistory(ticker, currentPrice);
         } else {

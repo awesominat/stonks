@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface APIAccessInterface {
+    String getAppName();
     boolean isMarketOpen();
     CompanyInformation getCompanyProfile(String ticker);
     List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to);
