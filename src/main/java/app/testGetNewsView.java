@@ -1,16 +1,16 @@
 package app;
 
 //import data_access.FileUserDataAccessObject;
-import drivers.Finnhub;
-//import entities.CommonUserFactory;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetNews.GetNewsController;
-import interface_adapters.GetNews.GetNewsPresenter;
-import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.ViewManagerModel;
-import use_cases.APIAccessInterface;
-import use_cases.GetNews.GetNewsInteractor;
-import use_cases.GetNews.GetNewsOutputBoundary;
+import driver.Finnhub;
+//import entity.CommonUserFactory;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetNews.GetNewsController;
+import interface_adapter.GetNews.GetNewsPresenter;
+import interface_adapter.GetNews.GetNewsViewModel;
+import interface_adapter.ViewManagerModel;
+import use_case.APIAccessInterface;
+import use_case.GetNews.GetNewsInteractor;
+import use_case.GetNews.GetNewsOutputBoundary;
 import view.GetNewsView;
 import view.ViewManager;
 

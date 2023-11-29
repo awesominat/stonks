@@ -1,19 +1,19 @@
 package app;
 
-import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Dashboard.DashboardController;
-import interface_adapters.Dashboard.DashboardPresenter;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
-import interface_adapters.ResetBalance.ResetBalanceController;
-import interface_adapters.Sell.SellViewModel;
-import interface_adapters.ViewManagerModel;
-import use_cases.APIAccessInterface;
-import use_cases.Dashboard.DashboardDataAccessInterface;
-import use_cases.Dashboard.DashboardInputBoundary;
-import use_cases.Dashboard.DashboardInteractor;
-import use_cases.Dashboard.DashboardOutputBoundary;
+import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.Dashboard.DashboardController;
+import interface_adapter.Dashboard.DashboardPresenter;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetNews.GetNewsViewModel;
+import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapter.ResetBalance.ResetBalanceController;
+import interface_adapter.Sell.SellViewModel;
+import interface_adapter.ViewManagerModel;
+import use_case.APIAccessInterface;
+import use_case.Dashboard.DashboardDataAccessInterface;
+import use_case.Dashboard.DashboardInputBoundary;
+import use_case.Dashboard.DashboardInteractor;
+import use_case.Dashboard.DashboardOutputBoundary;
 import view.DashboardView;
 
 public class DashboardUseCaseFactory {
@@ -38,6 +38,7 @@ public class DashboardUseCaseFactory {
                 dashboardDataAccessInterface,
                 apiAccessInterface
         );
+        dashboardController.execute(true);
         return new DashboardView(
                 dashboardViewModel,
                 dashboardController,

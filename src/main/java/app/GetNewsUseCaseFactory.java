@@ -1,13 +1,13 @@
 package app;
 
 
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetNews.GetNewsController;
-import interface_adapters.GetNews.GetNewsPresenter;
-import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.ViewManagerModel;
-import use_cases.APIAccessInterface;
-import use_cases.GetNews.*;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetNews.GetNewsController;
+import interface_adapter.GetNews.GetNewsPresenter;
+import interface_adapter.GetNews.GetNewsViewModel;
+import interface_adapter.ViewManagerModel;
+import use_case.APIAccessInterface;
+import use_case.GetNews.*;
 import view.GetNewsView;
 
 public class GetNewsUseCaseFactory {
