@@ -1,11 +1,11 @@
 package view;
 
-import drivers.TableModel;
-import interface_adapters.Buy.BuyController;
-import interface_adapters.Buy.BuyState;
-import interface_adapters.Buy.BuyViewModel;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.ViewManagerModel;
+import driver.TableModel;
+import interface_adapter.Buy.BuyController;
+import interface_adapter.Buy.BuyState;
+import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
 import java.awt.*;
