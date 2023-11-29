@@ -38,6 +38,7 @@ public class DashboardUseCaseFactory {
                 dashboardDataAccessInterface,
                 apiAccessInterface
         );
+        dashboardController.execute(true);
         return new DashboardView(
                 dashboardViewModel,
                 dashboardController,

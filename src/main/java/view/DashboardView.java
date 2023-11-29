@@ -1,23 +1,31 @@
 package view;
 
-// Imports for dashboard
+import drivers.TableModel;
 
-import interface_adapters.Buy.BuyViewModel;
+// Imports for dashboard
 import interface_adapters.Dashboard.DashboardController;
 import interface_adapters.Dashboard.DashboardState;
 import interface_adapters.Dashboard.DashboardViewModel;
 import interface_adapters.GetNews.GetNewsViewModel;
 import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapters.ResetBalance.ResetBalanceController;
+import interface_adapters.Buy.BuyViewModel;
 import interface_adapters.Sell.SellViewModel;
 import interface_adapters.ViewManagerModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
@@ -37,6 +45,20 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     final JButton news;
     final JButton reset;
     final JButton history;
+
+    // Panels to organize the view.
+    JPanel topPanel;
+    JPanel middlePanel;
+    JPanel bottomPanel;
+
+    // Field to show User's balance.
+    private final JLabel balanceField = new JLabel();
+
+    // Table showing user stats
+    final JTable userStatsTable;
+
+    // Table to show owned stocks and the statuses thereof.
+    final JTable ownedStocksTable;
 
     /**
      * The homepage (dashboard) window with a title, a welcome message, a panel of action buttons, statistics about
@@ -61,13 +83,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.historyViewModel = historyViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel(dashboardViewModel.TITLE_LABEL);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel welcome = new JLabel(dashboardViewModel.WELCOME_LABEL);
-
         // Create all the buttons in this view.
-        JPanel buttons = new JPanel();
+        JPanel buttons = new JPanel(new GridLayout(6, 1));
         refresh = new JButton(dashboardViewModel.REFRESH_BUTTON_LABEL);
         buttons.add(refresh);
         buy = new JButton(dashboardViewModel.PURCHASE_BUTTON_LABEL);
@@ -81,93 +98,138 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         history = new JButton(dashboardViewModel.TRANSACTION_HISTORY_BUTTON_LABEL);
         buttons.add(history);
 
+        // Add label for balanceField.
+        JLabel balanceLabel = new JLabel("Your Balance: ");
+
+        // Initialize an empty table for the User's stats
+        userStatsTable = new JTable();
+
+        // Initialize empty table for User's stock portfolio data
+        ownedStocksTable = new JTable();
+
         // Create an anonymous subclass of ActionListener and instantiate it.
         refresh.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(refresh)) {
-                            dashboardController.execute(true);
-                            dashboardViewModel.firePropertyChanged();
-                        }
-                    }
+                evt -> {
+                    dashboardController.execute(true);
+                    dashboardViewModel.firePropertyChanged();
                 }
         );
 
         buy.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(buy)) {
-                            buyViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(buyViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
-                        }
-                    }
+                evt -> {
+                    buyViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(buyViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                 }
         );
 
         sell.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(sell)) {
-                            sellViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(sellViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
-                        }
-                    }
+                evt -> {
+                    sellViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(sellViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                 }
         );
 
         news.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(news)) {
-                            getNewsViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(getNewsViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
-
-                            // TODO: Do we then have to call GetNewsController.execute() to obtain
-                            //  the needed information?
-                        }
-                    }
+                evt -> {
+                    getNewsViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(getNewsViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                 }
         );
 
         reset.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(reset)) {
-                            resetBalanceController.execute();
-                            dashboardViewModel.firePropertyChanged();
-
-                            // TODO: add reset balance pop-up
-
-                        }
-                    }
+                evt -> {
+                    resetBalanceController.execute();
+                    dashboardViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(dashboardViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
+                    // TODO: add reset balance pop-up
                 }
         );
 
         history.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(history)) {
-                            historyViewModel.firePropertyChanged();
-                            viewManagerModel.setActiveView(historyViewModel.getViewName());
-                            viewManagerModel.firePropertyChanged();
-                            System.out.println("History button pressed");
-                            // TODO: Do we then need to call GetTransactionHistoryController.execute()
-                            //  to obtain the needed information?
-                        }
-                    }
+                evt -> {
+                    historyViewModel.firePropertyChanged();
+                    viewManagerModel.setActiveView(historyViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
                 }
         );
 
-        // NOTE: may or may not be necessary
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         // Make the various display items visible to the user on the display.
-        this.add(title);
-        this.add(welcome);
-        this.add(buttons);
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        topPanel = new JPanel(new GridBagLayout());
+        middlePanel = new JPanel(new GridBagLayout());
+        bottomPanel = new JPanel(new GridBagLayout());
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        topPanel.add(buttons, gbc);
+
+        // Add the user's current balance to the view.
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 0;
+        topPanel.add(balanceField, gbc);
+
+        // Top Panel formatting stuff
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(Box.createHorizontalGlue(), gbc);
+        gbc.gridx = 4;
+        gbc.weightx = 1.24;
+        topPanel.add(Box.createHorizontalGlue(), gbc);
+
+        // Spice up the labels a bit.
+        Font labelFont = balanceLabel.getFont();
+//        balanceLabel.setForeground(new Color(14, 20, 138));
+        balanceLabel.setSize(25, 5);
+        balanceLabel.setFont(labelFont.deriveFont(Font.BOLD));
+
+        // Spice up the actual balance (field) as well.
+        Font fieldFont = balanceField.getFont();
+        balanceField.setForeground(Color.DARK_GRAY);
+        balanceField.setFont(fieldFont.deriveFont(Font.ITALIC));
+        balanceField.setSize(30, 8);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        topPanel.add(balanceLabel, gbc);
+
+        // Add Table of User Statistics to the view in the middle panel
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        middlePanel.add(userStatsTable, gbc);
+
+        JTableHeader header = ownedStocksTable.getTableHeader();
+        header.setBackground(Color.LIGHT_GRAY);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+
+        // Use Scroll Pane to make the table look nicer
+        bottomPanel.add(new JScrollPane(ownedStocksTable), gbc);
+
+        // Add panels to the view.
+        add(topPanel, BorderLayout.NORTH);
+        add(middlePanel);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        middlePanel.setVisible(true);
+        bottomPanel.setVisible(true);
     }
 
     /**
@@ -179,13 +241,60 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        dashboardController.execute();
+        dashboardController.execute(false);
         DashboardState state = dashboardViewModel.getState();
 
-        // TODO: Display user stats, once they are available.
+        // Rendering user balance
+        balanceField.setText(String.format("$%.2f", state.getUserStats().get("balance")));
 
-        // TODO: Display table of information about stocks owned by the user.
+
+        // Rendering user stats table
+        DefaultTableModel userStatsTableModel = new DefaultTableModel();
+        HashMap<String, Double> userStats = state.getUserStats();
+
+        userStatsTableModel.addColumn("Attribute");
+        userStatsTableModel.addColumn("Value");
+
+        userStatsTableModel.addRow(new Object[]{"Balance", String.format("%.2f", userStats.get("balance"))});
+        userStatsTableModel.addRow(new Object[]{"Portfolio Net worth", String.format("%.2f", userStats.get("Portfolio net worth"))});
+        userStatsTableModel.addRow(new Object[]{"Net Worth", String.format("%.2f", userStats.get("Net worth"))});
+        Double daysSinceLastReset = userStats.get("Days since last reset");
+        if (daysSinceLastReset >= 0) {
+            userStatsTableModel.addRow(new Object[]{"Days Since Last Reset", String.format("%.2f", daysSinceLastReset)});
+        } else {
+            userStatsTableModel.addRow(new Object[]{"Days Since Last Reset", "Never Reset"});
+        }
+        userStatsTable.setModel(userStatsTableModel);
+
+
+        // Rendering owned stocks table
+        DefaultTableModel ownedStocksTableModel = new DefaultTableModel();
+
+        ownedStocksTableModel.addColumn("Ticker");
+        ownedStocksTableModel.addColumn("Amount owned");
+        ownedStocksTableModel.addColumn("Current Price");
+        ownedStocksTableModel.addColumn("Price change");
+        ownedStocksTableModel.addColumn("Percent change");
+
+        List<String> ownedTickers = state.getOwnedTickers();
+        List<Double> ownedAmounts = state.getOwnedAmounts();
+        List<List<Double>> priceStats = state.getCurrentPriceStats();
+        for (int i = 0; i < ownedTickers.size(); i++) {
+            String ticker = ownedTickers.get(i);
+            Double amount = ownedAmounts.get(i);
+            List<Double> priceStatsForTicker = priceStats.get(i);
+
+            Double currentPrice = priceStatsForTicker.get(0);
+            Double priceChange = priceStatsForTicker.get(1);
+            Double percentChange = priceStatsForTicker.get(2);
+
+            if (currentPrice < 0) {
+                ownedStocksTableModel.addRow(new Object[] {ticker, amount, "Refresh to Update", "Refresh to Update", "Refresh to Update"});
+            } else {
+                ownedStocksTableModel.addRow(new Object[] {ticker, amount, currentPrice, priceChange, percentChange});
+            }
+        }
+        ownedStocksTable.setModel(ownedStocksTableModel);
 
     }
-
 }

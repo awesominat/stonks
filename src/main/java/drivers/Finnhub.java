@@ -3,6 +3,7 @@ package drivers;
 import entities.CompanyInformation;
 import entities.CompanyNews;
 import entities.PricePoint;
+import entities.StockInformation;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -173,15 +174,61 @@ public class Finnhub implements APIAccessInterface {
             assert response.body() != null;
             JSONObject responseBody = new JSONObject(response.body().string());
             LocalDate now = LocalDate.now();
-            Double result;
+            Double price;
 
             if (responseBody.get("c") instanceof BigDecimal) {
-                result = ((BigDecimal) responseBody.get("c")).doubleValue();
+                price = ((BigDecimal) responseBody.get("c")).doubleValue();
             } else {
-                result = (Double) responseBody.get("c");
+                price = (Double) responseBody.get("c");
             }
 
-            return new PricePoint(now, result);
+            return new PricePoint(now, price);
+        }
+        catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public StockInformation getCurrentStockInformation(String ticker) {
+        ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
+
+        String url = "https://finnhub.io/api/v1/quote?symbol=" + ticker + "&token=" + APIKEY;
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            assert response.body() != null;
+            JSONObject responseBody = new JSONObject(response.body().string());
+            Double price;
+            Double priceChange;
+            Double percentChange;
+
+            if (responseBody.get("c") instanceof BigDecimal) {
+                price = ((BigDecimal) responseBody.get("c")).doubleValue();
+            } else {
+                price = (Double) responseBody.get("c");
+            }
+
+            if (responseBody.get("d") instanceof BigDecimal) {
+                priceChange = ((BigDecimal) responseBody.get("d")).doubleValue();
+            } else {
+                priceChange = (Double) responseBody.get("d");
+            }
+
+            if (responseBody.get("dp") instanceof BigDecimal) {
+                percentChange = ((BigDecimal) responseBody.get("dp")).doubleValue();
+            } else {
+                percentChange = (Double) responseBody.get("dp");
+            }
+
+            return new StockInformation(price, priceChange, percentChange);
         }
         catch (IOException | JSONException e) {
             throw new RuntimeException(e);

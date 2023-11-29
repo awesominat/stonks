@@ -1,20 +1,17 @@
 package use_cases.Dashboard;
 
 public class DashboardInputData {
-    private Boolean aoiRefresh;
+    private Boolean refreshPressed;
 
-    public DashboardInputData(Boolean aoiRefresh) {
-        this.aoiRefresh = aoiRefresh;
-    }
-    public DashboardInputData() {
-        this.aoiRefresh = false;
+    public DashboardInputData(Boolean refreshPressed) {
+        this.refreshPressed = refreshPressed;
     }
 
-    public Boolean getAoiRefresh() {
-        return aoiRefresh;
+    public Boolean getRefreshPressed() {
+        return refreshPressed;
     }
 
-    public void setAoiRefresh(Boolean aoiRefresh) {
-        this.aoiRefresh = aoiRefresh;
+    public void setRefreshPressed(Boolean refreshPressed) {
+        this.refreshPressed = refreshPressed;
     }
 }
