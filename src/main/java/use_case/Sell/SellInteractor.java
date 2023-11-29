@@ -88,16 +88,9 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             List<Double> ownedAmounts = new ArrayList<Double>();
             ownedAmounts.addAll(portfolio.values());
 
-            List<Double> sellAmounts = new ArrayList<Double>();
-            for (String ownedStock : ownedStocks) {
-                Double stockPrice = driverAPI.getCurrentPrice(ownedStock).getPrice();
-                sellAmounts.add(stockPrice);
-            }
-
             SellOutputData result = new SellOutputData(
                     ownedStocks,
                     ownedAmounts,
-                    sellAmounts,
                     balance
             );
 

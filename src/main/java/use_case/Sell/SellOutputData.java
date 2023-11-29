@@ -8,7 +8,6 @@ public class SellOutputData {
     public boolean executeTypeSell;
     public List<String> ownedStocks;
     public List<Double> ownedAmounts;
-    public List<Double> sellAmounts;
     public Double balance;
 
     public SellOutputData(Double amount, String ticker) {
@@ -20,12 +19,10 @@ public class SellOutputData {
     public SellOutputData(
             List<String> ownedStocks,
             List<Double> ownedAmounts,
-            List<Double> sellAmounts,
             Double balance
     ) {
         this.ownedStocks = ownedStocks;
         this.ownedAmounts = ownedAmounts;
-        this.sellAmounts = sellAmounts;
         this.balance = balance;
         this.executeTypeSell = false;
     }
@@ -52,9 +49,5 @@ public class SellOutputData {
 
     public List<String> getOwnedStocks() {
         return ownedStocks;
-    }
-
-    public List<Double> getSellAmounts() {
-        return sellAmounts;
     }
 }
