@@ -1,10 +1,10 @@
 package view;
 
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryController;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryState;
-import interface_adapters.GetTransactionHistory.GetTransactionHistoryViewModel;
-import interface_adapters.ViewManagerModel;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetTransactionHistory.GetTransactionHistoryController;
+import interface_adapter.GetTransactionHistory.GetTransactionHistoryState;
+import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

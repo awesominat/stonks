@@ -3,12 +3,12 @@ package view;
 import java.util.Map;
 import java.util.List;
 
-import drivers.TableModel;
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.GetNews.GetNewsController;
-import interface_adapters.GetNews.GetNewsState;
-import interface_adapters.GetNews.GetNewsViewModel;
-import interface_adapters.ViewManagerModel;
+import driver.TableModel;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GetNews.GetNewsController;
+import interface_adapter.GetNews.GetNewsState;
+import interface_adapter.GetNews.GetNewsViewModel;
+import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,8 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;

@@ -1,15 +1,15 @@
 package app;
 
-import interface_adapters.Dashboard.DashboardViewModel;
-import interface_adapters.Sell.SellController;
-import interface_adapters.Sell.SellPresenter;
-import interface_adapters.Sell.SellViewModel;
-import interface_adapters.ViewManagerModel;
-import use_cases.APIAccessInterface;
-import use_cases.Sell.SellDataAccessInterface;
-import use_cases.Sell.SellInputBoundary;
-import use_cases.Sell.SellInteractor;
-import use_cases.Sell.SellOutputBoundary;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.Sell.SellController;
+import interface_adapter.Sell.SellPresenter;
+import interface_adapter.Sell.SellViewModel;
+import interface_adapter.ViewManagerModel;
+import use_case.APIAccessInterface;
+import use_case.Sell.SellDataAccessInterface;
+import use_case.Sell.SellInputBoundary;
+import use_case.Sell.SellInteractor;
+import use_case.Sell.SellOutputBoundary;
 import view.SellView;
 
 public class SellStockUseCaseFactory {
