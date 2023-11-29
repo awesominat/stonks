@@ -1,19 +1,19 @@
 package use_cases.GetNews;
 
 import drivers.Finnhub;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import use_cases.APIAccessInterface;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class GetNewsInteractorTest {
+public class GetNewsInteractorTest {
 
     @Test
-    void successTest() {
+    public void successTest() {
         GetNewsInputData inputData = new GetNewsInputData("AAPL");
         APIAccessInterface driverAPI = new Finnhub();
 
@@ -38,6 +38,7 @@ class GetNewsInteractorTest {
             @Override
             public void prepareFailView(String error) {
                 // For some reason the test calls this even though there is no failure.
+                // The `fail` method will always make the test fail, so we must avoid this using a comment.
 //                fail("Use case failure is unexpected.");
             }
         };

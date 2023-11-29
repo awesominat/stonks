@@ -1,21 +1,21 @@
 package entities;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class CommonUserTest {
+public class CommonUserTest {
 
     private CommonUser user;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         HashMap<String, Double> portfolio = new HashMap<>();
         HashMap<String, TransactionHistory> history = new HashMap<>();
         Double balance = 9740.0;
@@ -32,41 +32,41 @@ class CommonUserTest {
     }
 
     @Test
-    void getBalance() {
-        assertEquals(9740.0, user.getBalance());
+    public void getBalance() {
+        assertEquals(Double.valueOf(9740.0), user.getBalance());
     }
 
     @Test
-    void setBalance() {
+    public void setBalance() {
         user.setBalance(10000.0);
-        assertEquals(10000.0, user.getBalance());
+        assertEquals(Double.valueOf(10000.0), user.getBalance());
     }
 
     @Test
-    void getPortfolio() {
-        assertEquals(3.0, user.getPortfolio().get("GOOGL"));
+    public void getPortfolio() {
+        assertEquals(Double.valueOf(3.0), user.getPortfolio().get("GOOGL"));
     }
 
     @Test
-    void addToPortfolio() {
+    public void addToPortfolio() {
         user.addToPortfolio("MSFT", 1.0);
-        assertEquals(1.0, user.getPortfolio().get("MSFT"));
+        assertEquals(Double.valueOf(1.0), user.getPortfolio().get("MSFT"));
     }
 
     @Test
-    void isInPortfolio() {
+    public void isInPortfolio() {
         assertTrue(user.isInPortfolio("GOOGL"));
         assertFalse(user.isInPortfolio("AAPL"));
     }
 
     @Test
-    void removeFromPortfolio() {
+    public void removeFromPortfolio() {
         user.removeFromPortfolio("GOOGL");
         assertFalse(user.isInPortfolio("GOOGL"));
     }
 
     @Test
-    void clearPortfolio() {
+    public void clearPortfolio() {
         user.clearPortfolio();
         assertTrue(user.getPortfolio().isEmpty());
     }
