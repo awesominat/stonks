@@ -156,11 +156,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         reset.addActionListener(
                 evt -> {
-                    resetBalanceController.execute();
+                    resetBalanceController.execute(true);
                     dashboardViewModel.firePropertyChanged();
                     viewManagerModel.setActiveView(dashboardViewModel.getViewName());
                     viewManagerModel.firePropertyChanged();
-                    // TODO: add reset balance pop-up
                 }
         );
 
@@ -255,10 +254,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         System.out.println("Click " + evt.getActionCommand());
     }
 
-    @Override
+
     public void propertyChange(PropertyChangeEvent evt) {
         dashboardController.execute(false);
+
         DashboardState state = dashboardViewModel.getState();
+        if (state.getResetPressed()) {
+            JOptionPane.showMessageDialog(this, "Balance has been Reset!");
+            state.setResetPressed(false);
+        }
 
         // Rendering user balance
         balanceField.setText(String.format("$%.2f", state.getUserStats().get("balance")));
@@ -320,6 +324,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
         }
         ownedStocksTable.setModel(ownedStocksTableModel);
+
 
     }
 }
