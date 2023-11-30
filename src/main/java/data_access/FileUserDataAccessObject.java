@@ -26,7 +26,8 @@ public class FileUserDataAccessObject implements
         SellDataAccessInterface,
         ResetBalanceDataAccessInterface,
         DashboardDataAccessInterface,
-        GetTransactionHistoryDataAccessInterface
+        GetTransactionHistoryDataAccessInterface,
+        GetNewsDataAccessInterface
 {
 
     private File jsonFile;
