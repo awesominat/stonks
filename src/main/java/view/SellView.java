@@ -50,7 +50,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
 
 
         currentBalance = new JLabel();
-        currentBalance.setFont(new Font("Helvetica", Font.ROMAN_BASELINE, 14));
+        currentBalance.setFont(new Font("Helvetica", Font.ROMAN_BASELINE, 16));
         currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         currentBalance.setBorder(border);
