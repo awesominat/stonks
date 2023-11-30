@@ -6,6 +6,10 @@ import use_case.APIAccessInterface;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The GetNewsInteractor class implements the GetNewsInputBoundary interface and represents the
+ * interactor for the GetNews use case. It fetches news for a specific company over a specified time period.
+ */
 public class GetNewsInteractor implements GetNewsInputBoundary {
     GetNewsOutputBoundary getNewsPresenter;
     APIAccessInterface driverAPI;
@@ -18,16 +22,14 @@ public class GetNewsInteractor implements GetNewsInputBoundary {
         this.driverAPI = driverAPI;
     }
 
+    /**
+     * Executes the GetNews use case based on the provided input data.
+     * News is fetched over a time period of a month prior to the method call.
+     *
+     * @param getNewsInputData an InputData object following the relevant CA Engine rules
+     */
     @Override
     public void execute(GetNewsInputData getNewsInputData) {
-        /**
-         * The getNewsInputData parameter should follow the specifications laid out in that class.
-         * <p>
-         *     This method implements the bulk of the GetNews use case.
-         *     News is fetched over a time period of a month prior to the method call.
-         *
-         * @param  getNewsInputData  an InputData object following the relevant CA Engine rules
-         */
         String ticker = getNewsInputData.getTicker();
 
         // Define end of news period to be right now
