@@ -20,7 +20,6 @@ import use_case.Sell.SellOutputData;
 import java.io.IOException;
 import java.time.LocalDate;
 
-
 import static org.mockito.ArgumentMatchers.any;
 
 public class buySellTest {

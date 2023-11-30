@@ -89,7 +89,6 @@ public class Main {
                 viewManagerModel,
                 getNewsViewModel,
                 dashboardViewModel,
-                fileUserDataAccessObject,
                 apiAccessInterface
         );
         views.add(getNewsView, getNewsView.viewName);
