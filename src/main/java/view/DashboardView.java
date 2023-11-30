@@ -241,6 +241,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         DashboardState state = dashboardViewModel.getState();
         if (state.getResetPressed()) {
             JOptionPane.showMessageDialog(this, "Balance has been Reset!");
+            state.setResetPressed(false);
         }
 
         // Rendering user balance
