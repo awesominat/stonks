@@ -1,5 +1,5 @@
 package use_case.ResetBalance;
 
 public interface ResetBalanceInputBoundary {
-    void execute();
+    void execute(ResetBalanceInputData resetBalanceInputData);
 }

@@ -50,7 +50,7 @@ public class testDashboardView {
         DashboardController dashboardController = new DashboardController(dashboardInteractor);
 
         // DashboardView requires a ResetBalanceController, the simulation of which requires a bunch of other objects.
-        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(viewManagerModel);
+        ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(viewManagerModel, dashboardViewModel);
         ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(userDataAccessObject, resetBalancePresenter, driverAPI);
         ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 

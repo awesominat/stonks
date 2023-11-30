@@ -45,7 +45,8 @@ public class Main {
         GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
         ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(
-                viewManagerModel
+                viewManagerModel,
+                dashboardViewModel
         );
         ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(
                 fileUserDataAccessObject,

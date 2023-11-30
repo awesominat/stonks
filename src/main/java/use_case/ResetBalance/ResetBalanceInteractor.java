@@ -23,11 +23,11 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         this.driverAPI = driverAPI;
     }
     @Override
-    public void execute() {
+    public void execute(ResetBalanceInputData resetBalanceInputData) {
+        Boolean resetPressed = resetBalanceInputData.getResetPressed();
         User user = userDataAccessObject.get();
-
+        HashMap<String, Double> portfolio = user.getPortfolio();
         Double curBalance = user.getBalance();
-
         Double amountToAdd = 10000.0;
 
         user.setBalance(amountToAdd);
@@ -48,7 +48,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
 
         this.userDataAccessObject.save();
 
-        ResetBalanceOutputData result = new ResetBalanceOutputData(amountToAdd);
+        ResetBalanceOutputData result = new ResetBalanceOutputData(resetPressed);
 
         resetBalancePresenter.prepareSuccessView(result);
     }
