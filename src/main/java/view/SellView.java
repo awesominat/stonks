@@ -79,15 +79,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         title.setFont(new Font("Helvetica", Font.BOLD, 18));
 
         topPanel.add(title);
-        // Add the title label to the west (left) side of the main panel
-//        mainPanel.add(title, BorderLayout.WEST);
-
-//        frame.getContentPane().add(mainPanel);
-//        frame.setSize(160, 20);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(false);
-
-
 
         JLabel stockSelectionLabel = new JLabel("Select an owned stock");
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
@@ -215,11 +206,19 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             Double amountOwned = ownedAmounts.get(i);
             Double sellPriceSingle = sellPrices.get(i);
             Double sellPriceAll = sellPriceSingle * amountOwned;
-            tableModel.addRow(new Object[] {
-                    stockTicker, String.format("%.2f", amountOwned),
-                    String.format("$%.2f", sellPriceSingle),
-                    String.format("$%.2f", sellPriceAll)
-            });
+            if (sellPriceSingle > 0) {
+                tableModel.addRow(new Object[] {
+                        stockTicker, String.format("%.2f", amountOwned),
+                        String.format("$%.2f", sellPriceSingle),
+                        String.format("$%.2f", sellPriceAll)
+                });
+            } else {
+                tableModel.addRow(new Object[] {
+                        stockTicker, String.format("%.2f", amountOwned),
+                        "Refresh to Update",
+                        "Refresh to Update"
+                });
+            }
         }
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
