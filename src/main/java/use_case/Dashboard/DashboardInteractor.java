@@ -82,7 +82,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         LocalDate now = LocalDate.now();
         for (Map.Entry<String, TransactionHistory> entry: history.entrySet()) {
             TransactionHistory stockHistory = entry.getValue();
-            for (Transaction transaction: stockHistory.getTransactions()) {
+            for (Transaction transaction: stockHistory) {
                 if (transaction.getType() == TransactionType.TOPUP) {
                     PricePoint pp = transaction.getPricePoint();
                     double daysSince = DAYS.between(now, pp.getTimeStamp());
