@@ -2,7 +2,6 @@ package data_access;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import driver.LocalDateTypeAdapter;
 import driver.TransactionDeserializer;
 import entity.CommonUser;
@@ -11,6 +10,7 @@ import entity.User;
 import entity.UserFactory;
 import use_case.Buy.BuyDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
+import use_case.GetNews.GetNewsDataAccessInterface;
 import use_case.GetTransactionHistory.GetTransactionHistoryDataAccessInterface;
 import use_case.ResetBalance.ResetBalanceDataAccessInterface;
 import use_case.Sell.SellDataAccessInterface;
@@ -28,7 +28,6 @@ public class FileUserDataAccessObject implements
         DashboardDataAccessInterface,
         GetTransactionHistoryDataAccessInterface,
         GetNewsDataAccessInterface {
-
 
     private File jsonFile;
     private User user;

@@ -19,11 +19,13 @@ public class GetNewsUseCaseFactory {
             ViewManagerModel viewManagerModel,
             GetNewsViewModel getNewsViewModel,
             DashboardViewModel dashboardViewModel,
+            GetNewsDataAccessInterface getNewsDataAccessInterface,
             APIAccessInterface apiAccessInterface
     ) {
         GetNewsController getNewsController = createGetNewsUseCase(
                 viewManagerModel,
                 getNewsViewModel,
+                getNewsDataAccessInterface,
                 apiAccessInterface
         );
         return new GetNewsView(
@@ -37,6 +39,7 @@ public class GetNewsUseCaseFactory {
     private static GetNewsController createGetNewsUseCase(
             ViewManagerModel viewManagerModel,
             GetNewsViewModel getNewsViewModel,
+            GetNewsDataAccessInterface getNewsDataAccessInterface,
             APIAccessInterface apiAccessInterface
     ) {
         GetNewsOutputBoundary getNewsPresenter = new GetNewsPresenter(viewManagerModel, getNewsViewModel);
