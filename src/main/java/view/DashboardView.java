@@ -114,7 +114,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     dashboardController.execute(true);
                     refreshLabel.setForeground(new Color(0, 0, 0, 255));
 
-                    CompletableFuture<Void> asyncSleep = CompletableFuture.runAsync(() -> {
+                    CompletableFuture<Void> asyncFadeRefreshIndicator = CompletableFuture.runAsync(() -> {
                         try {
                             for (int i = 0; i < 11; i++) {
                                 Thread.sleep(200);
