@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 
         import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
@@ -96,6 +97,9 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         // Add label for balanceField.
         JLabel balanceLabel = new JLabel("Your Balance: ");
+        JLabel refreshLabel = new JLabel("Refreshed Stock Information.");
+        refreshLabel.setVisible(true);
+        refreshLabel.setForeground(new Color(0,0, 0, 0));
 
         // Initialize an empty table for the User's stats
         userStatsTable = new JTable();
@@ -103,10 +107,25 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         // Initialize empty table for User's stock portfolio data
         ownedStocksTable = new JTable();
 
+
         // Create an anonymous subclass of ActionListener and instantiate it.
         refresh.addActionListener(
                 evt -> {
                     dashboardController.execute(true);
+                    refreshLabel.setForeground(new Color(0, 0, 0, 255));
+
+                    CompletableFuture<Void> asyncSleep = CompletableFuture.runAsync(() -> {
+                        try {
+                            for (int i = 0; i < 11; i++) {
+                                Thread.sleep(200);
+                                refreshLabel.setForeground(new Color(0, 0, 0, 255 - (i * 255/10)));
+                                dashboardViewModel.firePropertyChanged();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
                     dashboardViewModel.firePropertyChanged();
                 }
         );
@@ -222,6 +241,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         // Add panels to the view.
         add(topPanel, BorderLayout.NORTH);
         add(middlePanel);
+        bottomPanel.add(refreshLabel);
         add(bottomPanel, BorderLayout.SOUTH);
 
         middlePanel.setVisible(true);
@@ -293,7 +313,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 ownedStocksTableModel.addRow(new Object[] {
                         ticker,
                         String.format("%.2f", amount),
-                        String.format("%.2f", currentPrice),
+                        String.format("$%.2f", currentPrice),
                         String.format("%.2f", priceChange),
                         String.format("%.2f", percentChange),
                 });

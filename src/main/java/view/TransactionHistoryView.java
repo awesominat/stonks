@@ -132,11 +132,12 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
             List<List<String>> dataList = entry.getValue();
 
             for (List<String> rowData : dataList) {
+                String stock = rowData.get(0);
+                String amount = rowData.get(1);
+                String price = rowData.get(2);
+                String date = rowData.get(3);
                 tableModel.addRow(new Object[]{key,
-                        rowData.get(0),
-                        rowData.get(1),
-                        rowData.get(2),
-                        rowData.get(3)
+                        stock, amount, "$" + price, date
                 }
                 );
             }
