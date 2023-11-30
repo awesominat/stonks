@@ -7,6 +7,7 @@ import interface_adapter.Sell.SellViewModel;
 import interface_adapter.Sell.SellState;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -47,11 +48,46 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
 
-        currentBalance = new JLabel();
-        currentBalance.setFont(new Font("Serif", Font.PLAIN, 30));
 
+        currentBalance = new JLabel();
+        currentBalance.setFont(new Font("Helvetica", Font.ROMAN_BASELINE, 14));
+        currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        currentBalance.setBorder(border);
+
+
+//        JFrame frame = new JFrame("Title");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLayout(new FlowLayout());
+
+        // Create a JPanel with BorderLayout
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Create a JLabel for the title
         JLabel title = new JLabel("Sell Stocks");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        title.setPreferredSize(new Dimension(160, 20));
+        title.setText("Sell Stocks");
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setFont(new Font("Helvetica", Font.BOLD, 18));
+
+        topPanel.add(title);
+        // Add the title label to the west (left) side of the main panel
+//        mainPanel.add(title, BorderLayout.WEST);
+
+//        frame.getContentPane().add(mainPanel);
+//        frame.setSize(160, 20);
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(false);
+
+
 
         JLabel stockSelectionLabel = new JLabel("Select an owned stock");
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
@@ -181,7 +217,8 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             Double sellPriceAll = sellPriceSingle * amountOwned;
             tableModel.addRow(new Object[] {
                     stockTicker, String.format("%.2f", amountOwned),
-                    String.format("%.2f", sellPriceSingle), String.format("%.2f", sellPriceAll)
+                    String.format("$%.2f", sellPriceSingle),
+                    String.format("$%.2f", sellPriceAll)
             });
         }
         table.setModel(tableModel);
@@ -189,7 +226,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         header.setBackground(Color.LIGHT_GRAY);
 
         Double userBalance = state.getBalance();
-        currentBalance.setText(String.format("Current Balance: %.2f", userBalance));
+        currentBalance.setText(String.format("Current Balance: $%.2f", userBalance));
     }
 
 }

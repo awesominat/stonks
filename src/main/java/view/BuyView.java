@@ -133,7 +133,6 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         setLayout(new BorderLayout());
         topPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
@@ -157,6 +156,17 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         gbc.weightx = 1.24;
         topPanel.add(Box.createHorizontalGlue(), gbc);
         this.add(topPanel, BorderLayout.NORTH);
+
+//        gbc.gridheight = 1;
+//        gbc.gridx = 2;
+//
+//        JLabel title = new JLabel("Buy Stocks");
+//
+//        title.setPreferredSize(new Dimension(160, 20));
+//        title.setText("Buy Stocks");
+//        title.setHorizontalAlignment(JLabel.CENTER);
+//        title.setFont(new Font("Helvetica", Font.BOLD, 18));
+//        topPanel.add(title, gbc);
 
         bottomPanel = new JPanel(new GridBagLayout());
 
