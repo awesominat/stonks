@@ -285,9 +285,18 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             Double percentChange = priceStatsForTicker.get(2);
 
             if (currentPrice < 0) {
-                ownedStocksTableModel.addRow(new Object[] {ticker, amount, "Refresh to Update", "Refresh to Update", "Refresh to Update"});
+                ownedStocksTableModel.addRow(new Object[] {
+                        ticker, String.format("%.2f", amount),
+                        "Refresh to Update", "Refresh to Update", "Refresh to Update"
+                });
             } else {
-                ownedStocksTableModel.addRow(new Object[] {ticker, amount, currentPrice, priceChange, percentChange});
+                ownedStocksTableModel.addRow(new Object[] {
+                        ticker,
+                        String.format("%.2f", amount),
+                        String.format("%.2f", currentPrice),
+                        String.format("%.2f", priceChange),
+                        String.format("%.2f", percentChange),
+                });
             }
         }
         ownedStocksTable.setModel(ownedStocksTableModel);

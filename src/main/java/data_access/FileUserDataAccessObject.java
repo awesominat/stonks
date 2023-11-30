@@ -26,8 +26,9 @@ public class FileUserDataAccessObject implements
         SellDataAccessInterface,
         ResetBalanceDataAccessInterface,
         DashboardDataAccessInterface,
-        GetTransactionHistoryDataAccessInterface
-{
+        GetTransactionHistoryDataAccessInterface,
+        GetNewsDataAccessInterface {
+
 
     private File jsonFile;
     private User user;
@@ -58,6 +59,7 @@ public class FileUserDataAccessObject implements
 
         try (FileWriter writer = new FileWriter(jsonFile)) {
             writer.write(json);
+            System.out.println("Stored");
         } catch (IOException e) {
             e.printStackTrace();
         }
