@@ -1,11 +1,13 @@
 package use_case.ResetBalance;
 
-import entity.*;
+import entity.PricePoint;
+import entity.TopupTransaction;
+import entity.Transaction;
+import entity.User;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 public class ResetBalanceInteractor extends BaseStockInteractor implements ResetBalanceInputBoundary {
     final ResetBalanceDataAccessInterface userDataAccessObject;
@@ -22,6 +24,17 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         this.resetBalancePresenter = resetBalancePresenter;
         this.driverAPI = driverAPI;
     }
+
+    private Transaction createResetTransaction(Double amountToAdd) {
+        return new TopupTransaction(
+                1.0,
+                new PricePoint(
+                        LocalDate.now(),
+                        amountToAdd
+                )
+        );
+    }
+
     @Override
     public void execute() {
         User user = userDataAccessObject.get();
@@ -34,17 +47,8 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
 
         user.clearPortfolio();
 
-        HashMap<String, TransactionHistory> userHistory = user.getHistory();
-
-        Transaction transaction = new TopupTransaction(
-                1.0,
-                new PricePoint(
-                        LocalDate.now(),
-                        amountToAdd
-                )
-        );
-
-        super.addToHistory(userHistory, "RESET", curBalance, transaction);
+        Transaction transaction = createResetTransaction(amountToAdd);
+        super.addToHistory(user, "RESET", curBalance, transaction);
 
         this.userDataAccessObject.save();
 

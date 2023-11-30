@@ -25,6 +25,15 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
         this.driverAPI = driverAPI;
     }
 
+    private Transaction createSellTransaction(Double amount, Double currentPrice) {
+        return new SellTransaction(
+                amount,
+                new PricePoint(
+                        LocalDate.now(),
+                        currentPrice)
+        );
+    }
+
     @Override
     public void execute(SellInputData sellInputData) {
         if (sellInputData.isExecuteTypeSell()) {
@@ -42,16 +51,17 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                 return;
             }
 
-            Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
+            Double currentPrice = null;
+            try {
+                currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
+            } catch (APIAccessInterface.TickerNotFoundException e) {
+                sellPresenter.prepareFailView("This ticker does not exist!");
+                return;
+            }
 
             user.addBalance(currentPrice * amount);
-            HashMap<String, TransactionHistory> userHistory = user.getHistory();
 
-            Transaction transaction = new SellTransaction(
-                    amount,
-                    new PricePoint(
-                            LocalDate.now(),
-                            currentPrice));
+            Transaction transaction = createSellTransaction(amount, currentPrice);
 
             super.updatePortfolio(
                     user,
@@ -60,7 +70,7 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
             );
 
             super.addToHistory(
-                    userHistory,
+                    user,
                     ticker,
                     currentPrice,
                     transaction
