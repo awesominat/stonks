@@ -1,4 +1,4 @@
-package use_case.GetTransactionHistory;
+package interface_adapter.GetTransactionHistory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,6 +4,7 @@ import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GetTransactionHistory.GetTransactionHistoryController;
 import interface_adapter.GetTransactionHistory.GetTransactionHistoryState;
 import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapter.Sell.SellState;
 import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
@@ -25,6 +26,10 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     JTable table;
     final JButton back;
     GetTransactionHistoryController getTransactionHistoryController;
+    final JComboBox<String> stockInputFieldFilter = new JComboBox<String>();
+    String selectedStock = null;
+    final JComboBox<String> typeInputFieldFilter = new JComboBox<String>();
+
     public TransactionHistoryView(
             GetTransactionHistoryController getTransactionHistoryController,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
@@ -32,12 +37,19 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
             DashboardViewModel dashboardViewModel
     ) {
         this.getTransactionHistoryController = getTransactionHistoryController;
-
         this.getTransactionHistoryViewModel = getTransactionHistoryViewModel;
-
         this.getTransactionHistoryViewModel.addPropertyChangeListener(this);
 
-        setPreferredSize(new Dimension(1600, 800));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        setPreferredSize(new Dimension(400, 400));
 
         this.getTransactionHistoryController.execute();
 
@@ -51,13 +63,12 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         title.setBorder(border);
         title.setText("Transaction History");
-//        title.setHorizontalAlignment(JLabel.NORTH);
         title.setAlignmentX(SwingConstants.NORTH);
         title.setFont(new Font("Helvetica", Font.BOLD, 18));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setLayout(new BorderLayout());
 
-        this.add(title);
+        topPanel.add(title);
 
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
         back.setMaximumSize(new Dimension(20, 10));
@@ -70,15 +81,36 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
                 }
         );
 
+        topPanel.add(back);
         table = new JTable();
 
         JScrollPane scrollPane = new JScrollPane(table);
 
+        JLabel stockInputFieldFilterTitle = new JLabel("Select an owned stock");
+        stockInputFieldFilterTitle.setMaximumSize(new Dimension(100,100));
+        stockInputFieldFilterTitle.setAlignmentX(SwingConstants.SOUTH_WEST);
+
+        for (String stock: getTransactionHistoryViewModel.getState().allStocksInHistory()){
+            stockInputFieldFilter.addItem(stock);
+        }
+
+        stockInputFieldFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GetTransactionHistoryState currentState = getTransactionHistoryViewModel.getState();
+                selectedStock = String.valueOf(stockInputFieldFilter.getSelectedItem());
+                getTransactionHistoryViewModel.firePropertyChanged();
+            }
+        });
+        topPanel.add(stockInputFieldFilter);
+
 //
 //        this.add(titleLabel);
-        this.add(title, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH);
+        add(stockInputFieldFilter, BorderLayout.NORTH);
+//        add(title, BorderLayout.NORTH);
         setLayout(new BorderLayout());
-        add(back, BorderLayout.NORTH);
+//        add(back, BorderLayout.BEFORE_FIRST_LINE);
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -88,6 +120,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
     public void propertyChange(PropertyChangeEvent evt) {
         getTransactionHistoryController.execute();
+        System.out.println(selectedStock);
 
         GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
 
