@@ -3,10 +3,11 @@
 ## Installation Instructions
 
 1. Clone the repository using any CLI with git installed using "git clone https://github.com/awesominat/stonks.git" (alternatively, you can download the repo)
-2. Install all necessary packages (OkHttp, json)
-3. Create an account over on [Finnhub](finnhub.io) and copy your API key
-4. Create a file called file.txt in the root directory and insert the key and nothing else (no spaces)
-5. Open src/app/main, and run the file
+2. Install [Maven](https://maven.apache.org/download.cgi) or run `brew install maven` in terminal to install Maven
+3. Run `mvn clean install` in the project directory
+4. Create an account over on [Finnhub](finnhub.io) and copy your API key
+5. Create a file called file.txt in the root directory and paste the key and nothing else
+6. Navigate to src/app and run Main
 
 ## General Description
 The broad purpose of the software is to give users a platform to invest in stocks, view their profits, view stock price 
