@@ -13,10 +13,7 @@ public class FilterCollection {
     }
 
     public List<List<String>> applyFilters(List<List<String>> toFilter, String[] filterArguments){
-        System.out.println(filterType);
         if (filterArguments.length != filterType.size()) {
-            System.out.println(filterArguments.length);
-            System.out.println(filterType.size());
             throw new RuntimeException("Incorrect Number of Filter Arguments");
         }
         for (int i = 0; i < filterArguments.length; i++) {

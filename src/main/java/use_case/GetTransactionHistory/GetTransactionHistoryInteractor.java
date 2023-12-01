@@ -37,7 +37,7 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
 
                 String type = tran.getType().toString();
                 String amount = tran.getAmount().toString();
-                String pricePurchasedAt = tran.getPricePoint().getPrice().toString();
+                String pricePurchasedAt = String.format("%.2f", tran.getPricePoint().getPrice());
                 String date = tran.getPricePoint().getTimeStamp().toString();
 
                 // List containing Transaction Facts

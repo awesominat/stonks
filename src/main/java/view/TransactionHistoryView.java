@@ -47,7 +47,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         filterCollection.add(new FilterByStockName());
         filterCollection.add(new FilterByTransactionType());
-        this.getTransactionHistoryController.execute();
+//        this.getTransactionHistoryController.execute();
 
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
         table = new JTable();
@@ -117,14 +117,16 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     public void propertyChange(PropertyChangeEvent evt) {
         getTransactionHistoryController.execute();
 
-        stockInputFieldFilterModel.removeAllElements();
-        stockInputFieldFilterModel.addElement("No filter");
+        if (stockInputFieldFilterModel.getIndexOf("No filter") == -1) {
+            stockInputFieldFilterModel.addElement("No filter");
+        }
         for (String stock: getTransactionHistoryViewModel.getState().allStocksInHistory()){
             if (stockInputFieldFilterModel.getIndexOf(stock) == -1 && !stock.equals("RESET")) {
                 stockInputFieldFilterModel.addElement(stock);
             }
         }
         if (selectedStock != null) {
+            System.out.println(selectedStock);
             stockInputFieldFilterModel.setSelectedItem(selectedStock);
         }
 
@@ -155,45 +157,6 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
                         }
                 );
             }
-
-
-
-//        if (selectedStock == "No filter") {
-//            for (List<String> rowData : userRecord) {
-//
-//                String stock = rowData.get(0);
-//                String type = rowData.get(1);
-//                String amount = rowData.get(2);
-//                String price = rowData.get(3);
-//                String date = rowData.get(4);
-//                tableModel.addRow(new Object[]{stock,
-//                                type, amount, "$" + price, date
-//                        }
-//                );
-//            }
-//        } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
-//
-//            Filter filterForStockName = new FilterByStockName();
-//
-//            List<List<String>> filteredTransactions = filterForStockName.filter(userRecord, selectedStock);
-//
-//            for (List<String> rowData : filteredTransactions) {
-//
-//                if (rowData.get(0) == selectedStock) {
-//
-//                    String stock = rowData.get(0);
-//                    String type = rowData.get(1);
-//                    String amount = rowData.get(2);
-//                    String price = rowData.get(3);
-//                    String date = rowData.get(4);
-//
-//                    tableModel.addRow(new Object[]{stock,
-//                                    type, amount, "$" + price, date
-//                            }
-//                    );
-//                }
-//            }
-//        }
 
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
