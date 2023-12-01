@@ -16,11 +16,31 @@ public class GetTransactionHistoryState {
     }
 
     public HashSet<String> allStocksInHistory() {
+
         HashSet<String> stocks = new HashSet<>();
+
         for (List<String> transaction: this.userRecord) {
+
             stocks.add(transaction.get(0));
+
         }
+
         return stocks;
+
+    }
+
+    public HashSet<String> allTypesInHistory() {
+
+        HashSet<String> stockTypes = new HashSet<>();
+
+        for (List<String> transaction: this.userRecord) {
+
+            stockTypes.add(transaction.get(1));
+
+        }
+
+        return stockTypes;
+
     }
 
 

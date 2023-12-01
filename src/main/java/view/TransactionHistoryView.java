@@ -6,7 +6,6 @@ import interface_adapter.Sell.SellState;
 import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -15,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TransactionHistoryView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -26,9 +24,11 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     final JButton back;
     GetTransactionHistoryController getTransactionHistoryController;
     DefaultComboBoxModel<String> stockInputFieldFilterModel;
+    DefaultComboBoxModel<String> typeInputFieldFilterModel;
     final JComboBox<String> stockInputFieldFilter;
     String selectedStock = null;
-    final JComboBox<String> typeInputFieldFilter = new JComboBox<String>();
+    String selectedType = null;
+    final JComboBox<String> typeInputFieldFilter;
 
     public TransactionHistoryView(
             GetTransactionHistoryController getTransactionHistoryController,
@@ -53,6 +53,9 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         stockInputFieldFilterModel = new DefaultComboBoxModel<>();
         stockInputFieldFilter = new JComboBox<>(stockInputFieldFilterModel);
+
+        typeInputFieldFilterModel = new DefaultComboBoxModel<>();
+        typeInputFieldFilter = new JComboBox<>(typeInputFieldFilterModel);
 
         back.addActionListener(
                 evt -> {
@@ -84,6 +87,18 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
             }
         });
 
+        typeInputFieldFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GetTransactionHistoryState currentState = getTransactionHistoryViewModel.getState();
+
+                selectedType = String.valueOf(typeInputFieldFilter.getSelectedItem());
+
+                getTransactionHistoryViewModel.firePropertyChanged();
+            }
+        });
+
+        this.add(typeInputFieldFilter);
         this.add(stockInputFieldFilter);
         this.add(back);
         add(scrollPane, BorderLayout.CENTER);
@@ -111,6 +126,23 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         }
         stockInputFieldFilterModel.setSelectedItem(selectedStock);
 
+        typeInputFieldFilterModel.removeAllElements();
+
+        typeInputFieldFilterModel.addElement("No filter");
+
+        for (String type: getTransactionHistoryViewModel.getState().allTypesInHistory()){
+
+            if (typeInputFieldFilterModel.getIndexOf(type) == -1) {
+
+                typeInputFieldFilterModel.addElement(type);
+
+            }
+
+        }
+
+        typeInputFieldFilterModel.setSelectedItem(selectedType);
+
+
         GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
 
         DefaultTableModel tableModel = new DefaultTableModel();
@@ -130,8 +162,20 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         if (selectedStock == "No filter") {
              userRecord = state.getUserRecord();
         } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
+
             Filter filterForStockName = new FilterByStockName();
+
             userRecord = filterForStockName.filter(state.getUserRecord(), selectedStock);
+
+        }
+
+        if (selectedType == "No filter") {
+            userRecord = state.getUserRecord();
+        } else if (getTransactionHistoryViewModel.getState().allTypesInHistory().contains(selectedType)) {
+
+            Filter filterForTransactionType = new FilterByTransactionType();
+
+            userRecord = filterForTransactionType.filter(state.getUserRecord(), selectedType);
         }
 
         for (List<String> rowData : userRecord) {
@@ -146,6 +190,8 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
                         }
                 );
             }
+
+
 
 //        if (selectedStock == "No filter") {
 //            for (List<String> rowData : userRecord) {
