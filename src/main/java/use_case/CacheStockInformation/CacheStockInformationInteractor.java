@@ -30,14 +30,18 @@ public class CacheStockInformationInteractor implements CacheStockInformationInp
         Set<String> stocksOwned = user.getPortfolio().keySet();
         HashMap<String, List<Double>> stockInformationMap = new HashMap<>();
         for (String stock: stocksOwned) {
-            StockInformation stockInformation = driverAPI.getCurrentStockInformation(stock);
-            List<Double> stockInformationArrayList = new ArrayList<>();
-            stockInformationArrayList.add(stockInformation.getCurrentPrice());
-            stockInformationArrayList.add(stockInformation.getPriceChange());
-            stockInformationArrayList.add(stockInformation.getPercentChange());
-            stockInformationMap.put(
-                    stock, stockInformationArrayList
-            );
+            try {
+                StockInformation stockInformation = driverAPI.getCurrentStockInformation(stock);
+                List<Double> stockInformationArrayList = new ArrayList<>();
+                stockInformationArrayList.add(stockInformation.getCurrentPrice());
+                stockInformationArrayList.add(stockInformation.getPriceChange());
+                stockInformationArrayList.add(stockInformation.getPercentChange());
+                stockInformationMap.put(
+                        stock, stockInformationArrayList
+                );
+            } catch (APIAccessInterface.TickerNotFoundException ex) {
+                user.removeFromPortfolio(stock);
+            }
         }
         CacheStockInformationOutputData result = new CacheStockInformationOutputData(stockInformationMap);
         cacheStockInformationPresenter.updateCacheSuccess(result);
