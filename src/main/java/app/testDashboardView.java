@@ -40,6 +40,10 @@ public class testDashboardView {
         new ViewManager(views, cardLayout, viewManagerModel);
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         CacheStockInformationViewModel cacheStockInformationViewModel = new CacheStockInformationViewModel();
+        BuyViewModel buyViewModel = new BuyViewModel();
+        SellViewModel sellViewModel = new SellViewModel();
+        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
+        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
         FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
         userDataAccessObject.save();
@@ -50,6 +54,7 @@ public class testDashboardView {
         DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(
                 viewManagerModel,
                 dashboardViewModel,
+                sellViewModel,
                 cacheStockInformationViewModel
         );
         DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, driverAPI);
@@ -60,11 +65,6 @@ public class testDashboardView {
         ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(userDataAccessObject, resetBalancePresenter, driverAPI);
         ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 
-        // Initialize necessary ViewModels.
-        BuyViewModel buyViewModel = new BuyViewModel();
-        SellViewModel sellViewModel = new SellViewModel();
-        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
-        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
         // Create the DashboardView to be simulated.
         DashboardView dashboardView = new DashboardView(

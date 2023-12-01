@@ -2,6 +2,7 @@ package interface_adapter.Dashboard;
 
 import interface_adapter.CacheStockInformation.CacheStockInformationState;
 import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
+import interface_adapter.Sell.SellViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Dashboard.DashboardOutputBoundary;
 import use_case.Dashboard.DashboardOutputData;
@@ -16,17 +17,20 @@ import java.util.List;
 public class DashboardPresenter implements DashboardOutputBoundary, PropertyChangeListener {
 
     private final DashboardViewModel dashboardViewModel;
+    private final SellViewModel sellViewModel;
     private final CacheStockInformationViewModel cacheStockInformationViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public DashboardPresenter(
             ViewManagerModel viewManagerModel,
             DashboardViewModel dashboardViewModel,
+            SellViewModel sellViewModel,
             CacheStockInformationViewModel cacheStockInformationViewModel
     ) {
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
         this.cacheStockInformationViewModel = cacheStockInformationViewModel;
+        this.sellViewModel = sellViewModel;
         cacheStockInformationViewModel.addPropertyChangeListener(this);
     }
 
@@ -96,5 +100,6 @@ public class DashboardPresenter implements DashboardOutputBoundary, PropertyChan
         dashboardState.setCurrentPriceStats(currentPriceInfo);
         dashboardViewModel.setState(dashboardState);
         dashboardViewModel.firePropertyChanged();
+        sellViewModel.firePropertyChanged();
     }
 }
