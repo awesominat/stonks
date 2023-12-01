@@ -9,13 +9,15 @@ public class FilterByTransactionType implements Filter{
             List<List<String>> transactionsToFilter,
             String stockType
     ) {
-        List<List<String>> filteredTransactions = new ArrayList<>();
-        for (List<String> transaction: transactionsToFilter){
-            if (transaction.get(1).equals(stockType)){
-                filteredTransactions.add(transaction);
+        if (!stockType.equals("No filter")) {
+            List<List<String>> filteredTransactions = new ArrayList<>();
+            for (List<String> transaction : transactionsToFilter) {
+                if (transaction.get(1).equals(stockType)) {
+                    filteredTransactions.add(transaction);
+                }
             }
+            return filteredTransactions;
         }
-
-        return filteredTransactions;
+        return transactionsToFilter;
     }
 }

@@ -27,6 +27,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     final JComboBox<String> stockInputFieldFilter;
     DefaultComboBoxModel<String> typeInputFieldFilterModel;
     final JComboBox<String> typeInputFieldFilter;
+    FilterCollection filterCollection = new FilterCollection();
 
     String selectedStock = null;
     String selectedType = null;
@@ -43,6 +44,9 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         this.getTransactionHistoryViewModel.addPropertyChangeListener(this);
         setPreferredSize(new Dimension(400, 400));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+        filterCollection.add(new FilterByStockName());
+        filterCollection.add(new FilterByTransactionType());
         this.getTransactionHistoryController.execute();
 
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
@@ -134,20 +138,11 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         tableModel.addColumn("Amount");
         tableModel.addColumn("Price");
         tableModel.addColumn("Date");
-        List<List<String>> userRecord = new ArrayList<>();
-        if (selectedStock == "No filter") {
-             userRecord = state.getUserRecord();
-        } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
-            Filter filterForStockName = new FilterByStockName();
-            userRecord = filterForStockName.filter(state.getUserRecord(), selectedStock);
-        }
-
-        if (selectedType == "No filter") {
-            userRecord = state.getUserRecord();
-        } else if (getTransactionHistoryViewModel.getState().allTypesInHistory().contains(selectedType)) {
-            Filter filterForTransactionType = new FilterByTransactionType();
-            userRecord = filterForTransactionType.filter(state.getUserRecord(), selectedType);
-        }
+        List<List<String>> userRecord = state.getUserRecord();
+        userRecord = filterCollection.applyFilters(
+                userRecord,
+                new String[] {selectedStock, selectedType}
+        );
 
         for (List<String> rowData : userRecord) {
                 String stock = rowData.get(0);

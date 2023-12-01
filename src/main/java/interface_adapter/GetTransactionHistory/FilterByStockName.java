@@ -9,13 +9,15 @@ public class FilterByStockName implements Filter{
             List<List<String>> transactionsToFilter,
             String stockName
     ) {
-        List<List<String>> filteredTransactions = new ArrayList<>();
-        for (List<String> transaction: transactionsToFilter){
-            if (transaction.get(0).equals(stockName)){
-                filteredTransactions.add(transaction);
+        if (!stockName.equals("No filter")) {
+            List<List<String>> filteredTransactions = new ArrayList<>();
+            for (List<String> transaction : transactionsToFilter) {
+                if (transaction.get(0).equals(stockName)) {
+                    filteredTransactions.add(transaction);
+                }
             }
+            return filteredTransactions;
         }
-
-        return filteredTransactions;
+        return transactionsToFilter;
     }
 }
