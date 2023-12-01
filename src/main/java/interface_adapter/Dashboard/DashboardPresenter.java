@@ -1,21 +1,33 @@
 package interface_adapter.Dashboard;
 
+import interface_adapter.CacheStockInformation.CacheStockInformationState;
+import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Dashboard.DashboardOutputBoundary;
 import use_case.Dashboard.DashboardOutputData;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-public class DashboardPresenter implements DashboardOutputBoundary {
+public class DashboardPresenter implements DashboardOutputBoundary, PropertyChangeListener {
 
     private final DashboardViewModel dashboardViewModel;
+    private final CacheStockInformationViewModel cacheStockInformationViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public DashboardPresenter(ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel) {
+    public DashboardPresenter(
+            ViewManagerModel viewManagerModel,
+            DashboardViewModel dashboardViewModel,
+            CacheStockInformationViewModel cacheStockInformationViewModel
+    ) {
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
+        this.cacheStockInformationViewModel = cacheStockInformationViewModel;
+        cacheStockInformationViewModel.addPropertyChangeListener(this);
     }
 
     @Override
@@ -70,4 +82,19 @@ public class DashboardPresenter implements DashboardOutputBoundary {
     public void prepareFailView(String error) {
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        DashboardState dashboardState = dashboardViewModel.getState();
+        CacheStockInformationState state = (CacheStockInformationState) evt.getNewValue();
+        HashMap<String, List<Double>> cachedStockInformationMap = state.getStockInformationMap();
+
+        List<String> ownedTickers = dashboardState.getOwnedTickers();
+        List<List<Double>> currentPriceInfo = new ArrayList<>();
+        for (String ticker: ownedTickers) {
+            currentPriceInfo.add(cachedStockInformationMap.get(ticker));
+        }
+        dashboardState.setCurrentPriceStats(currentPriceInfo);
+        dashboardViewModel.setState(dashboardState);
+        dashboardViewModel.firePropertyChanged();
+    }
 }

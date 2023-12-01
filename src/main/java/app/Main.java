@@ -4,6 +4,8 @@ import data_access.FileUserDataAccessObject;
 import driver.Finnhub;
 import entity.CommonUserFactory;
 import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.CacheStockInformation.CacheStockInformationController;
+import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.GetNews.GetNewsViewModel;
 import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapter.ResetBalance.ResetBalanceController;
@@ -18,6 +20,7 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
@@ -43,6 +46,7 @@ public class Main {
         SellViewModel sellViewModel = new SellViewModel();
         GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
         GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
+        CacheStockInformationViewModel cacheStockInformationViewModel = new CacheStockInformationViewModel();
 
         ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(
                 viewManagerModel,
@@ -61,6 +65,7 @@ public class Main {
                 buyViewModel,
                 sellViewModel,
                 getNewsViewModel,
+                cacheStockInformationViewModel,
                 resetBalanceController,
                 getTransactionHistoryViewModel,
                 fileUserDataAccessObject,
@@ -103,6 +108,24 @@ public class Main {
                 apiAccessInterface
         );
         views.add(transactionHistoryView, transactionHistoryView.viewName);
+
+        CacheStockInformationController cacheController = CacheStockInformationUseCaseFactory.createCacheStockInformationUseCase(
+                cacheStockInformationViewModel,
+                fileUserDataAccessObject,
+                apiAccessInterface
+        );
+
+        // Async function call for CacheStockInformation to begin
+        CompletableFuture<Void> beginAsyncCaching = CompletableFuture.runAsync(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(15000);
+                    cacheController.execute();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
         viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         dashboardViewModel.firePropertyChanged();
