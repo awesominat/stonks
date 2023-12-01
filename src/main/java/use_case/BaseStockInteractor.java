@@ -14,13 +14,29 @@ public abstract class BaseStockInteractor {
         this.apiAccessInterface = apiAccessInterface;
     }
 
+    /**
+     * Initializes a {@link TransactionHistory} for a given stock ticker. If the ticker matches
+     * the application's name {@link TopupTransaction}, a generic stock is created. Otherwise, it attempts to retrieve
+     * company information for the given ticker. Validate ticker before calling this method.
+     *
+     * @param ticker   The stock ticker to look up the stock.
+     * @param boughtAt The price at which the stock is bought.
+     * @return A new {@link TransactionHistory} object for the given ticker.
+     * @throws RuntimeException if the ticker is not found in the API. This is considered
+     *                          a pre-condition violation.
+     */
     protected TransactionHistory initHistory(String ticker, Double boughtAt) {
         if (ticker.equals(apiAccessInterface.getAppName())) {
             Stock newStock = new Stock(boughtAt, apiAccessInterface.getAppName(), apiAccessInterface.getAppName());
             List<Transaction> transactions = new ArrayList<>();
             return new TransactionHistory(newStock, transactions);
         } else {
-            CompanyInformation companyInformation = apiAccessInterface.getCompanyProfile(ticker);
+            CompanyInformation companyInformation = null;
+            try {
+                companyInformation = apiAccessInterface.getCompanyProfile(ticker);
+            } catch (APIAccessInterface.TickerNotFoundException e) {
+                throw new RuntimeException("Pre-condition violated, ticker " + ticker + " does not exist");
+            }
             List<Transaction> transactions = new ArrayList<>();
             Stock newStock = new Stock(boughtAt, companyInformation.getName(), ticker);
             return new TransactionHistory(newStock, transactions);
@@ -40,12 +56,13 @@ public abstract class BaseStockInteractor {
     }
 
     protected void addToHistory(
-            HashMap<String, TransactionHistory> userHistory,
+            User user,
             String ticker,
             Double currentPrice,
             Transaction transaction
     ) {
 
+        HashMap<String, TransactionHistory> userHistory = user.getHistory();
         TransactionHistory transactionHistory;
 
         if (!userHistory.containsKey(ticker)) {
