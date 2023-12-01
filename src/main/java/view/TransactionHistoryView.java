@@ -2,7 +2,6 @@ package view;
 
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GetTransactionHistory.*;
-import interface_adapter.Sell.SellState;
 import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
@@ -13,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionHistoryView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -27,7 +25,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     final JComboBox<String> stockInputFieldFilter;
     DefaultComboBoxModel<String> typeInputFieldFilterModel;
     final JComboBox<String> typeInputFieldFilter;
-    FilterCollection filterCollection = new FilterCollection();
+    FilterCollectionInterface filterCollection = new FilterCollection();
 
     String selectedStock = null;
     String selectedType = null;
@@ -141,7 +139,7 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         tableModel.addColumn("Price");
         tableModel.addColumn("Date");
         List<List<String>> userRecord = state.getUserRecord();
-        userRecord = filterCollection.applyFilters(
+        filterCollection.applyFilters(
                 userRecord,
                 new String[] {selectedStock, selectedType}
         );

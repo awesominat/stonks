@@ -5,19 +5,16 @@ import java.util.List;
 
 public class FilterByStockName implements Filter{
     @Override
-    public List<List<String>> filter(
+    public void filter(
             List<List<String>> transactionsToFilter,
             String stockName
     ) {
         if (!stockName.equals("No filter")) {
-            List<List<String>> filteredTransactions = new ArrayList<>();
-            for (List<String> transaction : transactionsToFilter) {
-                if (transaction.get(0).equals(stockName)) {
-                    filteredTransactions.add(transaction);
+            for (int i = transactionsToFilter.size() - 1; i>=0; i--) {
+                if (!transactionsToFilter.get(i).get(0).equals(stockName)) {
+                    transactionsToFilter.remove(i);
                 }
             }
-            return filteredTransactions;
         }
-        return transactionsToFilter;
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Filter {
 
-    public List<List<String>> filter(
+    public void filter(
             List<List<String>> transactionsToFilter,
             String filterBy
     );
