@@ -11,10 +11,14 @@ public class GetNewsOutputData {
     String ticker;
     List<Map<String, String>> newsItems;
 
-    public GetNewsOutputData(
-            String ticker,
-            List<CompanyNews> companyNewsItems
-    ) {
+    /**
+     * Constructs a new GetNewsOutputData instance with the specified ticker symbol
+     * and a list of CompanyNews items.
+     *
+     * @param ticker The ticker symbol associated with the company whose news was retrieved by this use case.
+     * @param companyNewsItems A list of CompanyNews items, each containing information for a news article.
+     */
+    public GetNewsOutputData(String ticker, List<CompanyNews> companyNewsItems) {
 
         this.ticker = ticker;
         this.newsItems = new ArrayList<Map<String, String>>();
