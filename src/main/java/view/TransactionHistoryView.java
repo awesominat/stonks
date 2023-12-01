@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -125,11 +126,15 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         tableModel.addColumn("Date");
 
-
-        List<List<String>> userRecord = state.getUserRecord();
-
+        List<List<String>> userRecord = new ArrayList<>();
         if (selectedStock == "No filter") {
-            for (List<String> rowData : userRecord) {
+             userRecord = state.getUserRecord();
+        } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
+            Filter filterForStockName = new FilterByStockName();
+            userRecord = filterForStockName.filter(state.getUserRecord(), selectedStock);
+        }
+
+        for (List<String> rowData : userRecord) {
 
                 String stock = rowData.get(0);
                 String type = rowData.get(1);
@@ -141,29 +146,43 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
                         }
                 );
             }
-        } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
 
-            Filter filterForStockName = new FilterByStockName();
-
-            List<List<String>> filteredTransactions = filterForStockName.filter(userRecord, selectedStock);
-
-            for (List<String> rowData : filteredTransactions) {
-
-                if (rowData.get(0) == selectedStock) {
-
-                    String stock = rowData.get(0);
-                    String type = rowData.get(1);
-                    String amount = rowData.get(2);
-                    String price = rowData.get(3);
-                    String date = rowData.get(4);
-
-                    tableModel.addRow(new Object[]{stock,
-                                    type, amount, "$" + price, date
-                            }
-                    );
-                }
-            }
-        }
+//        if (selectedStock == "No filter") {
+//            for (List<String> rowData : userRecord) {
+//
+//                String stock = rowData.get(0);
+//                String type = rowData.get(1);
+//                String amount = rowData.get(2);
+//                String price = rowData.get(3);
+//                String date = rowData.get(4);
+//                tableModel.addRow(new Object[]{stock,
+//                                type, amount, "$" + price, date
+//                        }
+//                );
+//            }
+//        } else if (getTransactionHistoryViewModel.getState().allStocksInHistory().contains(selectedStock)) {
+//
+//            Filter filterForStockName = new FilterByStockName();
+//
+//            List<List<String>> filteredTransactions = filterForStockName.filter(userRecord, selectedStock);
+//
+//            for (List<String> rowData : filteredTransactions) {
+//
+//                if (rowData.get(0) == selectedStock) {
+//
+//                    String stock = rowData.get(0);
+//                    String type = rowData.get(1);
+//                    String amount = rowData.get(2);
+//                    String price = rowData.get(3);
+//                    String date = rowData.get(4);
+//
+//                    tableModel.addRow(new Object[]{stock,
+//                                    type, amount, "$" + price, date
+//                            }
+//                    );
+//                }
+//            }
+//        }
 
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
