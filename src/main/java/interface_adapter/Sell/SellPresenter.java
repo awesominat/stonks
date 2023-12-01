@@ -27,17 +27,20 @@ public class SellPresenter implements SellOutputBoundary {
     @Override
     public void prepareSuccessView(SellOutputData response) {
         SellState sellState = sellViewModel.getState();
-        DashboardState dashboardState = dashboardViewModel.getState();
-        List<List<Double>> currentPriceStats = dashboardState.getCurrentPriceStats();
-        List<Double> currentPrices = new ArrayList<>();
-        for (List<Double> stockStats: currentPriceStats) {
-            currentPrices.add(stockStats.get(0));
-        }
 
         if (response.isExecuteTypeSell()) {
             String sellSuccess = String.format("Congratulations! Sold %.2f stocks of ", response.getAmount()) + response.getTicker();
             sellState.setSellSuccess(sellSuccess);
         } else {
+            DashboardState dashboardState = dashboardViewModel.getState();
+            List<List<Double>> currentPriceStats = dashboardState.getCurrentPriceStats();
+            List<String> dashboardOwnedTickers = dashboardState.getOwnedTickers();
+
+            List<Double> currentPrices = new ArrayList<>();
+            for (String sellOwnedTicker: response.getOwnedStocks()) {
+                int idx = dashboardOwnedTickers.indexOf(sellOwnedTicker);
+                currentPrices.add(currentPriceStats.get(idx).get(0));
+            }
             sellState.setBalance(response.getBalance());
             sellState.setOwnedStocks(response.getOwnedStocks());
             sellState.setOwnedAmounts(response.getOwnedAmounts());
