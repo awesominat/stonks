@@ -1,13 +1,10 @@
 package view;
 
 import interface_adapter.Dashboard.DashboardViewModel;
-import interface_adapter.GetTransactionHistory.GetTransactionHistoryController;
-import interface_adapter.GetTransactionHistory.GetTransactionHistoryState;
-import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
+import interface_adapter.GetTransactionHistory.*;
 import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -15,52 +12,70 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
 import java.util.List;
 
 public class TransactionHistoryView extends JPanel implements ActionListener, PropertyChangeListener {
-
     public final String viewName = "transactionHistory";
     private final GetTransactionHistoryViewModel getTransactionHistoryViewModel;
-    JTable table;
-    final JButton back;
     GetTransactionHistoryController getTransactionHistoryController;
+
+    final JTable table;
+    final JButton back;
+    DefaultComboBoxModel<String> stockInputFieldFilterModel;
+    final JComboBox<String> stockInputFieldFilter;
+    DefaultComboBoxModel<String> typeInputFieldFilterModel;
+    final JComboBox<String> typeInputFieldFilter;
+    FilterCollectionInterface filterCollection = new FilterCollection();
+
+    String selectedStock = null;
+    String selectedType = null;
+
     public TransactionHistoryView(
             GetTransactionHistoryController getTransactionHistoryController,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
             ViewManagerModel viewManagerModel,
             DashboardViewModel dashboardViewModel
     ) {
+
         this.getTransactionHistoryController = getTransactionHistoryController;
-
         this.getTransactionHistoryViewModel = getTransactionHistoryViewModel;
-
         this.getTransactionHistoryViewModel.addPropertyChangeListener(this);
-
-        setPreferredSize(new Dimension(1600, 800));
-
-        this.getTransactionHistoryController.execute();
-
-        JLabel title = new JLabel("Transaction History");
-
-        JTableHeader header = new JTableHeader();
-        header.add(title);
-        header.setBackground(Color.LIGHT_GRAY);
-
-        title.setPreferredSize(new Dimension(160, 20));
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        title.setBorder(border);
-        title.setText("Transaction History");
-//        title.setHorizontalAlignment(JLabel.NORTH);
-        title.setAlignmentX(SwingConstants.NORTH);
-        title.setFont(new Font("Helvetica", Font.BOLD, 18));
+        setPreferredSize(new Dimension(400, 400));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        setLayout(new BorderLayout());
 
-        this.add(title);
+        filterCollection.add(new FilterByStockName());
+        filterCollection.add(new FilterByTransactionType());
+//        this.getTransactionHistoryController.execute();
 
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
-        back.setMaximumSize(new Dimension(20, 10));
+        table = new JTable();
+        JLabel filterLabel = new JLabel("Filter settings:");
+        filterLabel.setFont(new Font(filterLabel.getFont().getName(), Font.BOLD, 20));
+        JLabel stockFilterLabel = new JLabel("Stock filter");
+        JLabel typeFilterLabel = new JLabel("Transaction type filter");
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        stockInputFieldFilterModel = new DefaultComboBoxModel<>();
+        stockInputFieldFilter = new JComboBox<>(stockInputFieldFilterModel);
+
+        typeInputFieldFilterModel = new DefaultComboBoxModel<>();
+        typeInputFieldFilter = new JComboBox<>(typeInputFieldFilterModel);
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+
+        leftPanel.add(back);
+        leftPanel.add(filterLabel);
+        leftPanel.add(stockFilterLabel);
+        leftPanel.add(stockInputFieldFilter);
+        leftPanel.add(typeFilterLabel);
+        leftPanel.add(typeInputFieldFilter);
+
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(scrollPane);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
+        splitPane.setResizeWeight(0.05);
 
         back.addActionListener(
                 evt -> {
@@ -70,16 +85,27 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
                 }
         );
 
-        table = new JTable();
+        stockInputFieldFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedStock = String.valueOf(stockInputFieldFilter.getSelectedItem());
+                getTransactionHistoryViewModel.firePropertyChanged();
+            }
+        });
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        typeInputFieldFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedType = String.valueOf(typeInputFieldFilter.getSelectedItem());
+                getTransactionHistoryViewModel.firePropertyChanged();
+            }
+        });
+        typeInputFieldFilterModel.addElement("No filter");
+        typeInputFieldFilterModel.addElement("BUY");
+        typeInputFieldFilterModel.addElement("SELL");
+        typeInputFieldFilterModel.addElement("TOPUP");
 
-//
-//        this.add(titleLabel);
-        this.add(title, BorderLayout.NORTH);
-        setLayout(new BorderLayout());
-        add(back, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        this.add(splitPane);
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -89,35 +115,47 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
     public void propertyChange(PropertyChangeEvent evt) {
         getTransactionHistoryController.execute();
 
+        if (stockInputFieldFilterModel.getIndexOf("No filter") == -1) {
+            stockInputFieldFilterModel.addElement("No filter");
+        }
+        for (String stock: getTransactionHistoryViewModel.getState().allStocksInHistory()){
+            if (stockInputFieldFilterModel.getIndexOf(stock) == -1 && !stock.equals("RESET")) {
+                stockInputFieldFilterModel.addElement(stock);
+            }
+        }
+        if (selectedStock != null) {
+            System.out.println(selectedStock);
+            stockInputFieldFilterModel.setSelectedItem(selectedStock);
+        }
+
+        typeInputFieldFilterModel.setSelectedItem(selectedType);
+
         GetTransactionHistoryState state = getTransactionHistoryViewModel.getState();
 
         DefaultTableModel tableModel = new DefaultTableModel();
-
-
         tableModel.addColumn("Stock");
-
         tableModel.addColumn("Transaction Type");
-
         tableModel.addColumn("Amount");
-
         tableModel.addColumn("Price");
-
         tableModel.addColumn("Date");
-
-
         List<List<String>> userRecord = state.getUserRecord();
+        filterCollection.applyFilters(
+                userRecord,
+                new String[] {selectedStock, selectedType}
+        );
 
         for (List<String> rowData : userRecord) {
-            String stock = rowData.get(0);
-            String type = rowData.get(1);
-            String amount = rowData.get(2);
-            String price = rowData.get(3);
-            String date = rowData.get(4);
-            tableModel.addRow(new Object[]{stock,
-                    type, amount, "$" + price, date
+                String stock = rowData.get(0);
+                String type = rowData.get(1);
+                String amount = rowData.get(2);
+                String price = rowData.get(3);
+                String date = rowData.get(4);
+                tableModel.addRow(new Object[]{stock,
+                                type, amount, "$" + price, date
+                        }
+                );
             }
-            );
-        }
+
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.LIGHT_GRAY);

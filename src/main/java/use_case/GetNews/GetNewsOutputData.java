@@ -42,7 +42,6 @@ public class GetNewsOutputData {
 
             this.newsItems.add(newsItem);
         }
-
     }
 
     /**
