@@ -22,6 +22,10 @@ import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Represents the graphical user interface for the GetNews use case.
+ * Allows users to search for news articles related to a specific company (that is publicly traded) and displays the results.
+ */
 public class GetNewsView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "news";
     private final GetNewsViewModel getNewsViewModel;
@@ -41,7 +45,9 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
     JTabbedPane newsTabs;
     ImageIcon icon;
 
-    // Custom cell renderer to allow displaying a clipped preview of a larger String using tooltip
+    /**
+     * Custom cell renderer to allow displaying a clipped preview of a larger String using a tooltip.
+     */
     private static class ClippedPreviewTableCellRenderer extends DefaultTableCellRenderer {
         private static final int MAX_PREVIEW_LENGTH = 60;
 
@@ -61,11 +67,20 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         }
     }
 
-    public GetNewsView(GetNewsViewModel getNewsViewModel,
-                       GetNewsController getNewsController,
-                       ViewManagerModel viewManagerModel,
-                       DashboardViewModel dashboardViewModel) {
-
+    /**
+     * Constructs a new GetNewsView with the specified view models and controller.
+     *
+     * @param getNewsViewModel   The view model for the GetNews use case.
+     * @param getNewsController  The controller for the GetNews use case.
+     * @param viewManagerModel   The model responsible for managing views.
+     * @param dashboardViewModel The view model for the Dashboard.
+     */
+    public GetNewsView(
+            GetNewsViewModel getNewsViewModel,
+            GetNewsController getNewsController,
+            ViewManagerModel viewManagerModel,
+            DashboardViewModel dashboardViewModel
+    ) {
         this.getNewsController = getNewsController;
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
@@ -78,7 +93,7 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         search = new JButton(getNewsViewModel.SEARCH_BUTTON_LABEL);
 
         LabelTextPanel tickerInput = new LabelTextPanel(
-                new JLabel("Stock ticker"), tickerInputField);
+                new JLabel(getNewsViewModel.SEARCH_BAR_LABEL), tickerInputField);
         tickerInput.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         back.addActionListener(
@@ -105,59 +120,62 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+
+            }
         });
 
+        // Set layout.
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setLayout(new BorderLayout());
+
+        // Set components for top panel.
         topPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
+        // Set grid bag constraints for the back button and add it to the top panel.
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         topPanel.add(back, gbc);
 
+        // Tedious formatting stuff.
         gbc.gridx = 1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         topPanel.add(Box.createHorizontalGlue(), gbc);
 
+        // Set grid bag constraints for the ticker input field and add it to the top panel.
         gbc.gridx = 2;
         gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
         topPanel.add(tickerInput, gbc);
 
+        // Set grid bag constraints for the search button and add it to the top panel.
         gbc.gridx = 3;
         gbc.weightx = 0;
         topPanel.add(search);
 
+        // Add the ticker error field to the top panel.
         topPanel.add(tickerErrorField);
 
+        // Finish formatting top panel and add it to the top panel.
         gbc.gridx = 4;
         gbc.weightx = 1.24;
         topPanel.add(Box.createHorizontalGlue(), gbc);
-        this.add(topPanel, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH);
 
-        gbc.gridx = 0;
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.weightx = 0;
-
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.weightx = 0;
-
+        // Initialize middle panel.
         middlePanel = new JPanel(new GridBagLayout());
         newsTabs = new JTabbedPane();
         icon = new ImageIcon("images/news.png");
 
+        // Prepare formatting for middle panel and add it to the view.
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -166,25 +184,35 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
         middlePanel.add(newsTabs, gbc);
         add(middlePanel);
 
+        // Set middle panel to be initially invisible.
         middlePanel.setVisible(false);
-
     }
 
     /**
      * React to a button click that results in evt.
+     *
+     * @param evt The ActionEvent representing the button click.
      */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * Responds to property change events, updating the view based on the new state.
+     *
+     * @param evt  The PropertyChangeEvent representing a change in one of the view's properties.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // Get new state.
         GetNewsState state = (GetNewsState) evt.getNewValue();
+        // Update fields of the view (in the state variable).
         setFields(state);
 
+        // Get news items to be displayed.
         List<Map<String, String>> newsItems = state.getNewsItems();
 
-        // Handle event where new news items have been fetched
+        // Handle event where new news items have been fetched.
         if (newsItems != null && state.getRenderNewInfo() != null) {
             // Remove all existing tabs before adding new ones.
             newsTabs.removeAll();
@@ -204,24 +232,34 @@ public class GetNewsView extends JPanel implements ActionListener, PropertyChang
                 newsTabs.setIconAt(i, icon);
             }
 
+            // Show news item table for first news item (others available in their tabs).
             middlePanel.setVisible(true);
+            // Reset the flag indicating there is new info to be rendered to null.
             state.setRenderNewInfo(null);
+            // Update state in view model.
             getNewsViewModel.setState(state);
         }
 
-
+        // Get ticker error (possibly null).
         String tickerError = state.getTickerError();
 
+        // Handle case where there is a ticker error.
         if (tickerError != null) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    tickerError
-            );
+            // Show error pop-up message.
+            JOptionPane.showMessageDialog(this, tickerError);
+
+            // Reset ticker error flag to null.
             state.setTickerError(null);
+            // Update state in view model.
             getNewsViewModel.setState(state);
         }
     }
 
+    /**
+     * Updates the fields of the view based on the state.
+     *
+     * @param state  The GetNewsState representing the current state.
+     */
     private void setFields(GetNewsState state) {
         tickerInputField.setText(state.getTicker());
     }

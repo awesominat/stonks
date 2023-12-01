@@ -9,12 +9,22 @@ import java.util.List;
 /**
  * Implements the GetNewsInputBoundary interface.
  * Represents the interactor for the GetNews use case.
- * Implements execute method to fetch news articles related to the specific company (specified in the input data).
+ * Implements input boundary's execute method to fetch news articles related to the company specified (in input data).
  */
 public class GetNewsInteractor implements GetNewsInputBoundary {
+
+    /** The presenter responsible for handling the output of the GetNews use case. */
     GetNewsOutputBoundary getNewsPresenter;
+
+    /** The API access interface used for fetching news data from an external source. */
     APIAccessInterface driverAPI;
 
+    /**
+     * Constructs a new GetNewsInteractor with the specified presenter and API access interface.
+     *
+     * @param getNewsPresenter The presenter for handling the output of the GetNews use case.
+     * @param driverAPI The API access interface used for fetching news data from the API.
+     */
     public GetNewsInteractor(
             GetNewsOutputBoundary getNewsPresenter,
             APIAccessInterface driverAPI
@@ -27,7 +37,7 @@ public class GetNewsInteractor implements GetNewsInputBoundary {
      * Executes GetNews use case based on provided input data.
      * News fetched over time period of up to one month prior to the method call.
      *
-     * @param getNewsInputData An InputData object following the relevant CA Engine rules
+     * @param getNewsInputData An input data object for this use case.
      */
     @Override
     public void execute(GetNewsInputData getNewsInputData) {
@@ -39,17 +49,18 @@ public class GetNewsInteractor implements GetNewsInputBoundary {
         LocalDate from = to.minusMonths(1);
 
         try {
-            // Make API call
+            // Make API call to retrieve news related to the specified company.
             List<CompanyNews> companyNewsList = driverAPI.getCompanyNews(ticker, from, to);
 
-            // Save API output using OutputData format for the GetNews use case
+            // Save API output using OutputData format for the GetNews use case.
             GetNewsOutputData result = new GetNewsOutputData(ticker, companyNewsList);
 
             getNewsPresenter.prepareSuccessView(result);
 
         } catch (RuntimeException e) {
-//            e.printStackTrace();
+            // Handle any runtime exception and prepare a fail view.
             getNewsPresenter.prepareFailView("Ticker not found or API did not respond.");
         }
     }
+
 }

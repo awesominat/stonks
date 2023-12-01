@@ -14,16 +14,16 @@ public class GetNewsInputData {
     /**
      * Constructs a new GetNewsInputData object with the specified stock ticker.
      *
-     * @param ticker The ticker symbol of the company
+     * @param ticker The specified stock ticker for a public company (i.e. that is traded on the stock market).
      */
     public GetNewsInputData(String ticker) {
         this.ticker = ticker;
     }
 
     /**
-     * Gets the ticker symbol passed to this InputData object associated with a stock.
+     * Gets the ticker passed to this input data object associated with a company's stock.
      *
-     * @return the ticker symbol passed when this object was created.
+     * @return The ticker symbol passed when this object was created.
      */
     public String getTicker() {
         return ticker;

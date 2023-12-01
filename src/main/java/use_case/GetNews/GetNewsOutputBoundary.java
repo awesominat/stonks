@@ -9,14 +9,14 @@ public interface GetNewsOutputBoundary {
     /**
      * Prepares the view to represent a successful execution of the GetNews use case.
      *
-     * @param result The output data containing information for this success scenario.
+     * @param result  The output data containing information for this success scenario.
      */
     void prepareSuccessView(GetNewsOutputData result);
 
     /**
      * Prepares the view to represent a failed execution of the GetNews use case.
      *
-     * @param error A string representing the error information for the failure scenario.
+     * @param error  A string representing the error information for the failure scenario.
      */
     void prepareFailView(String error);
 
