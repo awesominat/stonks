@@ -70,16 +70,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Create a JLabel for the title
-        JLabel title = new JLabel("Sell Stocks");
-
-        title.setPreferredSize(new Dimension(160, 20));
-        title.setText("Sell Stocks");
-        title.setHorizontalAlignment(JLabel.CENTER);
-        title.setFont(new Font("Helvetica", Font.BOLD, 18));
-
-        topPanel.add(title);
-
         JLabel stockSelectionLabel = new JLabel("Select an owned stock");
         LabelTextPanel stockAmountInfo = new LabelTextPanel(
                 new JLabel("Select amount to sell"), amountInputField);
@@ -150,7 +140,6 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         });
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(title);
         this.add(currentBalance);
         this.add(new JScrollPane(table));
         this.add(stockSelectionLabel);
