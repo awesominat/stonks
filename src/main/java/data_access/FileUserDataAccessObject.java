@@ -9,7 +9,6 @@ import entity.Transaction;
 import entity.User;
 import entity.UserFactory;
 import use_case.Buy.BuyDataAccessInterface;
-import use_case.CacheStockInformation.CacheStockInformationDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.GetNews.GetNewsDataAccessInterface;
 import use_case.GetTransactionHistory.GetTransactionHistoryDataAccessInterface;
@@ -28,8 +27,7 @@ public class FileUserDataAccessObject implements
         ResetBalanceDataAccessInterface,
         DashboardDataAccessInterface,
         GetTransactionHistoryDataAccessInterface,
-        GetNewsDataAccessInterface,
-        CacheStockInformationDataAccessInterface
+        GetNewsDataAccessInterface
 {
 
     private File jsonFile;

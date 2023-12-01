@@ -4,7 +4,6 @@ import data_access.FileUserDataAccessObject;
 import driver.Finnhub;
 import entity.CommonUserFactory;
 import interface_adapter.Buy.BuyViewModel;
-import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
@@ -39,11 +38,6 @@ public class testDashboardView {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
-        CacheStockInformationViewModel cacheStockInformationViewModel = new CacheStockInformationViewModel();
-        BuyViewModel buyViewModel = new BuyViewModel();
-        SellViewModel sellViewModel = new SellViewModel();
-        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
-        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
         FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("./user.json", new CommonUserFactory());
         userDataAccessObject.save();
@@ -51,12 +45,7 @@ public class testDashboardView {
         APIAccessInterface driverAPI = new Finnhub();
 
         // Initialize all the necessary objects to simulate the DashboardView.
-        DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(
-                viewManagerModel,
-                dashboardViewModel,
-                sellViewModel,
-                cacheStockInformationViewModel
-        );
+        DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(viewManagerModel, dashboardViewModel);
         DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, driverAPI);
         DashboardController dashboardController = new DashboardController(dashboardInteractor);
 
@@ -65,6 +54,11 @@ public class testDashboardView {
         ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(userDataAccessObject, resetBalancePresenter, driverAPI);
         ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
 
+        // Initialize necessary ViewModels.
+        BuyViewModel buyViewModel = new BuyViewModel();
+        SellViewModel sellViewModel = new SellViewModel();
+        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
+        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
 
         // Create the DashboardView to be simulated.
         DashboardView dashboardView = new DashboardView(
