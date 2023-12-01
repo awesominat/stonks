@@ -1,20 +1,21 @@
-package use_case.GetNews;
+package use_case;
 
 import entity.CompanyInformation;
 import entity.CompanyNews;
 import entity.PricePoint;
 import entity.StockInformation;
-import org.junit.Test;
-import use_case.APIAccessInterface;
+import org.junit.jupiter.api.Test;
+import use_case.GetNews.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetNewsInteractorTest {
+public class GetNewsTest {
 
     @Test
     public void successTest() {

@@ -9,9 +9,7 @@ public interface User {
     Boolean isInPortfolio(String ticker);
     HashMap<String, Double> getPortfolio();
     Double getStockOwned(String ticker);
-    boolean hasStock(String ticker);
     boolean hasEnough(Double amount);
-    void addToHistory(String stockName, TransactionHistory entry);
     void spendBalance(Double difference);
     void setBalance(Double amount);
     void addBalance(Double addition);
