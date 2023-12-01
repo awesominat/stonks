@@ -3,7 +3,7 @@ package interface_adapter.GetTransactionHistory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterCollection {
+public class FilterCollection implements FilterCollectionInterface {
     List<Filter> filterType;
     public FilterCollection() {
         filterType = new ArrayList<>();
@@ -12,13 +12,12 @@ public class FilterCollection {
         this.filterType.add(filter);
     }
 
-    public List<List<String>> applyFilters(List<List<String>> toFilter, String[] filterArguments){
+    public void applyFilters(List<List<String>> toFilter, String[] filterArguments){
         if (filterArguments.length != filterType.size()) {
             throw new RuntimeException("Incorrect Number of Filter Arguments");
         }
         for (int i = 0; i < filterArguments.length; i++) {
-            toFilter = filterType.get(i).filter(toFilter, filterArguments[i]);
+            filterType.get(i).filter(toFilter, filterArguments[i]);
         }
-        return toFilter;
     }
 }
