@@ -23,6 +23,11 @@ public class GetNewsInteractorTest {
         // Create anonymous class that implements the APIAccessInterface
         APIAccessInterface driverAPI = new APIAccessInterface() {
             @Override
+            public String getAppName() {
+                return "stonks";
+            }
+
+            @Override
             public boolean isMarketOpen() {
                 // This method is not relevant, so simply return true.
                 return true;
