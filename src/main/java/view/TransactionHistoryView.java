@@ -59,25 +59,6 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         this.add(title);
 
-//        JFrame frame = new JFrame("Transaction History");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        // Create a JPanel with BorderLayout
-//        JPanel mainPanel = new JPanel(new BorderLayout());
-//
-//        // Create a JLabel for the title
-//        JLabel titleLabel = new JLabel("Transaction History");
-//        titleLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
-//
-//        // Add the title label to the west (left) side of the main panel
-//        mainPanel.add(titleLabel, BorderLayout.NORTH);
-//
-//        frame.getContentPane().add(mainPanel);
-//        frame.setSize(400, 300);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(false);
-
-
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
         back.setMaximumSize(new Dimension(20, 10));
 
@@ -124,26 +105,19 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         tableModel.addColumn("Date");
 
 
-        HashMap<String, List<List<String>>> userRecord = state.getUserRecord();
+        List<List<String>> userRecord = state.getUserRecord();
 
-      
-        for (HashMap.Entry<String, List<List<String>>> entry : userRecord.entrySet()) {
-            String key = entry.getKey();
-            List<List<String>> dataList = entry.getValue();
-
-            for (List<String> rowData : dataList) {
-                String stock = rowData.get(0);
-                String amount = rowData.get(1);
-                String price = rowData.get(2);
-                String date = rowData.get(3);
-                tableModel.addRow(new Object[]{key,
-                        stock, amount, "$" + price, date
-                }
-                );
+        for (List<String> rowData : userRecord) {
+            String stock = rowData.get(0);
+            String type = rowData.get(1);
+            String amount = rowData.get(2);
+            String price = rowData.get(3);
+            String date = rowData.get(4);
+            tableModel.addRow(new Object[]{stock,
+                    type, amount, "$" + price, date
             }
+            );
         }
-
-//        table.setPreferredSize(new Dimension(1440, 800));
         table.setModel(tableModel);
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.LIGHT_GRAY);
