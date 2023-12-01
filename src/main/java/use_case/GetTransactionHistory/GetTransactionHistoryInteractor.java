@@ -25,44 +25,31 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
         User user = userDataAccessObject.get();
         HashMap<String, TransactionHistory> userHistory =  user.getHistory();
 
-        // List of Stock Names
-        List<String> stocks = new ArrayList<>();
-
-        List<List<Transaction>> listOfTransactions = new ArrayList<>();
+        List<List<String>> userRecord = new ArrayList<>();
 
         for (Map.Entry<String, TransactionHistory> entry : userHistory.entrySet()) {
 
-            String stock = entry.getValue().getStock().getFullName();
-            TransactionHistory historyTransactionsForStock = entry.getValue();
+            TransactionHistory transactionHistoryForStock = entry.getValue();
+            String stock = transactionHistoryForStock.getStock().getFullName();
 
-            stocks.add(stock);
-            listOfTransactions.add(historyTransactionsForStock.getTransactions());
-        }
 
-        HashMap<String, List<List<String>>> userRecord = new HashMap<>();
-        for (int i = 0; i < stocks.size(); i ++) {
-            // List of Transactions of a Particular Stock (List of Transaction)
-            List<List<String>> listOfTransactionFacts = new ArrayList<>();
+            for (Transaction tran: transactionHistoryForStock) {
 
-            for (Transaction transaction : listOfTransactions.get(i)) {
-
-                String type = transaction.getType().toString();
-                String amount = transaction.getAmount().toString();
-                String pricePurchasedAt = transaction.getPricePoint().getPrice().toString();
-                String date = transaction.getPricePoint().getTimeStamp().toString();
+                String type = tran.getType().toString();
+                String amount = tran.getAmount().toString();
+                String pricePurchasedAt = tran.getPricePoint().getPrice().toString();
+                String date = tran.getPricePoint().getTimeStamp().toString();
 
                 // List containing Transaction Facts
-                List<String> Transaction = new ArrayList<>();
-
-                Transaction.add(type);
-                Transaction.add(amount);
-                Transaction.add(pricePurchasedAt);
-                Transaction.add(date);
-                listOfTransactionFacts.add(Transaction);
+                List<String> transaction = new ArrayList<>();
+                transaction.add(0, stock);
+                transaction.add(1, type);
+                transaction.add(2,amount);
+                transaction.add(3, pricePurchasedAt);
+                transaction.add(4,date);
+                userRecord.add(transaction);
             }
-            userRecord.put(stocks.get(i), listOfTransactionFacts);
         }
-
         GetTransactionHistoryOutputData transactionHistory = new GetTransactionHistoryOutputData(userRecord);
 
         getTransactionHistoryPresenter.prepareSuccessView(transactionHistory);

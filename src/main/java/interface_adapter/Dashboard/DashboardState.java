@@ -10,19 +10,22 @@ public class DashboardState {
     private List<Double> ownedAmounts;
     private List<List<Double>> currentPriceStats;
     private Boolean refreshPressed;
+    private Boolean resetPressed;
 
     public DashboardState(
             HashMap<String, Double> userStats,
             List<String> ownedTickers,
             List<Double> ownedAmounts,
             List<List<Double>> currentPriceStats,
-            Boolean refreshPressed
+            Boolean refreshPressed,
+            Boolean resetPressed
     ) {
         this.userStats = userStats;
         this.ownedTickers = ownedTickers;
         this.ownedAmounts = ownedAmounts;
         this.currentPriceStats = currentPriceStats;
         this.refreshPressed = refreshPressed;
+        this.resetPressed = resetPressed;
     }
 
     public List<Double> getOwnedAmounts() {
@@ -65,12 +68,21 @@ public class DashboardState {
         this.currentPriceStats = currentPriceStats;
     }
 
+    public Boolean getResetPressed() {
+        return resetPressed;
+    }
+
+    public void setResetPressed(Boolean resetPressed) {
+        this.resetPressed = resetPressed;
+    }
+
     public DashboardState() {
         this.userStats = new HashMap<>();
         this.ownedAmounts = new ArrayList<>();
         this.ownedTickers = new ArrayList<>();
         this.currentPriceStats = new ArrayList<>();
         this.refreshPressed = false;
+        this.resetPressed = false;
     }
 
 }

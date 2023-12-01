@@ -23,6 +23,14 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         this.driverAPI = driverAPI;
     }
 
+    private Transaction createBuyTransaction(Double amount, Double currentPrice) {
+        return new BuyTransaction(
+                amount,
+                new PricePoint(
+                        LocalDate.now(),
+                        currentPrice
+                ));
+    }
     @Override
     public void execute(BuyInputData buyInputData) {
         String ticker = buyInputData.getTicker();
@@ -55,8 +63,8 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
                         user.getBalance()
                 );
                 buyPresenter.prepareSuccessView(result);
-            } catch (RuntimeException e) { // this should be its own exception, TickerNotFoundException
-                buyPresenter.prepareFailView("Incorrect ticker.");
+            } catch (APIAccessInterface.TickerNotFoundException e) { // this should be its own exception, TickerNotFoundException
+                buyPresenter.prepareFailView("Please enter a valid ticker.");
             }
             return;
         } else if (amount <= 0) {
@@ -64,26 +72,26 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
             return;
         }
 
-        Double currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
+        Double currentPrice = null;
+        try {
+            currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
+        } catch (APIAccessInterface.TickerNotFoundException e) {
+            buyPresenter.prepareFailView("Please enter a valid ticker.");
+            return;
+        }
         if (!user.hasEnough(currentPrice * amount)) {
             buyPresenter.prepareFailView("You are broke. no money. no balance. no stock. no equity.");
             return;
         }
 
         user.spendBalance(currentPrice * amount);
-        HashMap<String, TransactionHistory> userHistory = user.getHistory();
 
-        Transaction transaction = new BuyTransaction(
-                amount,
-                new PricePoint(
-                        LocalDate.now(),
-                        currentPrice
-                ));
+        Transaction transaction = createBuyTransaction(amount, currentPrice);
 
         super.updatePortfolio(user, ticker, amount);
 
         super.addToHistory(
-                userHistory,
+                user,
                 ticker,
                 currentPrice,
                 transaction

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Finnhub implements APIAccessInterface {
-    String APIKEY;  // Question: should this be private or static or final or some combination of these things?
+    private final String APIKEY;
     int NUM_ARTICLES = 5;
     private final String appName = "RESET";
 
@@ -30,7 +30,7 @@ public class Finnhub implements APIAccessInterface {
         try {
             inputStream = new FileInputStream(f);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Please create file.txt in the root directory with your Finnhub API key");
         }
         // Set constant attribute `APIKEY` of Finnhub object to your personal API key
         APIKEY = fileReader.readFromInputStream(inputStream);
@@ -67,7 +67,7 @@ public class Finnhub implements APIAccessInterface {
     }
 
     @Override
-    public CompanyInformation getCompanyProfile(String ticker) {
+    public CompanyInformation getCompanyProfile(String ticker) throws TickerNotFoundException {
         // Get profile for company `ticker`.
 
         // Define url for API call
@@ -88,6 +88,10 @@ public class Finnhub implements APIAccessInterface {
             assert response.body() != null;
             JSONObject responseBody = new JSONObject(response.body().string());
 
+            if (responseBody.isEmpty()) {
+                throw new TickerNotFoundException("Ticker " + ticker + " does not exist");
+            }
+
             // Save API response values
             String country = (String) responseBody.get("country");
             String name = (String) responseBody.get("name");
@@ -104,7 +108,7 @@ public class Finnhub implements APIAccessInterface {
     }
 
     @Override
-    public List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to) {
+    public List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to) throws TickerNotFoundException {
         // Get news related to company `ticker` from the last month.
         // Limit it to the first `NUM_ARTICLES` articles.
 
@@ -129,6 +133,11 @@ public class Finnhub implements APIAccessInterface {
 
             // Read API data into a JSON array
             JSONArray responseBody = new JSONArray(response.body().string());
+
+            if (responseBody.isEmpty()) {
+                throw new TickerNotFoundException("Ticker " + ticker + " does not exist.");
+            }
+
             // Initialize output array (for return value)
             List<CompanyNews> ret = new ArrayList<CompanyNews>();
 
@@ -157,12 +166,14 @@ public class Finnhub implements APIAccessInterface {
             return ret;
         }
         catch (IOException | JSONException e) {
+            System.out.println(e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public PricePoint getCurrentPrice(String ticker) {
+    public PricePoint getCurrentPrice(String ticker) throws TickerNotFoundException {
         ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
 
         String url = "https://finnhub.io/api/v1/quote?symbol=" + ticker + "&token=" + APIKEY;
@@ -179,6 +190,11 @@ public class Finnhub implements APIAccessInterface {
             Response response = client.newCall(request).execute();
             assert response.body() != null;
             JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.isEmpty() || responseBody.get("d") == null) {
+                throw new TickerNotFoundException("Ticker " + ticker + " does not exist.");
+            }
+
             LocalDate now = LocalDate.now();
             Double price;
 
@@ -195,7 +211,7 @@ public class Finnhub implements APIAccessInterface {
         }
     }
 
-    public StockInformation getCurrentStockInformation(String ticker) {
+    public StockInformation getCurrentStockInformation(String ticker) throws TickerNotFoundException {
         ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
 
         String url = "https://finnhub.io/api/v1/quote?symbol=" + ticker + "&token=" + APIKEY;

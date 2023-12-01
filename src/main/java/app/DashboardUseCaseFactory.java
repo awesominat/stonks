@@ -1,6 +1,7 @@
 package app;
 
 import interface_adapter.Buy.BuyViewModel;
+import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
@@ -27,6 +28,7 @@ public class DashboardUseCaseFactory {
             BuyViewModel buyViewModel,
             SellViewModel sellViewModel,
             GetNewsViewModel getNewsViewModel,
+            CacheStockInformationViewModel cacheStockInformationViewModel,
             ResetBalanceController resetBalanceController,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
             DashboardDataAccessInterface dashboardDataAccessInterface,
@@ -35,6 +37,8 @@ public class DashboardUseCaseFactory {
         DashboardController dashboardController = createDashboardUseCase(
                 viewManagerModel,
                 dashboardViewModel,
+                sellViewModel,
+                cacheStockInformationViewModel,
                 dashboardDataAccessInterface,
                 apiAccessInterface
         );
@@ -54,10 +58,17 @@ public class DashboardUseCaseFactory {
     private static DashboardController createDashboardUseCase(
             ViewManagerModel viewManagerModel,
             DashboardViewModel dashboardViewModel,
+            SellViewModel sellViewModel,
+            CacheStockInformationViewModel cacheStockInformationViewModel,
             DashboardDataAccessInterface dashboardDataAccessInterface,
             APIAccessInterface apiAccessInterface
     ) {
-        DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(viewManagerModel, dashboardViewModel);
+        DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(
+                viewManagerModel,
+                dashboardViewModel,
+                sellViewModel,
+                cacheStockInformationViewModel
+        );
         DashboardInputBoundary dashboardInteractor = new DashboardInteractor(
                 dashboardDataAccessInterface,
                 dashboardPresenter,

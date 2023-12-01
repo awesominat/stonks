@@ -2,30 +2,20 @@ import entity.CommonUser;
 import entity.CompanyInformation;
 import entity.PricePoint;
 import entity.User;
-import use_case.Buy.BuyOutputBoundary;
-import use_case.Sell.SellOutputBoundary;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import use_case.APIAccessInterface;
-import use_case.Buy.BuyDataAccessInterface;
-import use_case.Buy.BuyInputData;
-import use_case.Buy.BuyInteractor;
-import use_case.Buy.BuyOutputData;
-import use_case.Sell.SellDataAccessInterface;
-import use_case.Sell.SellInputData;
-import use_case.Sell.SellInteractor;
-import use_case.Sell.SellOutputData;
+import use_case.Buy.*;
+import use_case.Sell.*;
 
-import java.io.IOException;
 import java.time.LocalDate;
-
 
 import static org.mockito.ArgumentMatchers.any;
 
 public class buySellTest {
     @Test
-    public void testBuy() throws IOException {
+    public void testBuy() throws APIAccessInterface.TickerNotFoundException {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
         BuyDataAccessInterface userDataAccessObject = Mockito.mock(BuyDataAccessInterface.class);
 
@@ -53,7 +43,7 @@ public class buySellTest {
     }
 
     @Test
-    public void testSell() throws IOException {
+    public void testSell() throws APIAccessInterface.TickerNotFoundException {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
         SellDataAccessInterface userDataAccessObject = Mockito.mock(SellDataAccessInterface.class);
 
