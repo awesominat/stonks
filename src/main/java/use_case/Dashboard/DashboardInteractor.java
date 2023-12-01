@@ -30,14 +30,21 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         Boolean refreshPressed = dashboardInputData.getRefreshPressed();
         User user = userDataAccessObject.get();
         HashMap<String, Double> portfolio = user.getPortfolio();
-        System.out.println(portfolio);
 
         // If the refresh button is pressed, we want to re fetch stock price information so that displayed
         // tables are up-to-date. Pressing of refresh is a manual user action, so API calls are made.
         if (refreshPressed) {
             List<List<Double>> priceStats = new ArrayList<List<Double>>();
             for (String ticker : portfolio.keySet()) {
-                StockInformation stockInformation = driverAPI.getCurrentStockInformation(ticker);
+                // if we ever reach a point where a ticker in the portfolio has no information
+                // this is only recoverable if the ticker is completely deleted from the portfolio
+                StockInformation stockInformation = null;
+                try {
+                    stockInformation = driverAPI.getCurrentStockInformation(ticker);
+                } catch (APIAccessInterface.TickerNotFoundException e) {
+                    portfolio.remove(ticker);
+                    continue;
+                }
                 List<Double> stockInfo = Arrays.asList(
                         stockInformation.getCurrentPrice(),
                         stockInformation.getPriceChange(),
@@ -82,7 +89,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         LocalDate now = LocalDate.now();
         for (Map.Entry<String, TransactionHistory> entry: history.entrySet()) {
             TransactionHistory stockHistory = entry.getValue();
-            for (Transaction transaction: stockHistory.getTransactions()) {
+            for (Transaction transaction: stockHistory) {
                 if (transaction.getType() == TransactionType.TOPUP) {
                     PricePoint pp = transaction.getPricePoint();
                     double daysSince = DAYS.between(now, pp.getTimeStamp());

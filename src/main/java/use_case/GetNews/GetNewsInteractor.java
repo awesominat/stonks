@@ -45,8 +45,9 @@ public class GetNewsInteractor implements GetNewsInputBoundary {
             getNewsPresenter.prepareSuccessView(result);
 
         } catch (RuntimeException e) {
-//            e.printStackTrace();
-            getNewsPresenter.prepareFailView("Ticker not found or API did not respond.");
+            getNewsPresenter.prepareFailView("API did not respond.");
+        } catch (APIAccessInterface.TickerNotFoundException e) {
+            getNewsPresenter.prepareFailView("Please enter a valid ticker.");
         }
     }
 }

@@ -1,5 +1,7 @@
 package interface_adapter.ResetBalance;
 import use_case.ResetBalance.ResetBalanceInputBoundary;
+import use_case.ResetBalance.ResetBalanceInputData;
+
 public class ResetBalanceController {
     final private ResetBalanceInputBoundary resetBalanceInteractor;
 
@@ -7,7 +9,7 @@ public class ResetBalanceController {
         this.resetBalanceInteractor = resetBalanceInteractor;
     }
 
-    public void execute() {
-        resetBalanceInteractor.execute();
+    public void execute(Boolean resetPressed) {
+        resetBalanceInteractor.execute(new ResetBalanceInputData(resetPressed));
     }
 }

@@ -1,11 +1,14 @@
 package use_case.ResetBalance;
 
-import entity.*;
+import entity.PricePoint;
+import entity.TopupTransaction;
+import entity.Transaction;
+import entity.User;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
+import java.util.HashMap;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 public class ResetBalanceInteractor extends BaseStockInteractor implements ResetBalanceInputBoundary {
     final ResetBalanceDataAccessInterface userDataAccessObject;
@@ -22,33 +25,35 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         this.resetBalancePresenter = resetBalancePresenter;
         this.driverAPI = driverAPI;
     }
-    @Override
-    public void execute() {
-        User user = userDataAccessObject.get();
 
-        Double curBalance = user.getBalance();
-
-        Double amountToAdd = 10000.0;
-
-        user.setBalance(amountToAdd);
-
-        user.clearPortfolio();
-
-        HashMap<String, TransactionHistory> userHistory = user.getHistory();
-
-        Transaction transaction = new TopupTransaction(
+    private Transaction createResetTransaction(Double amountToAdd) {
+        return new TopupTransaction(
                 1.0,
                 new PricePoint(
                         LocalDate.now(),
                         amountToAdd
                 )
         );
+    }
 
-        super.addToHistory(userHistory, "RESET", curBalance, transaction);
+    @Override
+    public void execute(ResetBalanceInputData resetBalanceInputData) {
+        Boolean resetPressed = resetBalanceInputData.getResetPressed();
+        User user = userDataAccessObject.get();
+        HashMap<String, Double> portfolio = user.getPortfolio();
+        Double curBalance = user.getBalance();
+        Double amountToAdd = 10000.0;
+
+        user.setBalance(amountToAdd);
+
+        user.clearPortfolio();
+
+        Transaction transaction = createResetTransaction(amountToAdd);
+        super.addToHistory(user, "RESET", curBalance, transaction);
 
         this.userDataAccessObject.save();
 
-        ResetBalanceOutputData result = new ResetBalanceOutputData(amountToAdd);
+        ResetBalanceOutputData result = new ResetBalanceOutputData(resetPressed);
 
         resetBalancePresenter.prepareSuccessView(result);
     }

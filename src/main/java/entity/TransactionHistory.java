@@ -1,13 +1,35 @@
 package entity;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class TransactionHistory {
+public class TransactionHistory implements Iterable<Transaction> {
     private Stock stock;
     private List<Transaction> transactions;
 
     public List<Transaction> getTransactions() {
         return transactions;
+    }
+
+    class TransactionIter implements Iterator<Transaction> {
+        int idx = 0;
+
+        public boolean hasNext() {
+            return idx < transactions.size();
+        }
+
+        public Transaction next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return transactions.get(idx++);
+        }
+    }
+
+    @Override
+    public Iterator<Transaction> iterator() {
+        return new TransactionIter();
     }
 
     public Stock getStock() {

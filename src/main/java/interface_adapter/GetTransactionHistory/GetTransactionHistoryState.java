@@ -1,16 +1,47 @@
 package interface_adapter.GetTransactionHistory;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class GetTransactionHistoryState {
-    private HashMap<String, List<List<String>>> userRecord;
+    private List<List<String>> userRecord;
 
-    public HashMap<String, List<List<String>>> getUserRecord() {
+    public List<List<String>> getUserRecord() {
         return userRecord;
     }
 
-    public void setUserRecord(HashMap<String, List<List<String>>> userRecord) {
+    public void setUserRecord(List<List<String>> userRecord) {
         this.userRecord = userRecord;
     }
+
+    public HashSet<String> allStocksInHistory() {
+
+        HashSet<String> stocks = new HashSet<>();
+
+        for (List<String> transaction: this.userRecord) {
+
+            stocks.add(transaction.get(0));
+
+        }
+
+        return stocks;
+
+    }
+
+    public HashSet<String> allTypesInHistory() {
+
+        HashSet<String> stockTypes = new HashSet<>();
+
+        for (List<String> transaction: this.userRecord) {
+
+            stockTypes.add(transaction.get(1));
+
+        }
+
+        return stockTypes;
+
+    }
+
+
 }
