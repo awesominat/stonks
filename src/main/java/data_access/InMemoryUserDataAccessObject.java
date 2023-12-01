@@ -6,7 +6,6 @@ import entity.TransactionHistory;
 import entity.User;
 import use_case.Buy.BuyDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
-import use_case.GetNews.GetNewsDataAccessInterface;
 import use_case.GetTransactionHistory.GetTransactionHistoryDataAccessInterface;
 import use_case.ResetBalance.ResetBalanceDataAccessInterface;
 import use_case.Sell.SellDataAccessInterface;
@@ -18,8 +17,7 @@ public class InMemoryUserDataAccessObject implements
         SellDataAccessInterface,
         ResetBalanceDataAccessInterface,
         DashboardDataAccessInterface,
-        GetTransactionHistoryDataAccessInterface,
-        GetNewsDataAccessInterface {
+        GetTransactionHistoryDataAccessInterface {
 
     private final User testUser = new CommonUser();
 
