@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SellTest {
-    private InMemoryUserDataAccessObject userDataAccessObject;
+    private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     APIAccessInterface mockApi;
 
     @BeforeAll
