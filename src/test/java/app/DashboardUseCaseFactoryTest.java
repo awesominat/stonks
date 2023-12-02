@@ -1,8 +1,8 @@
 package app;
 
+import entity.CacheStockInformation;
 import entity.CommonUser;
 import interface_adapter.Buy.BuyViewModel;
-import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GetNews.GetNewsViewModel;
@@ -32,13 +32,13 @@ class DashboardUseCaseFactoryTest {
     @Mock
     private GetNewsViewModel getNewsViewModel;
     @Mock
-    private CacheStockInformationViewModel cacheStockInformationViewModel;
-    @Mock
     private ResetBalanceController resetBalanceController;
     @Mock
     private GetTransactionHistoryViewModel getTransactionHistoryViewModel;
     @Mock
     private APIAccessInterface apiAccessInterface;
+    @Mock
+    private CacheStockInformation cacheStockInformation;
 
     @BeforeEach
     void setUp() {
@@ -61,10 +61,10 @@ class DashboardUseCaseFactoryTest {
                 buyViewModel,
                 sellViewModel,
                 getNewsViewModel,
-                cacheStockInformationViewModel,
                 resetBalanceController,
                 getTransactionHistoryViewModel,
                 dashboardDataAccessInterface,
+                cacheStockInformation,
                 apiAccessInterface
         );
 

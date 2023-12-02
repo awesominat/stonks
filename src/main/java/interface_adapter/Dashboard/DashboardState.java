@@ -6,42 +6,39 @@ import java.util.List;
 
 public class DashboardState {
     private HashMap<String, Double> userStats;
-    private List<String> ownedTickers;
-    private List<Double> ownedAmounts;
-    private List<List<Double>> currentPriceStats;
+    private HashMap<String, Double> ownedStocksTable;
+    private HashMap<String, List<Double>> stocksPriceInformationTable;
     private Boolean refreshPressed;
     private Boolean resetPressed;
 
     public DashboardState(
             HashMap<String, Double> userStats,
-            List<String> ownedTickers,
-            List<Double> ownedAmounts,
-            List<List<Double>> currentPriceStats,
+            HashMap<String, Double> ownedStocksTable,
+            HashMap<String, List<Double>> stocksPriceInformationTable,
             Boolean refreshPressed,
             Boolean resetPressed
     ) {
         this.userStats = userStats;
-        this.ownedTickers = ownedTickers;
-        this.ownedAmounts = ownedAmounts;
-        this.currentPriceStats = currentPriceStats;
+        this.ownedStocksTable = ownedStocksTable;
+        this.stocksPriceInformationTable = stocksPriceInformationTable;
         this.refreshPressed = refreshPressed;
         this.resetPressed = resetPressed;
     }
 
-    public List<Double> getOwnedAmounts() {
-        return ownedAmounts;
+    public HashMap<String, Double> getOwnedStocksTable() {
+        return ownedStocksTable;
     }
 
-    public void setOwnedAmounts(List<Double> ownedAmounts) {
-        this.ownedAmounts = ownedAmounts;
+    public void setOwnedStocksTable(HashMap<String, Double> ownedStocksTable) {
+        this.ownedStocksTable = ownedStocksTable;
     }
 
-    public List<String> getOwnedTickers() {
-        return ownedTickers;
+    public HashMap<String, List<Double>> getStocksPriceInformationTable() {
+        return stocksPriceInformationTable;
     }
 
-    public void setOwnedTickers(List<String> ownedTickers) {
-        this.ownedTickers = ownedTickers;
+    public void setStocksPriceInformationTable(HashMap<String, List<Double>> stocksPriceInformationTable) {
+        this.stocksPriceInformationTable = stocksPriceInformationTable;
     }
 
     public HashMap<String, Double> getUserStats() {
@@ -60,14 +57,6 @@ public class DashboardState {
         this.refreshPressed = refreshPressed;
     }
 
-    public List<List<Double>> getCurrentPriceStats() {
-        return currentPriceStats;
-    }
-
-    public void setCurrentPriceStats(List<List<Double>> currentPriceStats) {
-        this.currentPriceStats = currentPriceStats;
-    }
-
     public Boolean getResetPressed() {
         return resetPressed;
     }
@@ -78,9 +67,8 @@ public class DashboardState {
 
     public DashboardState() {
         this.userStats = new HashMap<>();
-        this.ownedAmounts = new ArrayList<>();
-        this.ownedTickers = new ArrayList<>();
-        this.currentPriceStats = new ArrayList<>();
+        this.ownedStocksTable = new HashMap<>();
+        this.stocksPriceInformationTable = new HashMap<>();
         this.refreshPressed = false;
         this.resetPressed = false;
     }

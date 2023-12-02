@@ -1,7 +1,7 @@
 package app;
 
+import entity.CacheStockInformation;
 import interface_adapter.Buy.BuyViewModel;
-import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
@@ -28,18 +28,18 @@ public class DashboardUseCaseFactory {
             BuyViewModel buyViewModel,
             SellViewModel sellViewModel,
             GetNewsViewModel getNewsViewModel,
-            CacheStockInformationViewModel cacheStockInformationViewModel,
             ResetBalanceController resetBalanceController,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
             DashboardDataAccessInterface dashboardDataAccessInterface,
+            CacheStockInformation cacheStockInformation,
             APIAccessInterface apiAccessInterface
     ) {
         DashboardController dashboardController = createDashboardUseCase(
                 viewManagerModel,
                 dashboardViewModel,
                 sellViewModel,
-                cacheStockInformationViewModel,
                 dashboardDataAccessInterface,
+                cacheStockInformation,
                 apiAccessInterface
         );
         dashboardController.execute(true);
@@ -59,18 +59,18 @@ public class DashboardUseCaseFactory {
             ViewManagerModel viewManagerModel,
             DashboardViewModel dashboardViewModel,
             SellViewModel sellViewModel,
-            CacheStockInformationViewModel cacheStockInformationViewModel,
             DashboardDataAccessInterface dashboardDataAccessInterface,
+            CacheStockInformation cacheStockInformation,
             APIAccessInterface apiAccessInterface
     ) {
         DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(
                 viewManagerModel,
                 dashboardViewModel,
-                sellViewModel,
-                cacheStockInformationViewModel
+                sellViewModel
         );
         DashboardInputBoundary dashboardInteractor = new DashboardInteractor(
                 dashboardDataAccessInterface,
+                cacheStockInformation,
                 dashboardPresenter,
                 apiAccessInterface
         );

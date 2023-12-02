@@ -2,10 +2,10 @@ package app;
 
 import data_access.FileUserDataAccessObject;
 import driver.Finnhub;
+import entity.CacheStockInformation;
 import entity.CommonUserFactory;
 import interface_adapter.Buy.BuyViewModel;
 import interface_adapter.CacheStockInformation.CacheStockInformationController;
-import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import interface_adapter.GetNews.GetNewsViewModel;
 import interface_adapter.GetTransactionHistory.GetTransactionHistoryViewModel;
 import interface_adapter.ResetBalance.ResetBalanceController;
@@ -40,13 +40,13 @@ public class Main {
                 new CommonUserFactory()
         );
         fileUserDataAccessObject.save();
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
 
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         BuyViewModel buyViewModel = new BuyViewModel();
         SellViewModel sellViewModel = new SellViewModel();
         GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
         GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
-        CacheStockInformationViewModel cacheStockInformationViewModel = new CacheStockInformationViewModel();
 
         ResetBalancePresenter resetBalancePresenter = new ResetBalancePresenter(
                 viewManagerModel,
@@ -65,10 +65,10 @@ public class Main {
                 buyViewModel,
                 sellViewModel,
                 getNewsViewModel,
-                cacheStockInformationViewModel,
                 resetBalanceController,
                 getTransactionHistoryViewModel,
                 fileUserDataAccessObject,
+                cacheStockInformation,
                 apiAccessInterface
         );
         views.add(dashboardView, dashboardView.viewName);
@@ -109,8 +109,8 @@ public class Main {
         views.add(transactionHistoryView, transactionHistoryView.viewName);
 
         CacheStockInformationController cacheController = CacheInformationUseCaseFactory.createCacheStockInformationUseCase(
-                cacheStockInformationViewModel,
                 fileUserDataAccessObject,
+                cacheStockInformation,
                 apiAccessInterface
         );
 
