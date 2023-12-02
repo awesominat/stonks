@@ -20,8 +20,8 @@ public class CacheInformationUseCaseFactory {
                 cacheStockInformationViewModel
         );
         CacheStockInformationInteractor interactor = new CacheStockInformationInteractor(
-                presenter,
                 fileUserDataAccessObject,
+                presenter,
                 apiAccessInterface
         );
         return new CacheStockInformationController(

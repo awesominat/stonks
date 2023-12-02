@@ -92,7 +92,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
             for (Transaction transaction: stockHistory) {
                 if (transaction.getType() == TransactionType.TOPUP) {
                     PricePoint pp = transaction.getPricePoint();
-                    double daysSince = DAYS.between(now, pp.getTimeStamp());
+                    double daysSince = DAYS.between(pp.getTimeStamp(), now);
                     if (daysSinceLastTopup == -1) {
                         daysSinceLastTopup = daysSince;
                     } else {

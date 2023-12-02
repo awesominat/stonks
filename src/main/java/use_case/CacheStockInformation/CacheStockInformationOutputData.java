@@ -13,8 +13,4 @@ public class CacheStockInformationOutputData {
     public HashMap<String, List<Double>> getStockInformationMap() {
         return stockInformationMap;
     }
-
-    public void setStockInformationMap(HashMap<String, List<Double>> stockInformationMap) {
-        this.stockInformationMap = stockInformationMap;
-    }
 }

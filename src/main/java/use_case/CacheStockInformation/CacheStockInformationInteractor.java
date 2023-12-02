@@ -15,8 +15,8 @@ public class CacheStockInformationInteractor implements CacheStockInformationInp
     APIAccessInterface driverAPI;
 
     public CacheStockInformationInteractor(
-            CacheStockInformationOutputBoundary cacheStockInformationPresenter,
             CacheStockInformationDataAccessInterface userDataAccessObject,
+            CacheStockInformationOutputBoundary cacheStockInformationPresenter,
             APIAccessInterface driverAPI
     ) {
         this.userDataAccessObject = userDataAccessObject;
