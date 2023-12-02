@@ -1,6 +1,7 @@
 import entity.*;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import use_case.APIAccessInterface;
 import use_case.Buy.*;
@@ -69,11 +70,15 @@ public class resetBalanceInteractorTest {
                 mockApi);
 
 
-        resetBalanceInteractor.execute(resetBalanceInputData);
+        ArgumentCaptor<ResetBalanceOutputData> captor = ArgumentCaptor.forClass(ResetBalanceOutputData.class);
 
-        Mockito.verify(mockResetBalancePresenter).prepareSuccessView(any(ResetBalanceOutputData.class));
+        resetBalanceInteractor.execute(resetBalanceInputData);
+        Mockito.verify(mockResetBalancePresenter).prepareSuccessView(captor.capture());
         Mockito.verify(userDataAccessInterface).save();
 
+        ResetBalanceOutputData resetBalanceOutputData = captor.getValue();
+
+        assert(captor.getValue().isResetPressed());
         assert capturedUser.getBalance().equals(10000.0);
         assert capturedUser.getPortfolio().isEmpty();
         HashMap<String, TransactionHistory> userHistory = capturedUser.getHistory();
