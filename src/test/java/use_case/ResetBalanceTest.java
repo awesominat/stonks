@@ -1,15 +1,18 @@
+package use_case;
+
 import entity.*;
+import interface_adapter.Dashboard.DashboardState;
+import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.ResetBalance.ResetBalanceController;
+import interface_adapter.ResetBalance.ResetBalancePresenter;
+import interface_adapter.ViewManagerModel;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import use_case.APIAccessInterface;
 import use_case.Buy.*;
 import use_case.ResetBalance.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
@@ -17,8 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
-public class resetBalanceInteractorTest {
+public class ResetBalanceTest {
 
+    // 100% Line Coverage for UseCase and Interface Adapters related to ResetBalance
     @Test
     public void testReset() throws APIAccessInterface.TickerNotFoundException {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
@@ -63,6 +67,7 @@ public class resetBalanceInteractorTest {
 
         // testBuy and then reset
 
+
         ResetBalanceInputData resetBalanceInputData = new ResetBalanceInputData(true);
 
         ResetBalanceOutputBoundary mockResetBalancePresenter = Mockito.mock(ResetBalanceOutputBoundary.class);
@@ -70,7 +75,7 @@ public class resetBalanceInteractorTest {
         ResetBalanceDataAccessInterface userDataAccessInterface = Mockito.mock(ResetBalanceDataAccessInterface.class);
 
         Mockito.when(userDataAccessInterface.get()).thenReturn(capturedUser);
-        ResetBalanceInteractor resetBalanceInteractor = new ResetBalanceInteractor(
+        ResetBalanceInputBoundary resetBalanceInteractor = new ResetBalanceInteractor(
                 userDataAccessInterface,
                 mockResetBalancePresenter,
                 mockApi);
@@ -78,13 +83,33 @@ public class resetBalanceInteractorTest {
 
         ArgumentCaptor<ResetBalanceOutputData> captor = ArgumentCaptor.forClass(ResetBalanceOutputData.class);
 
-        resetBalanceInteractor.execute(resetBalanceInputData);
+        ResetBalanceController resetBalanceController = new ResetBalanceController(resetBalanceInteractor);
+        Boolean resetPressed  = true;
+        resetBalanceController.execute(resetPressed);
+//        resetBalanceInteractor.execute(resetBalanceInputData);
         Mockito.verify(mockResetBalancePresenter).prepareSuccessView(captor.capture());
         Mockito.verify(userDataAccessInterface).save();
 
         ResetBalanceOutputData resetBalanceOutputData = captor.getValue();
 
-        assert(captor.getValue().isResetPressed());
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
+        DashboardState dashboardState = dashboardViewModel.getState();
+        ResetBalanceOutputBoundary resetBalancePresenter = new ResetBalancePresenter(
+                viewManagerModel,
+                dashboardViewModel
+        );
+
+        resetBalancePresenter.prepareSuccessView(resetBalanceOutputData);
+
+        assertTrue(dashboardState.getResetPressed());
+
+
+//        ArgumentCaptor<Boolean> stateIsResetPressedCaptor = ArgumentCaptor.forClass(Boolean.class);
+//        Mockito.verify(dashboardState).setResetPressed(stateIsResetPressedCaptor.capture());
+//        Boolean isResetPressed = stateIsResetPressedCaptor.getValue();
+//        assertTrue(isResetPressed);
+
         assert capturedUser.getBalance().equals(10000.0);
         assert capturedUser.getPortfolio().isEmpty();
         HashMap<String, TransactionHistory> userHistory = capturedUser.getHistory();
@@ -102,6 +127,8 @@ public class resetBalanceInteractorTest {
         long secondsDifference = ChronoUnit.SECONDS.between(expectedTimestamp, actualTimestamp);
 
         assertTrue(Math.abs(secondsDifference) < 5, "Timestamps are not close enough.");
+
+
 
 //        for (String stock: userHistory.keySet()) {
 //            if (stock.equals("RESET")) {
