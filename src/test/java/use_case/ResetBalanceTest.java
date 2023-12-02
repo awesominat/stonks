@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class ResetBalanceTest {
 
+    // 100% Line Coverage for UseCase and Interface Adapters related to ResetBalance
     @Test
     public void testReset() throws APIAccessInterface.TickerNotFoundException {
         APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
