@@ -1,5 +1,6 @@
 package use_case.CacheStockInformation;
 
+import entity.CacheStockInformation;
 import entity.StockInformation;
 import entity.User;
 import use_case.APIAccessInterface;
@@ -11,17 +12,17 @@ import java.util.Set;
 
 public class CacheStockInformationInteractor implements CacheStockInformationInputBoundary {
     final CacheStockInformationDataAccessInterface userDataAccessObject;
-    CacheStockInformationOutputBoundary cacheStockInformationPresenter;
+    final CacheStockInformation cacheStockInformation;
     APIAccessInterface driverAPI;
 
     public CacheStockInformationInteractor(
-            CacheStockInformationOutputBoundary cacheStockInformationPresenter,
             CacheStockInformationDataAccessInterface userDataAccessObject,
+            CacheStockInformation cacheStockInformation,
             APIAccessInterface driverAPI
     ) {
         this.userDataAccessObject = userDataAccessObject;
         this.driverAPI = driverAPI;
-        this.cacheStockInformationPresenter = cacheStockInformationPresenter;
+        this.cacheStockInformation = cacheStockInformation;
     }
 
     @Override
@@ -45,8 +46,6 @@ public class CacheStockInformationInteractor implements CacheStockInformationInp
                     stock, stockInformationArrayList
             );
         }
-        CacheStockInformationOutputData result = new CacheStockInformationOutputData(stockInformationMap);
-        cacheStockInformationPresenter.updateCacheSuccess(result);
-
+        cacheStockInformation.setStockInformationMap(stockInformationMap);
     }
 }

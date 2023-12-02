@@ -6,9 +6,6 @@ public class ResetBalanceInputData {
     public ResetBalanceInputData(Boolean resetPressed) {
         this.resetPressed = resetPressed;
     }
-    public void setResetPressed(Boolean resetPressed) {
-        this.resetPressed = resetPressed;
-    }
 
     public Boolean getResetPressed() {
         return resetPressed;

@@ -4,6 +4,8 @@ import entity.Transaction;
 import entity.TransactionHistory;
 import entity.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +40,11 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
                 String type = tran.getType().toString();
                 String amount = tran.getAmount().toString();
                 String pricePurchasedAt = String.format("%.2f", tran.getPricePoint().getPrice());
-                String date = tran.getPricePoint().getTimeStamp().toString();
+
+
+                LocalDateTime localDateTime = tran.getPricePoint().getTimeStamp();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
+                String date = localDateTime.format(formatter);
 
                 // List containing Transaction Facts
                 List<String> transaction = new ArrayList<>();

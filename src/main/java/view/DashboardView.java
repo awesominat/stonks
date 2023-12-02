@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 
         import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -296,13 +297,12 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         ownedStocksTableModel.addColumn("Price change");
         ownedStocksTableModel.addColumn("Percent change");
 
-        List<String> ownedTickers = state.getOwnedTickers();
-        List<Double> ownedAmounts = state.getOwnedAmounts();
-        List<List<Double>> priceStats = state.getCurrentPriceStats();
-        for (int i = 0; i < ownedTickers.size(); i++) {
-            String ticker = ownedTickers.get(i);
-            Double amount = ownedAmounts.get(i);
-            List<Double> priceStatsForTicker = priceStats.get(i);
+        HashMap<String, Double> ownedInfoTable = state.getOwnedStocksTable();
+        HashMap<String, List<Double>> priceInfoTable = state.getStocksPriceInformationTable();
+        Set<String> ownedTickers = ownedInfoTable.keySet();
+        for (String ticker: ownedTickers) {
+            Double amount = ownedInfoTable.get(ticker);
+            List<Double> priceStatsForTicker = priceInfoTable.get(ticker);
 
             Double currentPrice = priceStatsForTicker.get(0);
             Double priceChange = priceStatsForTicker.get(1);

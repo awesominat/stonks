@@ -6,6 +6,7 @@ import use_case.Sell.SellOutputData;
 import use_case.Sell.SellOutputBoundary;
 import interface_adapter.Dashboard.DashboardState;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SellPresenter implements SellOutputBoundary {
@@ -33,13 +34,13 @@ public class SellPresenter implements SellOutputBoundary {
             sellState.setSellSuccess(sellSuccess);
         } else {
             DashboardState dashboardState = dashboardViewModel.getState();
-            List<List<Double>> currentPriceStats = dashboardState.getCurrentPriceStats();
-            List<String> dashboardOwnedTickers = dashboardState.getOwnedTickers();
+            HashMap<String, List<Double>> currentPriceStats = dashboardState.getStocksPriceInformationTable();
+            HashMap<String, Double> dashboardOwnedTickers = dashboardState.getOwnedStocksTable();
 
             List<Double> currentPrices = new ArrayList<>();
             for (String sellOwnedTicker: response.getOwnedStocks()) {
-                int idx = dashboardOwnedTickers.indexOf(sellOwnedTicker);
-                currentPrices.add(currentPriceStats.get(idx).get(0));
+                List<Double> priceInfo = currentPriceStats.get(sellOwnedTicker);
+                currentPrices.add(priceInfo.get(0));
             }
             sellState.setBalance(response.getBalance());
             sellState.setOwnedStocks(response.getOwnedStocks());

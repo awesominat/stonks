@@ -6,9 +6,9 @@ import entity.Transaction;
 import entity.User;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
-import java.util.HashMap;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class ResetBalanceInteractor extends BaseStockInteractor implements ResetBalanceInputBoundary {
     final ResetBalanceDataAccessInterface userDataAccessObject;
@@ -30,7 +30,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         return new TopupTransaction(
                 1.0,
                 new PricePoint(
-                        LocalDate.now(),
+                        LocalDateTime.now(),
                         amountToAdd
                 )
         );

@@ -4,18 +4,24 @@ import entity.*;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-public class DashboardInteractor extends BaseStockInteractor implements DashboardInputBoundary {
+public class DashboardInteractor extends BaseStockInteractor implements DashboardInputBoundary, PropertyChangeListener {
     final DashboardDataAccessInterface userDataAccessObject;
+    final CacheStockInformation cacheStockInformation;
     DashboardOutputBoundary dashboardPresenter;
     APIAccessInterface driverAPI;
 
     public DashboardInteractor(
             DashboardDataAccessInterface userDataAccessInterface,
+            CacheStockInformation cacheStockInformation,
             DashboardOutputBoundary dashboardPresenter,
             APIAccessInterface driverAPI
     ) {
@@ -23,6 +29,8 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         this.userDataAccessObject = userDataAccessInterface;
         this.dashboardPresenter = dashboardPresenter;
         this.driverAPI = driverAPI;
+        this.cacheStockInformation = cacheStockInformation;
+        this.cacheStockInformation.addPropertyChangeListener(this);
     }
 
     @Override
@@ -34,7 +42,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         // If the refresh button is pressed, we want to re fetch stock price information so that displayed
         // tables are up-to-date. Pressing of refresh is a manual user action, so API calls are made.
         if (refreshPressed) {
-            List<List<Double>> priceStats = new ArrayList<List<Double>>();
+            HashMap<String, List<Double>> stockPriceInformationMap = new HashMap<>();
             for (String ticker : portfolio.keySet()) {
                 // if we ever reach a point where a ticker in the portfolio has no information
                 // this is only recoverable if the ticker is completely deleted from the portfolio
@@ -50,21 +58,15 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
                         stockInformation.getPriceChange(),
                         stockInformation.getPercentChange()
                 );
-                priceStats.add(stockInfo);
+                stockPriceInformationMap.put(ticker, stockInfo);
             }
-            dashboardPresenter.prepareSuccessView(new DashboardOutputData(priceStats));
+            dashboardPresenter.prepareSuccessView(new DashboardOutputData(stockPriceInformationMap));
         } else {
             // If refresh is not pressed, the user has navigated to the dashboard using the back button from
             // another page. In this case, refresh everything EXCEPT the price stats, which will remain as they are
             // until the refresh button is pressed.
-            List<String> ownedTickers = new ArrayList<String>();
-            ownedTickers.addAll(portfolio.keySet());
-
-            List<Double> ownedAmounts = new ArrayList<Double>();
-            ownedAmounts.addAll(portfolio.values());
-
             HashMap<String, Double> userStats = buildUserStats(user);
-            dashboardPresenter.prepareSuccessView(new DashboardOutputData(userStats, ownedTickers, ownedAmounts));
+            dashboardPresenter.prepareSuccessView(new DashboardOutputData(userStats, portfolio));
         }
     }
 
@@ -86,7 +88,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         userStats.put("Net worth", user.getBalance() + portfolioNetWorth);
 
         double daysSinceLastTopup = -1.0;
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         for (Map.Entry<String, TransactionHistory> entry: history.entrySet()) {
             TransactionHistory stockHistory = entry.getValue();
             for (Transaction transaction: stockHistory) {
@@ -103,5 +105,13 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         }
         userStats.put("Days since last reset", daysSinceLastTopup);
         return userStats;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        CacheStockInformation cacheStockInformation = (CacheStockInformation) evt.getNewValue();
+        HashMap<String, List<Double>> stockPriceInformationMap = cacheStockInformation.getStockInformationMap();
+        DashboardOutputData dashboardOutputData = new DashboardOutputData(stockPriceInformationMap);
+        dashboardPresenter.prepareSuccessView(dashboardOutputData);
     }
 }

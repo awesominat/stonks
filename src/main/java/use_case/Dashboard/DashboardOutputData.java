@@ -5,43 +5,25 @@ import java.util.List;
 
 public class DashboardOutputData {
     HashMap<String, Double> userStats;
-    List<String> ownedTickers;
-    List<Double> ownedAmounts;
-    List<List<Double>> currentPriceStats;
+    HashMap<String, List<Double>> stockPriceInformationTable;
+    HashMap<String, Double> ownedStocksInformationTable;
     Boolean refreshPressed;
 
-    public DashboardOutputData(List<List<Double>> currentPriceStats) {
-        this.currentPriceStats = currentPriceStats;
+    public DashboardOutputData(HashMap<String, List<Double>> stockPriceInformationTable) {
+        this.stockPriceInformationTable = stockPriceInformationTable;
         this.refreshPressed = true;
         this.userStats = null;
-        this.ownedTickers = null;
-        this.ownedAmounts = null;
+        this.ownedStocksInformationTable = null;
     }
 
     public DashboardOutputData(
             HashMap<String, Double> userStats,
-            List<String> ownedTickers,
-            List<Double> ownedAmounts
+            HashMap<String, Double> ownedStocksInformationTable
     ) {
         this.userStats = userStats;
-        this.ownedTickers = ownedTickers;
-        this.ownedAmounts = ownedAmounts;
+        this.ownedStocksInformationTable = ownedStocksInformationTable;
         this.refreshPressed = false;
-        this.currentPriceStats = null;
-    }
-
-    public DashboardOutputData(
-            HashMap<String, Double> userStats,
-            List<String> ownedTickers,
-            List<Double> ownedAmounts,
-            List<List<Double>> currentPriceStats,
-            Boolean refreshPressed
-    ) {
-        this.userStats = userStats;
-        this.ownedTickers = ownedTickers;
-        this.ownedAmounts = ownedAmounts;
-        this.refreshPressed = refreshPressed;
-        this.currentPriceStats = currentPriceStats;
+        this.stockPriceInformationTable = null;
     }
 
     public Boolean getRefreshPressed() {
@@ -52,12 +34,21 @@ public class DashboardOutputData {
         this.refreshPressed = refreshPressed;
     }
 
-    public List<List<Double>> getCurrentPriceStats() {
-        return currentPriceStats;
+
+    public HashMap<String, Double> getOwnedStocksInformationTable() {
+        return ownedStocksInformationTable;
     }
 
-    public void setCurrentPriceStats(List<List<Double>> currentPriceStats) {
-        this.currentPriceStats = currentPriceStats;
+    public void setOwnedStocksInformationTable(HashMap<String, Double> ownedStocksInformationTable) {
+        this.ownedStocksInformationTable = ownedStocksInformationTable;
+    }
+
+    public HashMap<String, List<Double>> getStockPriceInformationTable() {
+        return stockPriceInformationTable;
+    }
+
+    public void setStockPriceInformationTable(HashMap<String, List<Double>> stockPriceInformationTable) {
+        this.stockPriceInformationTable = stockPriceInformationTable;
     }
 
     public HashMap<String, Double> getUserStats() {
@@ -68,19 +59,4 @@ public class DashboardOutputData {
         this.userStats = userStats;
     }
 
-    public List<String> getOwnedTickers() {
-        return ownedTickers;
-    }
-
-    public void setOwnedTickers(List<String> ownedTickers) {
-        this.ownedTickers = ownedTickers;
-    }
-
-    public List<Double> getOwnedAmounts() {
-        return ownedAmounts;
-    }
-
-    public void setOwnedAmounts(List<Double> ownedAmounts) {
-        this.ownedAmounts = ownedAmounts;
-    }
 }
