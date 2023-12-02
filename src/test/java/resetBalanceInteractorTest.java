@@ -10,8 +10,11 @@ import use_case.ResetBalance.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 public class resetBalanceInteractorTest {
@@ -23,7 +26,10 @@ public class resetBalanceInteractorTest {
 
         Mockito.when(userDataAccessObject.get()).thenReturn(new CommonUser());
 
-        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
+        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(
+                LocalDateTime.now(),
+                100.0)
+        );
 
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(
                 new CompanyInformation(
@@ -84,19 +90,31 @@ public class resetBalanceInteractorTest {
         HashMap<String, TransactionHistory> userHistory = capturedUser.getHistory();
         assert userHistory.containsKey("RESET");
 
-        int result = 1;
-        for (String stock: userHistory.keySet()) {
-            if (stock.equals("RESET")) {
-                TransactionHistory transactionHistory = userHistory.get(stock);
+        Transaction mostRecentTransaction = userHistory.get("RESET").getMostRecentTransaction();
 
+        assertEquals(mostRecentTransaction.getType(), TransactionType.TOPUP);
+        assertEquals(mostRecentTransaction.getAmount(), 1.0);
+        assertEquals(mostRecentTransaction.getPricePoint().getPrice(), 10000.0);
 
-                for (Transaction transaction : transactionHistory) {
-                    result = transaction.getPricePoint().getTimeStamp().compareTo(LocalDate.now());
-                }
-            }
+        LocalDateTime expectedTimestamp = mostRecentTransaction.getPricePoint().getTimeStamp();
+        LocalDateTime actualTimestamp = LocalDateTime.now();
 
-        }
-        assert result == 0;
+        long secondsDifference = ChronoUnit.SECONDS.between(expectedTimestamp, actualTimestamp);
+
+        assertTrue(Math.abs(secondsDifference) < 5, "Timestamps are not close enough.");
+
+//        for (String stock: userHistory.keySet()) {
+//            if (stock.equals("RESET")) {
+//                TransactionHistory transactionHistory = userHistory.get(stock);
+//
+//
+//                for (Transaction transaction : transactionHistory) {
+//                    result = transaction.getPricePoint().getTimeStamp().compareTo(LocalDateTime.now());
+//                }
+//            }
+//
+//        }
+
 
 
     }
