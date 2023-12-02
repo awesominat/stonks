@@ -20,12 +20,15 @@ public class BuyTest {
 
     @BeforeAll
     public void setupAPI() throws APIAccessInterface.TickerNotFoundException {
-        mockApi = Mockito.mock(APIAccessInterface.class);
 
-        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
-        Mockito.when(mockApi.getCurrentPrice("AAPL :)")).thenThrow(new APIAccessInterface.TickerNotFoundException("Ticker AAPL :) does not exist."));
-        Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
-                "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
+        throw new RuntimeException("testffa");
+
+//        mockApi = Mockito.mock(APIAccessInterface.class);
+//
+//        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
+//        Mockito.when(mockApi.getCurrentPrice("AAPL :)")).thenThrow(new APIAccessInterface.TickerNotFoundException("Ticker AAPL :) does not exist."));
+//        Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
+//                "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
     }
 
     @BeforeEach
