@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import use_case.Buy.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,7 +71,13 @@ public class BuyTest {
         assertEquals(mostRecentTransaction.getType(), TransactionType.BUY);
         assertEquals(mostRecentTransaction.getAmount(), 10.0);
         assertEquals(mostRecentTransaction.getPricePoint().getPrice(), 100.0);
-        assertEquals(mostRecentTransaction.getPricePoint().getTimeStamp(), LocalDateTime.now());
+
+        LocalDateTime expectedTimestamp = mostRecentTransaction.getPricePoint().getTimeStamp();
+        LocalDateTime actualTimestamp = LocalDateTime.now();
+
+        long secondsDifference = ChronoUnit.SECONDS.between(expectedTimestamp, actualTimestamp);
+
+        assertTrue(Math.abs(secondsDifference) < 5, "Timestamps are not close enough.");
     }
 
     @Test

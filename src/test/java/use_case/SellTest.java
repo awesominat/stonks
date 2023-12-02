@@ -11,6 +11,7 @@ import use_case.Sell.SellOutputBoundary;
 import use_case.Sell.SellOutputData;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +131,14 @@ public class SellTest {
         assertEquals(mostRecentTransaction.getType(), TransactionType.SELL);
         assertEquals(mostRecentTransaction.getAmount(), 5.0);
         assertEquals(mostRecentTransaction.getPricePoint().getPrice(), 100.0);
-        assertEquals(mostRecentTransaction.getPricePoint().getTimeStamp(), LocalDateTime.now());
+
+
+        LocalDateTime expectedTimestamp = mostRecentTransaction.getPricePoint().getTimeStamp();
+        LocalDateTime actualTimestamp = LocalDateTime.now();
+
+        long secondsDifference = ChronoUnit.SECONDS.between(expectedTimestamp, actualTimestamp);
+
+        assertTrue(Math.abs(secondsDifference) < 5, "Timestamps are not close enough.");
 
         // force test selling ALL AAPL stock
         Mockito.clearInvocations(mockApi);
