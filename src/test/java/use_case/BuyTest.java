@@ -7,7 +7,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import use_case.Buy.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,7 @@ public class BuyTest {
     public void setupAPI() throws APIAccessInterface.TickerNotFoundException {
         mockApi = Mockito.mock(APIAccessInterface.class);
 
-        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
+        Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDateTime.now(), 100.0));
         Mockito.when(mockApi.getCurrentPrice("AAPL :)")).thenThrow(new APIAccessInterface.TickerNotFoundException("Ticker AAPL :) does not exist."));
         Mockito.when(mockApi.getCompanyProfile("AAPL")).thenReturn(new CompanyInformation("US",
                 "Apple Inc", "AAPL", "https://www.apple.com/", "1980-12-12"));
@@ -70,7 +71,13 @@ public class BuyTest {
         assertEquals(mostRecentTransaction.getType(), TransactionType.BUY);
         assertEquals(mostRecentTransaction.getAmount(), 10.0);
         assertEquals(mostRecentTransaction.getPricePoint().getPrice(), 100.0);
-        assertEquals(mostRecentTransaction.getPricePoint().getTimeStamp(), LocalDate.now());
+
+        LocalDateTime expectedTimestamp = mostRecentTransaction.getPricePoint().getTimeStamp();
+        LocalDateTime actualTimestamp = LocalDateTime.now();
+
+        long secondsDifference = ChronoUnit.SECONDS.between(expectedTimestamp, actualTimestamp);
+
+        assertTrue(Math.abs(secondsDifference) < 5, "Timestamps are not close enough.");
     }
 
     @Test

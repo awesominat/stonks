@@ -2,6 +2,8 @@ package use_case.GetNews;
 
 import entity.CompanyNews;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -35,7 +37,12 @@ public class GetNewsOutputData {
             Map<String, String> newsItem = new HashMap<>();
 
             newsItem.put("category", companyNews.getCategory());
-            newsItem.put("datetime", companyNews.getDatetime().toString());
+
+            LocalDateTime localDateTime = companyNews.getDatetime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
+            String date = localDateTime.format(formatter);
+            
+            newsItem.put("datetime", date);
             newsItem.put("headline", companyNews.getHeadline());
             newsItem.put("url", companyNews.getUrl());
             newsItem.put("summary", companyNews.getSummary());

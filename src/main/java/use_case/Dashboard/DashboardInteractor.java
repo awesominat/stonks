@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -87,7 +88,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         userStats.put("Net worth", user.getBalance() + portfolioNetWorth);
 
         double daysSinceLastTopup = -1.0;
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         for (Map.Entry<String, TransactionHistory> entry: history.entrySet()) {
             TransactionHistory stockHistory = entry.getValue();
             for (Transaction transaction: stockHistory) {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +26,7 @@ public class CommonUserTest {
 
         Stock googleStock = new Stock(120.0, "Google", "GOOGL");
         List<Transaction> googleTransactions = new ArrayList<>();
-        googleTransactions.add(new BuyTransaction(3.0, new PricePoint(LocalDate.now(), 120.0)));
+        googleTransactions.add(new BuyTransaction(3.0, new PricePoint(LocalDateTime.now(), 120.0)));
 
         history.put("GOOGL", new TransactionHistory(googleStock, googleTransactions));
 
