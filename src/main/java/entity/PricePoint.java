@@ -1,17 +1,17 @@
 package entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PricePoint {
-    private LocalDate timeStamp;
+    private LocalDateTime timeStamp;
     private Double price;
 
-    public PricePoint(LocalDate timeStamp, Double price) {
+    public PricePoint(LocalDateTime timeStamp, Double price) {
         this.price = price;
         this.timeStamp = timeStamp;
     }
 
-    public LocalDate getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
@@ -19,7 +19,7 @@ public class PricePoint {
         return price;
     }
 
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 

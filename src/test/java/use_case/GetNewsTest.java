@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import use_case.GetNews.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class GetNewsTest {
                 for (int i = 0; i < 5; i++) {
                     newsOut.add(new CompanyNews(
                                     "company",
-                                    LocalDate.parse("2023-11-28"),
+                                    LocalDateTime.parse("2023-11-28"),
                                     "The Cash-Rich Magnificent 7 For The Long Haul",
                                     "https://finnhub.io/api/news?id=69513fc7f9f8ea2f36c36a0cd322ff4acd6983bf7dbb70d44fcc15fb475810ac",
                                     "Wage growth, low unemployment rates, and artificial intelligence are driving the thriving U.S. economy. Click here to read my most recent analysis."
@@ -64,7 +65,7 @@ public class GetNewsTest {
 
             @Override
             public PricePoint getCurrentPrice(String ticker) {
-                return new PricePoint(LocalDate.now(), 100.0);
+                return new PricePoint(LocalDateTime.now(), 100.0);
             }
 
             @Override

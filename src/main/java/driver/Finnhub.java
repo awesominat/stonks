@@ -159,7 +159,7 @@ public class Finnhub implements APIAccessInterface {
                 // Convert timeStamp from Integer to LocalDate
                 Instant instant = Instant.ofEpochSecond(timeStamp.longValue());
                 ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-                LocalDate datetime = zdt.toLocalDate();
+                LocalDateTime datetime = zdt.toLocalDateTime();
 
                 ret.add(new CompanyNews(category, datetime, headline, url_out, summary));
             }
@@ -195,7 +195,7 @@ public class Finnhub implements APIAccessInterface {
                 throw new TickerNotFoundException("Ticker " + ticker + " does not exist.");
             }
 
-            LocalDate now = LocalDate.now();
+            LocalDateTime now = LocalDateTime.now();
             Double price;
 
             if (responseBody.get("c") instanceof BigDecimal) {

@@ -4,7 +4,7 @@ import entity.*;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class BuyInteractor extends BaseStockInteractor implements BuyInputBoundary {
@@ -27,7 +27,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
         return new BuyTransaction(
                 amount,
                 new PricePoint(
-                        LocalDate.now(),
+                        LocalDateTime.now(),
                         currentPrice
                 ));
     }
