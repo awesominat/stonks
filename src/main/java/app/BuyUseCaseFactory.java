@@ -12,10 +12,10 @@ import use_case.Buy.BuyInteractor;
 import use_case.Buy.BuyOutputBoundary;
 import view.BuyView;
 
-public class BuyStockUseCaseFactory {
+public class BuyUseCaseFactory {
 
     // Prevent instantiation
-    private BuyStockUseCaseFactory() {}
+    private BuyUseCaseFactory() {}
 
     public static BuyView create(
             ViewManagerModel viewManagerModel,

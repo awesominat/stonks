@@ -1,20 +1,22 @@
 package entity;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CommonUserTest {
 
     private CommonUser user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         HashMap<String, Double> portfolio = new HashMap<>();
         HashMap<String, TransactionHistory> history = new HashMap<>();

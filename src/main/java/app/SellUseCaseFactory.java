@@ -12,10 +12,10 @@ import use_case.Sell.SellInteractor;
 import use_case.Sell.SellOutputBoundary;
 import view.SellView;
 
-public class SellStockUseCaseFactory {
+public class SellUseCaseFactory {
 
     // Prevent instantiation
-    private SellStockUseCaseFactory() {}
+    private SellUseCaseFactory() {}
 
     public static SellView create(
             ViewManagerModel viewManagerModel,

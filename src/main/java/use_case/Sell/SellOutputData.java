@@ -3,12 +3,12 @@ package use_case.Sell;
 import java.util.List;
 
 public class SellOutputData {
-    public Double amount;
-    public String ticker;
-    public boolean executeTypeSell;
-    public List<String> ownedStocks;
-    public List<Double> ownedAmounts;
-    public Double balance;
+    private Double amount;
+    private String ticker;
+    private boolean executeTypeSell;
+    private List<String> ownedStocks;
+    private List<Double> ownedAmounts;
+    private Double balance;
 
     public SellOutputData(Double amount, String ticker) {
         this.amount = amount;
