@@ -9,6 +9,7 @@ import use_case.GetNews.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,12 @@ public class GetNewsTest {
 
         assertEquals(5, response.getNewsItems().size());
         assertEquals("AAPL", response.getTicker());
-        assertEquals("2023-11-28", newsItem.get("datetime"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
+        LocalDateTime localDateTime = LocalDateTime.parse(newsItem.get("datetime"), formatter);
+        String date = localDateTime.format(formatter);
+        assertEquals("12:00:00 a.m. 2023-11-28", date);
+
         assertEquals("The Cash-Rich Magnificent 7 For The Long Haul", newsItem.get("headline"));
     }
 
