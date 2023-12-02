@@ -1,15 +1,15 @@
 package entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CompanyNews {
     String category;
-    LocalDate datetime;
+    LocalDateTime datetime;
     String headline;
     String url;
     String summary;
 
-    public CompanyNews(String category, LocalDate datetime, String headline, String url, String summary) {
+    public CompanyNews(String category, LocalDateTime datetime, String headline, String url, String summary) {
         this.category = category;
         this.datetime = datetime;
         this.headline = headline;
@@ -19,7 +19,7 @@ public class CompanyNews {
 
     public String getCategory() {return category;}
 
-    public LocalDate getDatetime() {return datetime;}
+    public LocalDateTime getDatetime() {return datetime;}
 
     public String getHeadline() {return headline;}
 

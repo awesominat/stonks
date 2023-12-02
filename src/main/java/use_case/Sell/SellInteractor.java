@@ -1,10 +1,13 @@
 package use_case.Sell;
 
-import entity.*;
+import entity.PricePoint;
+import entity.SellTransaction;
+import entity.Transaction;
+import entity.User;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +32,7 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
         return new SellTransaction(
                 amount,
                 new PricePoint(
-                        LocalDate.now(),
+                        LocalDateTime.now(),
                         currentPrice)
         );
     }

@@ -3,7 +3,7 @@ package data_access;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import driver.LocalDateTypeAdapter;
+import driver.LocalDateTimeTypeAdapter;
 import driver.TransactionDeserializer;
 import entity.CommonUser;
 import entity.Transaction;
@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class FileUserDataAccessObject implements
         BuyDataAccessInterface,
@@ -41,7 +41,7 @@ public class FileUserDataAccessObject implements
         } else {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(Transaction.class, new TransactionDeserializer())
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
                     .create();
             try (FileReader reader = new FileReader(jsonFile)) {
                  this.user = gson.fromJson(reader, CommonUser.class);
@@ -53,7 +53,7 @@ public class FileUserDataAccessObject implements
 
     public void save() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
                 .create();
         String json = gson.toJson(user);
 
