@@ -1,10 +1,10 @@
 package use_case;
 
-import entity.CompanyInformation;
-import entity.CompanyNews;
-import entity.PricePoint;
-import entity.StockInformation;
-import org.junit.jupiter.api.Test;
+import entity.*;
+import org.apiguardian.api.API;
+import org.junit.jupiter.api.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import use_case.GetNews.*;
 
 import java.time.LocalDate;
@@ -12,95 +12,106 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GetNewsTest {
+    private APIAccessInterface mockAPI;
+    private GetNewsOutputBoundary presenter;
 
-    @Test
-    public void successTest() {
-        GetNewsInputData inputData = new GetNewsInputData("AAPL");
+    @BeforeAll
+    public void setUpAPI() throws RuntimeException, APIAccessInterface.TickerNotFoundException {
+        mockAPI = Mockito.mock(APIAccessInterface.class);
 
-        // Create anonymous class that implements the APIAccessInterface
-        APIAccessInterface driverAPI = new APIAccessInterface() {
-            @Override
-            public String getAppName() {
-                return "stonks";
-            }
+        // Setup mock output for "AAPL" get news call.
+        List<CompanyNews> newsOut = new ArrayList<>();
+        // Add five duplicate articles to output List.
+        for (int i = 0; i < 5; i++) {
+            newsOut.add(new CompanyNews(
+                            "company",
+                            LocalDate.parse("2023-11-28"),
+                            "The Cash-Rich Magnificent 7 For The Long Haul",
+                            "https://finnhub.io/api/news?id=69513fc7f9f8ea2f36c36a0cd322ff4acd6983bf7dbb70d44fcc15fb475810ac",
+                            "Wage growth, low unemployment rates, and artificial intelligence are driving the thriving U.S. economy. Click here to read my most recent analysis."
+                    )
+            );
+        }
 
-            @Override
-            public boolean isMarketOpen() {
-                // This method is not relevant, so simply return true.
-                return true;
-            }
+        // Setup parameters for mock call.
+        LocalDate now = LocalDate.now();
+        LocalDate monthAgo = now.minusMonths(1);
 
-            @Override
-            public CompanyInformation getCompanyProfile(String ticker) {
-                return new CompanyInformation(
-                        "US",
-                        "Apple Inc",
-                        "AAPL",
-                        "https://www.apple.com/",
-                        "1980-12-12"
-                );
-            }
+        // Simulate successful mock call.
+        Mockito.when(mockAPI.getCompanyNews("AAPL", monthAgo, now)).thenReturn(newsOut);
 
-            @Override
-            public List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to) {
-                List<CompanyNews> newsOut = new ArrayList<>();
-                // Add five duplicate articles to output List.
-                for (int i = 0; i < 5; i++) {
-                    newsOut.add(new CompanyNews(
-                                    "company",
-                                    LocalDate.parse("2023-11-28"),
-                                    "The Cash-Rich Magnificent 7 For The Long Haul",
-                                    "https://finnhub.io/api/news?id=69513fc7f9f8ea2f36c36a0cd322ff4acd6983bf7dbb70d44fcc15fb475810ac",
-                                    "Wage growth, low unemployment rates, and artificial intelligence are driving the thriving U.S. economy. Click here to read my most recent analysis."
-                            )
-                    );
-                }
-                return newsOut;
-            }
+        // Simulate ticker error.
+        Mockito.when(mockAPI.getCompanyNews("SSS", monthAgo, now)).thenThrow(
+                new APIAccessInterface.TickerNotFoundException("Ticker SSS not found. Please enter a valid ticker.")
+        );
 
-            @Override
-            public PricePoint getCurrentPrice(String ticker) {
-                return new PricePoint(LocalDate.now(), 100.0);
-            }
-
-            @Override
-            public StockInformation getCurrentStockInformation(String ticker) {
-                return new StockInformation(100.0, 1.05, 0.01);
-            }
-        };
-
-        // This creates a successPresenter that tests whether the test case is as we expect.
-        GetNewsOutputBoundary successPresenter = new GetNewsOutputBoundary() {
-            @Override
-            public void prepareSuccessView(GetNewsOutputData response) {
-                assertEquals("AAPL", response.getTicker());
-
-                List<Map<String, String>> newsItems = response.getNewsItems();
-                assertEquals(5, newsItems.size());
-
-                LocalDate now = LocalDate.now();
-                LocalDate limit = now.minusMonths(1);
-
-                for (Map<String, String> newsItem : newsItems) {
-                    LocalDate newsDate = LocalDate.parse(newsItem.get("datetime"));
-                    assertTrue(newsDate.isAfter(limit));
-                }
-            }
-
-            @Override
-            public void prepareFailView(String error) {
-                // For some reason the test calls this even though there is no failure.
-                // The `fail` method will always make the test fail, so we must avoid this using a comment.
-//                fail("Use case failure is unexpected.");
-            }
-        };
-
-        GetNewsInputBoundary interactor = new GetNewsInteractor(successPresenter, driverAPI);
-        interactor.execute(inputData); // This will eventually send Output Data to the successPresenter
+        // Simulate API failure error.
+        Mockito.when(mockAPI.getCompanyNews("API does not respond", monthAgo, now)).thenThrow(
+                new RuntimeException("API did not respond.")
+        );
     }
 
+    @BeforeEach
+    public void setUpPresenter() {
+        presenter = Mockito.mock(GetNewsOutputBoundary.class);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        Mockito.clearInvocations(mockAPI);
+    }
+
+    @Test
+    public void testInfoFetch() throws APIAccessInterface.TickerNotFoundException {
+        GetNewsInputData inputData = new GetNewsInputData("AAPL");
+        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
+        interactor.execute(inputData);
+
+        ArgumentCaptor<GetNewsOutputData> captor = ArgumentCaptor.forClass(GetNewsOutputData.class);
+
+        Mockito.verify(presenter).prepareSuccessView(captor.capture());
+        Mockito.verify(presenter, Mockito.never()).prepareFailView(any(String.class));
+
+        GetNewsOutputData outputData = captor.getValue();
+
+        assertEquals(5, outputData.getNewsItems().size());
+        assertEquals("AAPL", outputData.getTicker());
+    }
+
+    @Test
+    public void testInvalidTicker() throws APIAccessInterface.TickerNotFoundException {
+        GetNewsInputData inputData = new GetNewsInputData("SSS");
+        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
+        interactor.execute(inputData);
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        Mockito.verify(presenter).prepareFailView(captor.capture());
+        Mockito.verify(presenter, Mockito.never()).prepareSuccessView(any(GetNewsOutputData.class));
+
+        String tickerErrorMessage = captor.getValue();
+
+        assertEquals("Ticker 'SSS' not found. Please enter a valid ticker.", tickerErrorMessage);
+    }
+
+    @Test
+    public void testNoApiResponse() throws RuntimeException {
+        GetNewsInputData inputData = new GetNewsInputData("API does not respond");
+        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
+        interactor.execute(inputData);
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        Mockito.verify(presenter).prepareFailView(captor.capture());
+        Mockito.verify(presenter, Mockito.never()).prepareSuccessView(any(GetNewsOutputData.class));
+
+        String apiErrorMessage = captor.getValue();
+
+        assertEquals("API did not respond.", apiErrorMessage);
+    }
 }
