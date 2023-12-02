@@ -75,7 +75,7 @@ public class resetBalanceInteractorTest {
         Mockito.verify(userDataAccessInterface).save();
 
         assert capturedUser.getBalance().equals(10000.0);
-
+        assert capturedUser.getPortfolio().isEmpty();
 
     }
 }
