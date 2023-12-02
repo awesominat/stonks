@@ -31,7 +31,7 @@ public class GetNewsTest {
         for (int i = 0; i < 5; i++) {
             newsOut.add(new CompanyNews(
                             "company",
-                            LocalDateTime.parse("2023-11-28"),
+                            LocalDate.parse("2023-11-28").atStartOfDay(),
                             "The Cash-Rich Magnificent 7 For The Long Haul",
                             "https://finnhub.io/api/news?id=69513fc7f9f8ea2f36c36a0cd322ff4acd6983bf7dbb70d44fcc15fb475810ac",
                             "Wage growth, low unemployment rates, and artificial intelligence are driving the thriving U.S. economy. Click here to read my most recent analysis."
@@ -78,10 +78,14 @@ public class GetNewsTest {
         Mockito.verify(presenter).prepareSuccessView(captor.capture());
         Mockito.verify(presenter, Mockito.never()).prepareFailView(any(String.class));
 
-        GetNewsOutputData outputData = captor.getValue();
+        GetNewsOutputData response = captor.getValue();
 
-        assertEquals(5, outputData.getNewsItems().size());
-        assertEquals("AAPL", outputData.getTicker());
+        Map<String, String> newsItem = response.getNewsItems().get(0);
+
+        assertEquals(5, response.getNewsItems().size());
+        assertEquals("AAPL", response.getTicker());
+        assertEquals("2023-11-28", newsItem.get("datetime"));
+        assertEquals("The Cash-Rich Magnificent 7 For The Long Haul", newsItem.get("headline"));
     }
 
     @Test
