@@ -1,7 +1,4 @@
-import entity.CommonUser;
-import entity.CompanyInformation;
-import entity.PricePoint;
-import entity.User;
+import entity.*;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -10,6 +7,9 @@ import use_case.Buy.*;
 import use_case.ResetBalance.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -76,6 +76,23 @@ public class resetBalanceInteractorTest {
 
         assert capturedUser.getBalance().equals(10000.0);
         assert capturedUser.getPortfolio().isEmpty();
+        HashMap<String, TransactionHistory> userHistory = capturedUser.getHistory();
+        assert userHistory.containsKey("RESET");
+
+        int result = 1;
+        for (String stock: userHistory.keySet()) {
+            if (stock.equals("RESET")) {
+                TransactionHistory transactionHistory = userHistory.get(stock);
+
+
+                for (Transaction transaction : transactionHistory) {
+                    result = transaction.getPricePoint().getTimeStamp().compareTo(LocalDate.now());
+                }
+            }
+
+        }
+        assert result == 0;
+
 
     }
 }
