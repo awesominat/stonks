@@ -21,11 +21,10 @@ import static org.mockito.ArgumentMatchers.any;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SellTest {
     private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-    APIAccessInterface mockApi;
+    APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
 
     @BeforeAll
     public void setupAPI() throws APIAccessInterface.TickerNotFoundException {
-        mockApi = Mockito.mock(APIAccessInterface.class);
 
         Mockito.when(mockApi.getCurrentPrice("AAPL")).thenReturn(new PricePoint(LocalDate.now(), 100.0));
         Mockito.when(mockApi.getCurrentPrice("AAPL :)")).thenThrow(new APIAccessInterface.TickerNotFoundException("Ticker AAPL :) does not exist."));

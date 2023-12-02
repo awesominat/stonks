@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BuyTest {
     private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-    APIAccessInterface mockApi;
+    APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
 
     @BeforeAll
     public void setupAPI() throws APIAccessInterface.TickerNotFoundException {
