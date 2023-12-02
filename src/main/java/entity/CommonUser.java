@@ -28,13 +28,7 @@ public class CommonUser implements User {
     public Double getStockOwned(String ticker) {
         return portfolio.get(ticker);
     }
-    public boolean hasStock(String ticker) {
-        return portfolio.containsKey(ticker);
-    }
 
-    public void addToHistory(String stockName, TransactionHistory entry) {
-        history.put(stockName, entry);
-    }
     public boolean hasEnough(Double amount) {
         return this.balance >= amount;
     }

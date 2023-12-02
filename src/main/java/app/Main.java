@@ -73,7 +73,7 @@ public class Main {
         );
         views.add(dashboardView, dashboardView.viewName);
 
-        BuyView buyView = BuyStockUseCaseFactory.create(
+        BuyView buyView = BuyUseCaseFactory.create(
                 viewManagerModel,
                 buyViewModel,
                 dashboardViewModel,
@@ -82,7 +82,7 @@ public class Main {
         );
         views.add(buyView, buyView.viewName);
 
-        SellView sellView = SellStockUseCaseFactory.create(
+        SellView sellView = SellUseCaseFactory.create(
                 viewManagerModel,
                 sellViewModel,
                 dashboardViewModel,
@@ -108,7 +108,7 @@ public class Main {
         );
         views.add(transactionHistoryView, transactionHistoryView.viewName);
 
-        CacheStockInformationController cacheController = CacheStockInformationUseCaseFactory.createCacheStockInformationUseCase(
+        CacheStockInformationController cacheController = CacheInformationUseCaseFactory.createCacheStockInformationUseCase(
                 cacheStockInformationViewModel,
                 fileUserDataAccessObject,
                 apiAccessInterface

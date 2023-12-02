@@ -8,8 +8,8 @@ import use_case.CacheStockInformation.CacheStockInformationDataAccessInterface;
 import use_case.CacheStockInformation.CacheStockInformationInteractor;
 import use_case.CacheStockInformation.CacheStockInformationOutputBoundary;
 
-public class CacheStockInformationUseCaseFactory {
-    private CacheStockInformationUseCaseFactory() {}
+public class CacheInformationUseCaseFactory {
+    private CacheInformationUseCaseFactory() {}
 
     public static CacheStockInformationController createCacheStockInformationUseCase(
             CacheStockInformationViewModel cacheStockInformationViewModel,

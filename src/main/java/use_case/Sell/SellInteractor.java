@@ -46,16 +46,17 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                 sellPresenter.prepareFailView("Please enter a decimal value greater than 0");
                 return;
             }
-            if (!user.hasStock(ticker) || user.getStockOwned(ticker) < amount) {
-                sellPresenter.prepareFailView("You can't sell more than you have.");
-                return;
-            }
 
             Double currentPrice = null;
             try {
                 currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
             } catch (APIAccessInterface.TickerNotFoundException e) {
                 sellPresenter.prepareFailView("This ticker does not exist!");
+                return;
+            }
+
+            if (!user.isInPortfolio(ticker) || user.getStockOwned(ticker) < amount) {
+                sellPresenter.prepareFailView("You can't sell more than you have.");
                 return;
             }
 
