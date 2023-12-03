@@ -12,6 +12,19 @@ public class SellState {
     private List<Double> sellAmounts = null;
     private Double balance = null;
 
+    /**
+     * constructor for the sell state
+     *
+     * @param stockSelected     contains the current selected stock in the dropdown menu
+     * @param amount            contains the amount of stocks the user wants to sell
+     * @param amountError       contains the error message regarding the amount, either a format error
+     *                          or the user tried to sell more stocks than owned
+     * @param ownedStocks       list containing stocks currently owned by the user
+     * @param sellSuccess       contains the success message displayed upon selling stocks.
+     * @param ownedAmounts      contains amounts of stocks owned by the user
+     * @param balance           contains the current balance of the user
+     * @param sellAmounts       list containing the sell prices of the stocks owned by the user
+     */
     public SellState(
             String stockSelected,
             String amount,
@@ -47,11 +60,7 @@ public class SellState {
     public String getStockSelected() {
         return stockSelected;
     }
-
-    public void setStockSelected(String stockSelected) {
-        this.stockSelected = stockSelected;
-    }
-
+public void setStockSelected(String stockSelected) { this.stockSelected = stockSelected; }
     public void setAmountError(String amountError) {
         this.amountError = amountError;
     }
@@ -96,9 +105,9 @@ public class SellState {
         return ownedAmounts;
     }
 
-    // Because of the previous copy constructor, the default constructor must be explicit. Hence overloading.
-    public SellState() {
-
-    }
+    /**
+     * Empty initializer since all attributes have default null values.
+     */
+    public SellState() {}
 
 }

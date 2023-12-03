@@ -9,10 +9,22 @@ public class CacheStockInformation {
     private HashMap<String, List<Double>> stockInformationMap;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    /**
+     * Initializes with an empty hashmap. This is not a problem, since a refresh is always
+     * called right at the start of execution, which replaces this hashmap with a filled one
+     * if the user owns any stocks.
+     */
     public CacheStockInformation() {
         this.stockInformationMap = new HashMap<>();
     }
 
+    /**
+     * Updates the stockInformationMap stored in the Cache with a new information map.
+     * Also fires property changed to alert the observer that a change has occurred.
+     *
+     * @param stockInformationMap   Maps a ticker name to a list
+     *                              containing [current price, price change, percent change]
+     */
     public void setStockInformationMap(HashMap<String, List<Double>> stockInformationMap) {
         this.stockInformationMap = stockInformationMap;
         firePropertyChanged();
@@ -26,6 +38,12 @@ public class CacheStockInformation {
         support.firePropertyChange("stockInformationMap", null, this);
     }
 
+    /**
+     * Allows us to add any observers to this object. This can allow us to make multiple interactors
+     * observe the cache if necessary.
+     *
+     * @param listener  Observer to add
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }

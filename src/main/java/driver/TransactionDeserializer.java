@@ -9,6 +9,16 @@ import entity.Transaction;
 import java.lang.reflect.Type;
 
 public class TransactionDeserializer implements JsonDeserializer<Transaction> {
+    /**
+     * Deserializes transactions stored in the user.json file and returns a
+     * Transaction object
+     *
+     * @param json      json element to deserialize
+     * @param typeOfT   return type
+     * @param context   ??? TODO
+     * @return          deserialized json element (Transaction object)
+     * @throws JsonParseException   error thrown if unable to parse json element
+     */
     @Override
     public Transaction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
@@ -23,6 +33,12 @@ public class TransactionDeserializer implements JsonDeserializer<Transaction> {
         return context.deserialize(jsonObject, transactionClass);
     }
 
+    /**
+     * Returns the type of the transaction given a string
+     *
+     * @param type  is either "BUY", "SELL" or "TOPUP"
+     * @return      returns the respective Transaction type class
+     */
     private Class<? extends Transaction> getTransactionClass(String type) {
         return switch (type) {
             case "BUY" -> BuyTransaction.class;

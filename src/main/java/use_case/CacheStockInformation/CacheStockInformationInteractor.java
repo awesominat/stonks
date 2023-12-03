@@ -15,6 +15,13 @@ public class CacheStockInformationInteractor implements CacheStockInformationInp
     final CacheStockInformation cacheStockInformation;
     APIAccessInterface driverAPI;
 
+    /**
+     * Initializer for the cache interactor.
+     *
+     * @param userDataAccessObject      uses this to check which stocks are in the user portfolio
+     * @param cacheStockInformation     updates this with new price info from API
+     * @param driverAPI                 uses this to make API calls and grab updated stock prices
+     */
     public CacheStockInformationInteractor(
             CacheStockInformationDataAccessInterface userDataAccessObject,
             CacheStockInformation cacheStockInformation,
@@ -25,6 +32,12 @@ public class CacheStockInformationInteractor implements CacheStockInformationInp
         this.cacheStockInformation = cacheStockInformation;
     }
 
+    /**
+     * Has no input parameters, since it simply has to refresh the stock which is an attribute of
+     * this class using the driverAPI, which is also an attribute.
+     * Returns nothing and simply sets the stock information map in the cache. This triggers a
+     * firePropertyChanged call.
+     */
     @Override
     public void execute() {
         User user = userDataAccessObject.get();

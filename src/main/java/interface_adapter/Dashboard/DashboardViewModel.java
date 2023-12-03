@@ -6,6 +6,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * The dashboard view model, which contains the dashboard state and acts as the class
+ * that is observed by the dashboard view.
+ */
 public class DashboardViewModel extends ViewModel  {
     public final String PURCHASE_BUTTON_LABEL = "Buy";
     public final String SELL_BUTTON_LABEL = "Sell";

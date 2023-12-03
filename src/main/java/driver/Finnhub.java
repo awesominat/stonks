@@ -18,11 +18,20 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The driverAPI class which handles all API calls, processing input values into a request
+ * and reading and cleaning the output responses from the API.
+ *
+ * Implements the APIAccessInterface, which is used in interactors
+ */
 public class Finnhub implements APIAccessInterface {
     private final String APIKEY;
     int NUM_ARTICLES = 5;
     private final String appName = "RESET";
 
+    /**
+     * Constructor that attempts to read the API key from file.txt
+     */
     public Finnhub() {
         File f = new File("file.txt");
         FileReader fileReader = new FileReader();
@@ -37,11 +46,19 @@ public class Finnhub implements APIAccessInterface {
     }
 
 
+    /**
+     * TODO
+     * Unsure about the purpose of this method or what the attribute appName means
+     * @return
+     */
     @Override
     public String getAppName() {
         return appName;
     }
 
+    /**
+     * @return  Returns a boolean indicating whether the market is currently open
+     */
     @Override
     public boolean isMarketOpen() {
         String url = "https://finnhub.io/api/v1/stock/market-status?exchange=US&token=" + APIKEY;
@@ -66,6 +83,15 @@ public class Finnhub implements APIAccessInterface {
         }
     }
 
+    /**
+     * Gets the information of the company indicated with ticker. This is displayed on the buy view when a
+     * ticker is searched for.
+     *
+     * @param ticker    ticker for the company for which we want to fetch the profile
+     * @return          An instance of the CompanyInformation class, which contains all information
+     *                  about a company that needs to be displayed.
+     * @throws TickerNotFoundException  The exception that is thrown when an incorrect ticker is entered
+     */
     @Override
     public CompanyInformation getCompanyProfile(String ticker) throws TickerNotFoundException {
         // Get profile for company `ticker`.
@@ -107,6 +133,15 @@ public class Finnhub implements APIAccessInterface {
         }
     }
 
+    /**
+     * Method used to grab news articles about a company between given dates. Used for the get news use case.
+     *
+     * @param ticker    ticker for the company for which we want to grab news articles
+     * @param from      start date from which we want articles
+     * @param to        end date until which we want articles
+     * @return          list of Company News articles, where each element is a single article
+     * @throws TickerNotFoundException  exception that is thrown when an incorrect ticker is entered
+     */
     @Override
     public List<CompanyNews> getCompanyNews(String ticker, LocalDate from, LocalDate to) throws TickerNotFoundException {
         // Get news related to company `ticker` from the last month.
@@ -166,12 +201,17 @@ public class Finnhub implements APIAccessInterface {
             return ret;
         }
         catch (IOException | JSONException e) {
-//            System.out.println(e);
-//            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Gets the current price of a given stock.
+     *
+     * @param ticker    stock to grab the current price for
+     * @return          an instance of the PricePoint object, which contains the price and timestamp
+     * @throws TickerNotFoundException      exception thrown when an incorrect ticker is entered
+     */
     @Override
     public PricePoint getCurrentPrice(String ticker) throws TickerNotFoundException {
         ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
@@ -211,6 +251,16 @@ public class Finnhub implements APIAccessInterface {
         }
     }
 
+    /**
+     * Grabs more comprehensive price information that getCurrentPrice. Used to display
+     * stock price information on the dashboard view
+     *
+     * @param ticker    company to grab stock price information for
+     * @return          an instance of StockInformation, which contains the current price,
+     *                  price change and percent change of a stock
+     * @throws TickerNotFoundException      exception that is thrown when an incorrect stock is entered
+     */
+    @Override
     public StockInformation getCurrentStockInformation(String ticker) throws TickerNotFoundException {
         ticker = ticker.replaceAll("[^a-zA-Z0-9]", "");
 
