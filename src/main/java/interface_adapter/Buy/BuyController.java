@@ -3,9 +3,15 @@ package interface_adapter.Buy;
 import use_case.Buy.BuyInputBoundary;
 import use_case.Buy.BuyInputData;
 
+/**
+ * Handles the user's input and passing it to the interactor.
+ */
 public class BuyController {
     final private BuyInputBoundary buyInteractor;
 
+    /**
+     * @param buyInteractor The interactor to be used for the execution of the use case.
+     */
     public BuyController(BuyInputBoundary buyInteractor) {
         this.buyInteractor = buyInteractor;
     }

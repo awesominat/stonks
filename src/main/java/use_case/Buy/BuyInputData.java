@@ -1,5 +1,8 @@
 package use_case.Buy;
 
+/**
+ * This class represents the input data for the BuyInteractor.
+ */
 public class BuyInputData {
     private final Double amount;
     private final String ticker;
@@ -34,12 +37,18 @@ public class BuyInputData {
         this.ticker = null;
     }
 
-
+    /**
+     * @return  The amount of the stock to be purchased.
+     */
     public Double getAmount() {
         return amount;
     }
 
+    /**
+     * @return  The ticker symbol of the stock to be purchased.
+     */
     public String getTicker() {
         return ticker;
     }
+
 }

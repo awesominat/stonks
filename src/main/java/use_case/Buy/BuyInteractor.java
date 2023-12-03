@@ -7,11 +7,26 @@ import use_case.BaseStockInteractor;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
+/**
+ * Applies the enterprise application rules for the Buy use case.
+ * Handles the business logic for the Buy use case.
+ */
 public class BuyInteractor extends BaseStockInteractor implements BuyInputBoundary {
+
+    /** The data access object for the user. */
     final BuyDataAccessInterface userDataAccessObject;
+
+    /** The presenter for the Buy use case. */
     BuyOutputBoundary buyPresenter;
+
+    /** The API driver for the Buy use case. */
     APIAccessInterface driverAPI;
 
+    /**
+     * @param userDataAccessInterface The data access object for the user.
+     * @param buyPresenter The presenter for the Buy use case.
+     * @param driverAPI The API driver for the Buy use case.
+     */
     public BuyInteractor(
             BuyDataAccessInterface userDataAccessInterface,
             BuyOutputBoundary buyPresenter,
@@ -31,6 +46,10 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
                         currentPrice
                 ));
     }
+
+    /**
+     * @param buyInputData The input data for the Buy use case. Contains the ticker and amount.
+     */
     @Override
     public void execute(BuyInputData buyInputData) {
         String ticker = buyInputData.getTicker();
@@ -104,4 +123,5 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
 
         buyPresenter.prepareSuccessView(result);
     }
+
 }
