@@ -35,10 +35,6 @@ class FileUserDataAccessObjectTest {
         if (testFile.exists()) {
             testFile.delete();
         }
-        File testDirectory = new File("./");
-        if (testDirectory.exists()) {
-            testDirectory.delete();
-        }
     }
 
     @Test
