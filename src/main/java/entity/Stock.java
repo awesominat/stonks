@@ -8,6 +8,13 @@ public class Stock {
     final private String fullName;
     final private String ticker;
 
+    /**
+     * Contains common information about a specific stock.
+     *
+     * @param lastSeenPrice     last seen price of the stock from the last API call
+     * @param fullName          full name of the stock
+     * @param ticker            ticker name of the stock
+     */
     public Stock(Double lastSeenPrice, String fullName, String ticker) {
         this.lastSeenPrice = lastSeenPrice;
         this.fullName = fullName;

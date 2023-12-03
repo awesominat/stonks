@@ -6,6 +6,12 @@ public class PricePoint {
     private LocalDateTime timeStamp;
     private Double price;
 
+    /**
+     * Constructor for a PricePoint object
+     *
+     * @param timeStamp     the timestamp at which this price point was generated
+     * @param price         the price of a specific stock
+     */
     public PricePoint(LocalDateTime timeStamp, Double price) {
         this.price = price;
         this.timeStamp = timeStamp;
