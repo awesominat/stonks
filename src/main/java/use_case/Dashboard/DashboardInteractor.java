@@ -4,10 +4,8 @@ import entity.*;
 import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -94,7 +92,7 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
             for (Transaction transaction: stockHistory) {
                 if (transaction.getType() == TransactionType.TOPUP) {
                     PricePoint pp = transaction.getPricePoint();
-                    double daysSince = DAYS.between(now, pp.getTimeStamp());
+                    double daysSince = DAYS.between(pp.getTimeStamp(), now);
                     if (daysSinceLastTopup == -1) {
                         daysSinceLastTopup = daysSince;
                     } else {
