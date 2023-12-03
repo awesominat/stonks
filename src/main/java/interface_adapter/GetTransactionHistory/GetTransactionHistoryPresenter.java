@@ -34,8 +34,4 @@ public class GetTransactionHistoryPresenter implements GetTransactionHistoryOutp
         viewManagerModel.firePropertyChanged();
     }
 
-    @Override
-    public void prepareFailView(String error) {
-
-    }
 }
