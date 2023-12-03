@@ -16,7 +16,4 @@ public class DashboardInputData {
         return refreshPressed;
     }
 
-    public void setRefreshPressed(Boolean refreshPressed) {
-        this.refreshPressed = refreshPressed;
-    }
 }

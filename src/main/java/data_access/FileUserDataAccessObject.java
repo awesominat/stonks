@@ -36,7 +36,7 @@ public class FileUserDataAccessObject implements
     public FileUserDataAccessObject(String jsonPath, UserFactory userFactory) throws IOException {
         jsonFile = new File(jsonPath);
         if (jsonFile.length() == 0) {
-            user = new CommonUser();
+            user = userFactory.create();
             save();
         } else {
             Gson gson = new GsonBuilder()
@@ -59,7 +59,6 @@ public class FileUserDataAccessObject implements
 
         try (FileWriter writer = new FileWriter(jsonFile)) {
             writer.write(json);
-            System.out.println("Stored");
         } catch (IOException e) {
             e.printStackTrace();
         }

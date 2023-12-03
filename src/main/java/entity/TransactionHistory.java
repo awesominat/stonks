@@ -55,14 +55,8 @@ public class TransactionHistory implements Iterable<Transaction> {
         this.stock = stock;
         this.transactions = transactions;
     }
-
-    public TransactionHistory() {
-    }
     public void setStock(Stock stock) {
         this.stock = stock;
-    }
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
     }
 
     @Override

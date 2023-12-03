@@ -91,8 +91,8 @@ public class DashboardPresenter implements DashboardOutputBoundary  {
             dashboardViewModel.setState(state);
         }
     }
+    public void prepareFailView(String error){
 
-    @Override
-    public void prepareFailView(String error) {
     }
+
 }
