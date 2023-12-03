@@ -3,34 +3,23 @@ package interface_adapter.Sell;
 import java.util.List;
 
 public class SellState {
+    // contains the current selected stock in the dropdown menu
     private String stockSelected = null;
+    // contains the error message regarding the amount, either a format error
+    // or the user tried to sell more stocks than owned
     private String amountError = null;
+    // contains the amount of stocks the user wants to sell
     private String amount = null;
+    // contains the success message displayed upon selling stocks.
     private String sellSuccess = null;
+    // list containing stocks currently owned by the user
     private List<String> ownedStocks = null;
+    // list containing amounts of stocks currently owned by the user
     private List<Double> ownedAmounts = null;
+    // list containing the sell prices of the stocks owned by the user
     private List<Double> sellAmounts = null;
+    // contains the current balance of the user
     private Double balance = null;
-
-    public SellState(
-            String stockSelected,
-            String amount,
-            String amountError,
-            List<String> ownedStocks,
-            String sellSuccess,
-            List<Double> ownedAmounts,
-            Double balance,
-            List<Double> sellAmounts
-    ) {
-        this.amountError = amountError;
-        this.amount = amount;
-        this.stockSelected = stockSelected;
-        this.ownedStocks = ownedStocks;
-        this.sellSuccess = sellSuccess;
-        this.ownedAmounts = ownedAmounts;
-        this.balance = balance;
-        this.sellAmounts = sellAmounts;
-    }
 
     public String getAmountError() {
         return amountError;
@@ -47,11 +36,7 @@ public class SellState {
     public String getStockSelected() {
         return stockSelected;
     }
-
-    public void setStockSelected(String stockSelected) {
-        this.stockSelected = stockSelected;
-    }
-
+public void setStockSelected(String stockSelected) { this.stockSelected = stockSelected; }
     public void setAmountError(String amountError) {
         this.amountError = amountError;
     }
@@ -96,9 +81,9 @@ public class SellState {
         return ownedAmounts;
     }
 
-    // Because of the previous copy constructor, the default constructor must be explicit. Hence overloading.
-    public SellState() {
-
-    }
+    /**
+     * Empty initializer since all attributes have default null values.
+     */
+    public SellState() {}
 
 }

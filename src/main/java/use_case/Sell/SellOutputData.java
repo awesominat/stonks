@@ -10,12 +10,32 @@ public class SellOutputData {
     private List<Double> ownedAmounts;
     private Double balance;
 
+    /**
+     * The first constructor which is used when the execution type is sell.
+     * Contains amounts and ticker to be sold so that a success popup can be displayed
+     *
+     * @param amount    amount of stocks to be sold
+     * @param ticker    ticker of stock to be sold
+     */
     public SellOutputData(Double amount, String ticker) {
         this.amount = amount;
         this.ticker = ticker;
         this.executeTypeSell = true;
     }
 
+    /**
+     * The second constructor which is used when the execution type is refresh.
+     * Contains stocks owned, amounts of those stocks and the current user balance
+     * so that these can be updated on the sell view.
+     *
+     * More importantly, this sets the attribute executeTypeSell to be false.
+     * This is checked for in the presenter, which can then also use the dashboard state to grab
+     * current, up-to-date stock prices to the displayed on the sell view.
+     *
+     * @param ownedStocks   list of currently owned stocks
+     * @param ownedAmounts  parallel list of amounts of currently owned stocks
+     * @param balance       current user balance
+     */
     public SellOutputData(
             List<String> ownedStocks,
             List<Double> ownedAmounts,
