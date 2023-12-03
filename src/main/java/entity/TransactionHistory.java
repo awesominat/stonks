@@ -8,10 +8,6 @@ public class TransactionHistory implements Iterable<Transaction> {
     private Stock stock;
     private List<Transaction> transactions;
 
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
     class TransactionIter implements Iterator<Transaction> {
         int idx = 0;
 
@@ -48,17 +44,9 @@ public class TransactionHistory implements Iterable<Transaction> {
         this.stock = stock;
         this.transactions = transactions;
     }
-
-    public TransactionHistory() {
-    }
     public void setStock(Stock stock) {
         this.stock = stock;
     }
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-
     @Override
     public String toString() {
         System.out.println(transactions);

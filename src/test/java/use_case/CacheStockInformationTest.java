@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CacheStockInformationTest {
-    private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject(new CommonUserFactory());
     APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
 
     @BeforeAll
@@ -36,7 +36,7 @@ public class CacheStockInformationTest {
 
     @BeforeEach
     public void setupUser() {
-        userDataAccessObject = new InMemoryUserDataAccessObject();
+        userDataAccessObject = new InMemoryUserDataAccessObject(new CommonUserFactory());
 
         User user = userDataAccessObject.get();
         user.addToPortfolio("AAPL", 10.0);
