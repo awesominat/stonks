@@ -16,6 +16,7 @@ import use_case.Sell.SellOutputData;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -119,6 +120,41 @@ public class SellInterfaceAdapterTest {
 
         // Perform assertions on the capturedSellState as needed
         assert capturedSellState.getBalance() >= sellViewModelMock.getState().getBalance();
+    }
+
+    @Test
+    void testPrepareSuccessViewNotExecuteTypeSell() {
+        ViewManagerModel viewManagerModelMock = Mockito.mock(ViewManagerModel.class);
+        SellViewModel sellViewModel = new SellViewModel();
+        SellState sellState = new SellState();
+        sellViewModel.setState(sellState);
+
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
+        DashboardState dashboardState1 = new DashboardState();
+        dashboardViewModel.setState(dashboardState1);
+
+        SellPresenter sellPresenter = new SellPresenter(viewManagerModelMock, sellViewModel, dashboardViewModel);
+
+        HashMap<String, List<Double>> stocksPriceInformationTable = new HashMap<>();
+        stocksPriceInformationTable.put(
+                "AAPL",
+                Arrays.asList(100.0, -2.0, -1.0)
+        );
+        dashboardState1.setStocksPriceInformationTable(stocksPriceInformationTable);
+
+        List<String> ownedStocks = new ArrayList<>();
+        ownedStocks.add("AAPL");
+        List<Double> ownedAmounts = new ArrayList<>();
+        ownedAmounts.add(2.0);
+        Double balance = 10000.0;
+
+        SellOutputData response = new SellOutputData(ownedStocks, ownedAmounts, balance);
+
+        sellPresenter.prepareSuccessView(response);
+
+        assertEquals(sellState.getOwnedAmounts(), ownedAmounts);
+        assertEquals(sellState.getOwnedStocks(), ownedStocks);
+        assertEquals(sellState.getBalance(), balance);
     }
 
 //
