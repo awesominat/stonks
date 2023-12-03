@@ -25,14 +25,4 @@ public class CompanyInformation {
 
     public String getIpo() {return ipo;}
 
-    public String toString() {
-        return "CompanyInformation{\n" +
-                "country='" + this.country + "', \n" +
-                "name='" + this.name + "', \n" +
-                "ticker='" + this.ticker + "', \n" +
-                "weburl='" + this.weburl + "', \n" +
-                "ipo='" + this.ipo + "'\n" +
-                "}";
-    }
-
 }
