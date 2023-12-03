@@ -85,7 +85,8 @@ public class GetTransactionHistoryTest {
 //        getTransactionHistoryController.execute();
 
         getTransactionHistoryInteractor.execute();
-        ArgumentCaptor<GetTransactionHistoryOutputData> captor = ArgumentCaptor.forClass(GetTransactionHistoryOutputData.class);
+        ArgumentCaptor<GetTransactionHistoryOutputData> captor = ArgumentCaptor.forClass(
+                GetTransactionHistoryOutputData.class);
 
 //        ViewManagerModel viewManagerModel = new ViewManagerModel();
 //        GetTransactionHistoryViewModel getTransactionHistoryViewModel = new GetTransactionHistoryViewModel();
