@@ -4,10 +4,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Transaction history class which contains a list of transactions associated with a
+ * particular stock
+ */
 public class TransactionHistory implements Iterable<Transaction> {
     private Stock stock;
     private List<Transaction> transactions;
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    /**
+     * Iterator implementation to allow iteration through all transactions
+     */
     class TransactionIter implements Iterator<Transaction> {
         int idx = 0;
 
@@ -47,6 +58,7 @@ public class TransactionHistory implements Iterable<Transaction> {
     public void setStock(Stock stock) {
         this.stock = stock;
     }
+
     @Override
     public String toString() {
         System.out.println(transactions);

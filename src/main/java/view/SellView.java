@@ -23,19 +23,33 @@ import java.util.List;
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "sell";
 
+    // interface adapters required
     private final SellController sellController;
     private final SellViewModel sellViewModel;
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    // input fields (dropdown for stock selection and text input for amount)
     final JComboBox<String> stockInputField = new JComboBox<String>();
     final JTextField amountInputField = new JTextField(3);
 
+    // buttons and labels
     final JButton sell;
     final JButton back;
-    final JTable table;
     final JLabel currentBalance;
 
+    // currently owned stocks table with prices
+    final JTable table;
+
+    /**
+     * Constructor for the sell view. Initializes all tables, labels, and fields displayed on the screen
+     *
+     * @param sellViewModel         used to fire property changed when a refresh needs to be done
+     * @param sellController        used to run the sell use case interactor
+     * @param viewManagerModel      used to navigate to other pages (i.e. the back button)
+     * @param dashboardViewModel    used to grab the name of the page that will be navigated back to
+     *                              (since the back button takes the user back to the dashboard)
+     */
     public SellView(
             SellViewModel sellViewModel,
             SellController sellController,
@@ -47,22 +61,13 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         this.dashboardViewModel = dashboardViewModel;
         this.sellViewModel = sellViewModel;
         this.sellViewModel.addPropertyChangeListener(this);
-
+        this.setLayout(new BorderLayout());
 
         currentBalance = new JLabel();
         currentBalance.setFont(new Font("Helvetica", Font.ROMAN_BASELINE, 16));
         currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        currentBalance.setBorder(border);
+        currentBalance.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-
-//        JFrame frame = new JFrame("Title");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLayout(new FlowLayout());
-
-        // Create a JPanel with BorderLayout
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        setLayout(new BorderLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel topPanel = new JPanel(new GridBagLayout());
@@ -90,7 +95,8 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(sell)) {
                             SellState currentState = sellViewModel.getState();
-
+                            // this is the first execution type, since the controller is called with the
+                            // constructor for a sell execution type
                             sellController.execute(
                                     currentState.getAmount(),
                                     currentState.getStockSelected()
@@ -101,6 +107,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 }
         );
 
+        // navigates back to the dashboard
         back.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -155,17 +162,28 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * Function that populates the table, labels and fields on the screen.
+     * This is run whenever anything on the screen is changed as a result of
+     * either execution type.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // this is the second execution type, which causes refreshes to occur
         sellController.execute();
         SellState state = sellViewModel.getState();
 
+        // success popup
         String sellSuccess = state.getSellSuccess();
         if (sellSuccess != null) {
             JOptionPane.showMessageDialog(this, sellSuccess);
         }
         state.setSellSuccess(null);
 
+        // error popup
         String amountError = state.getAmountError();
         if (amountError != null) {
             JOptionPane.showMessageDialog(this, amountError);
@@ -173,6 +191,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         state.setAmountError(null);
         sellViewModel.setState(state);
 
+        // populating the dropdown menu with currently owned stocks
         List<String> ownedStocks = state.getOwnedStocks();
         stockInputField.removeAllItems();
         if (ownedStocks != null && !ownedStocks.isEmpty()) {
@@ -181,6 +200,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
             }
         }
 
+        // populating the currently owned stocks table
         List<Double> ownedAmounts = state.getOwnedAmounts();
         List<Double> sellPrices = state.getSellAmounts();
 
@@ -213,6 +233,7 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.LIGHT_GRAY);
 
+        // setting the current user balance
         Double userBalance = state.getBalance();
         currentBalance.setText(String.format("Current Balance: $%.2f", userBalance));
     }

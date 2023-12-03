@@ -9,6 +9,13 @@ public class DashboardOutputData {
     HashMap<String, Double> ownedStocksInformationTable;
     Boolean refreshPressed;
 
+    /**
+     * First constructor for dashboard output data. This is to be used when
+     * the execution type is refresh
+     *
+     * @param stockPriceInformationTable    a map from stock tickers to current price information
+     *                                      of those stocks
+     */
     public DashboardOutputData(HashMap<String, List<Double>> stockPriceInformationTable) {
         this.stockPriceInformationTable = stockPriceInformationTable;
         this.refreshPressed = true;
@@ -16,6 +23,13 @@ public class DashboardOutputData {
         this.ownedStocksInformationTable = null;
     }
 
+    /**
+     * Second constructor for the dashboard output data. This is to be used when the
+     * execution type is not refresh.
+     *
+     * @param userStats                     the current user stats table
+     * @param ownedStocksInformationTable   a map from the ticker to the amount of the stock owned by the user
+     */
     public DashboardOutputData(
             HashMap<String, Double> userStats,
             HashMap<String, Double> ownedStocksInformationTable

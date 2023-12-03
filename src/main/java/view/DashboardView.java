@@ -27,7 +27,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "dashboard";
+
+    // dashboard controller for running the dashboard use case
     private final DashboardController dashboardController;
+
+    // view models and view manager model to allow switching to other screens from the dashboard
     private final DashboardViewModel dashboardViewModel;
     private final BuyViewModel buyViewModel;
     private final SellViewModel sellViewModel;
@@ -61,6 +65,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     /**
      * The homepage (dashboard) window with a title, a welcome message, a panel of action buttons, statistics about
      * the user, and information about stocks the user has invested in.
+     *
+     * @param dashboardViewModel
+     * @param dashboardController
+     * @param buyViewModel
+     * @param sellViewModel
+     * @param getNewsViewModel
+     * @param resetBalanceController
+     * @param historyViewModel
+     * @param viewManagerModel
      */
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController,
@@ -204,7 +217,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         // Spice up the labels a bit.
         Font labelFont = balanceLabel.getFont();
-//        balanceLabel.setForeground(new Color(14, 20, 138));
         balanceLabel.setSize(25, 5);
         balanceLabel.setFont(labelFont.deriveFont(Font.BOLD));
 
@@ -256,6 +268,14 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     }
 
 
+    /**
+     * The property change function of the view. This is the function that populates all view
+     * elements with information from the dashboard state and this runs whenever the
+     * dashboard state updates and the view model fires a property change signal.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         dashboardController.execute(false);
 

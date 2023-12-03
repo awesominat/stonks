@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class JSONParser {
+    /**
+     * Reads the user.json file and grabs the user portfolio
+     *
+     * @return  a hashmap mapping tickers to amounts of those stocks owned (user portfolio)
+     */
     public HashMap<String, Double> getPortfolio() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("user.json")) {
@@ -25,6 +30,13 @@ public class JSONParser {
         return null;
     }
 
+    /**
+     * Grabs the transaction history of a user. This contains every transaction ever made by the user,
+     * including buy, sell and reset transactions.
+     *
+     * @return  map from ticker to a Transaction history, which contains every transaction ever done with
+     *          that specific stock
+     */
     public HashMap<String, TransactionHistory> getHistory() {
         Gson gson = new Gson();
         Type type = new TypeToken<List<TransactionHistory>>(){}.getType();

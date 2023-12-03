@@ -11,6 +11,16 @@ public class DashboardState {
     private Boolean refreshPressed;
     private Boolean resetPressed;
 
+    /**
+     * Constructor for dashboard state
+     *
+     * @param userStats                     user statistics, such as the net worth, portfolio worth, etc.
+     * @param ownedStocksTable              stocks owned by user and their amounts
+     * @param stocksPriceInformationTable   stocks owned by user and their price information
+     * @param refreshPressed                whether this is a refresh execution case or not
+     * @param resetPressed                  whether the reset button has been pressed.
+     *                                      Used by the reset balance use case
+     */
     public DashboardState(
             HashMap<String, Double> userStats,
             HashMap<String, Double> ownedStocksTable,
@@ -65,6 +75,10 @@ public class DashboardState {
         this.resetPressed = resetPressed;
     }
 
+    /**
+     * Initializer that sets all attributes to be empty. This allows us to
+     * start with an empty state and then populate it
+     */
     public DashboardState() {
         this.userStats = new HashMap<>();
         this.ownedStocksTable = new HashMap<>();
