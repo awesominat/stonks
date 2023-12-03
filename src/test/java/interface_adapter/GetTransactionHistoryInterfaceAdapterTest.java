@@ -1,4 +1,4 @@
-package interface_adapters;
+package interface_adapter;
 
 import entity.CommonUser;
 import entity.CompanyInformation;
@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import use_case.APIAccessInterface;
 import use_case.Buy.*;
 import use_case.GetTransactionHistory.*;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 
 import java.beans.PropertyChangeListener;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-public class GetTransactionHistoryInterfaceAdapters {
+public class GetTransactionHistoryInterfaceAdapterTest {
 
     @Test
     public void testGetTransactionHistoryIA() throws APIAccessInterface.TickerNotFoundException {
