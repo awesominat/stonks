@@ -5,6 +5,8 @@ import interface_adapter.ViewManagerModel;
 import use_case.Sell.SellOutputData;
 import use_case.Sell.SellOutputBoundary;
 import interface_adapter.Dashboard.DashboardState;
+
+import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ public class SellPresenter implements SellOutputBoundary {
 
     private final SellViewModel sellViewModel;
     private final DashboardViewModel dashboardViewModel;
+    private final ViewManagerModel viewManagerModel;
 
     /**
      * Constructor for the sell presenter
@@ -22,9 +25,11 @@ public class SellPresenter implements SellOutputBoundary {
      *                              information from dashboard state (to minimize API calls)
      */
     public SellPresenter(
+            ViewManagerModel viewManagerModel,
             SellViewModel sellViewModel,
             DashboardViewModel dashboardViewModel
     ) {
+        this.viewManagerModel = viewManagerModel;
         this.sellViewModel = sellViewModel;
         this.dashboardViewModel = dashboardViewModel;
     }
