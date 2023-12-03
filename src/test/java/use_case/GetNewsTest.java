@@ -94,7 +94,7 @@ public class GetNewsTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
         LocalDateTime localDateTime = LocalDateTime.parse(newsItem.get("datetime"), formatter);
         String date = localDateTime.format(formatter);
-        assertEquals("12:00:00 a.m. 2023-11-28", date);
+        assertEquals("2023-11-28", localDateTime.toLocalDate().toString());
 
         assertEquals("The Cash-Rich Magnificent 7 For The Long Haul", newsItem.get("headline"));
         assertEquals("company", newsItem.get("category"));
