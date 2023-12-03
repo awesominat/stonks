@@ -27,15 +27,4 @@ public class CompanyNews {
 
     public String getSummary() {return summary;}
 
-    public String toString() {
-        return "CompanyNews{\n" +
-                "category='" + this.category + "', \n" +
-                "headline='" + this.headline + "', \n" +
-                "summary='" + this.summary + "', \n" +
-                "url='" + this.url + "', \n" +
-                "datetime='" + this.datetime.toString() + "'\n" +
-                "}";
-    }
-
-
 }

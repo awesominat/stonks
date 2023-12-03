@@ -132,7 +132,6 @@ public class SellTest {
         assertEquals(mostRecentTransaction.getAmount(), 5.0);
         assertEquals(mostRecentTransaction.getPricePoint().getPrice(), 100.0);
 
-
         LocalDateTime expectedTimestamp = mostRecentTransaction.getPricePoint().getTimeStamp();
         LocalDateTime actualTimestamp = LocalDateTime.now();
 

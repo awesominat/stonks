@@ -166,8 +166,8 @@ public class Finnhub implements APIAccessInterface {
             return ret;
         }
         catch (IOException | JSONException e) {
-            System.out.println(e);
-            e.printStackTrace();
+//            System.out.println(e);
+//            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

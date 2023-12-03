@@ -50,9 +50,9 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
                 List<String> transaction = new ArrayList<>();
                 transaction.add(0, stock);
                 transaction.add(1, type);
-                transaction.add(2,amount);
+                transaction.add(2, amount);
                 transaction.add(3, pricePurchasedAt);
-                transaction.add(4,date);
+                transaction.add(4, date);
                 userRecord.add(transaction);
             }
         }

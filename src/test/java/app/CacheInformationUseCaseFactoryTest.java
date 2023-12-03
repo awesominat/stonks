@@ -1,7 +1,7 @@
 package app;
 
+import entity.CacheStockInformation;
 import interface_adapter.CacheStockInformation.CacheStockInformationController;
-import interface_adapter.CacheStockInformation.CacheStockInformationViewModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,9 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class CacheInformationUseCaseFactoryTest {
 
     @Mock
-    private CacheStockInformationViewModel cacheStockInformationViewModel;
-    @Mock
     private CacheStockInformationDataAccessInterface fileUserDataAccessObject;
+
+    @Mock
+    private CacheStockInformation cacheStockInformation;
+
     @Mock
     private APIAccessInterface apiAccessInterface;
 
@@ -28,8 +30,8 @@ class CacheInformationUseCaseFactoryTest {
     @Test
     void testCreateCacheStockInformationUseCase() {
         CacheStockInformationController controller = CacheInformationUseCaseFactory.createCacheStockInformationUseCase(
-                cacheStockInformationViewModel,
                 fileUserDataAccessObject,
+                cacheStockInformation,
                 apiAccessInterface
         );
 

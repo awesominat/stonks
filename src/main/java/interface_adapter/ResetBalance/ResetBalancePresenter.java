@@ -25,7 +25,4 @@ public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
         }
     }
 
-    @Override
-    public void prepareFailView(String error) {
-    }
 }

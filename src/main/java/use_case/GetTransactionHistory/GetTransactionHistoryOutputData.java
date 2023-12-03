@@ -10,10 +10,6 @@ public class GetTransactionHistoryOutputData {
         this.userRecord = userRecord;
     }
 
-    public void setUserRecord(List<List<String>> userRecord) {
-        this.userRecord = userRecord;
-    }
-
     public List<List<String>> getUserRecord() {
         return userRecord;
     }
