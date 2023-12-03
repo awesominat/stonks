@@ -58,7 +58,6 @@ public class SellViewTest {
         sellViewModel = new SellViewModel();
         sellViewModel.setState(sellState);
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
-//        dashboardViewModel = Mockito.mock(DashboardViewModel.class);
         viewManagerModel = Mockito.mock(ViewManagerModel.class);
 
         sellView = new SellView(sellViewModel, sellController, viewManagerModel, dashboardViewModel);
@@ -93,13 +92,7 @@ public class SellViewTest {
         assertNotNull(sellButton);
         sellButton.doClick();
 
-        // Use Mockito to verify interactions
         Mockito.verify(sellController, Mockito.times(1)).execute();
-
-        // Additional tests can include testing property change listeners,
-        // key event handling, action events, etc.
-
-        // Add more assertions and verifications as needed for your test
     }
 
     @Test

@@ -76,24 +76,7 @@ public class BuyViewTest {
         assertEquals("US", tableModel.getValueAt(0, 1));
         assertEquals("https://www.apple.com/", tableModel.getValueAt(1, 1));
         assertEquals("0.0", tableModel.getValueAt(2, 1));
-
-        // Assuming the first row contains the new stock information
-//        int firstRow = 0;
-//        assertEquals("US", tableModel.getValueAt(firstRow, getColumnIndex(tableModel, "country")));
-//        assertEquals("https://www.apple.com/", tableModel.getValueAt(firstRow, getColumnIndex(tableModel, "weburl")));
-//        assertEquals("10.0", tableModel.getValueAt(firstRow, getColumnIndex(tableModel, "currently held")));
-
-        // Additional assertions as needed
     }
-
-//    private int getColumnIndex(DefaultTableModel model, String columnName) {
-//        for (int i = 0; i < model.getColumnCount(); i++) {
-//            if (columnName.equals(model.getColumnName(i))) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
 
     @Test
     public void testBuyStockTriggersControllerExecution() {
@@ -135,20 +118,6 @@ public class BuyViewTest {
                 JButton button = findButton(child, query);
                 if (button != null) {
                     return button;
-                }
-            }
-        }
-        return null;
-    }
-    private Component findComponentByName(Component component, String name) {
-        if (name.equals(component.getName())) {
-            return component;
-        }
-        if (component instanceof Container) {
-            for (Component child : ((Container) component).getComponents()) {
-                Component found = findComponentByName(child, name);
-                if (found != null) {
-                    return found;
                 }
             }
         }
