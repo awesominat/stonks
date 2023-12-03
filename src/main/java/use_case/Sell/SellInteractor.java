@@ -76,12 +76,6 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                 return;
             }
 
-            // The error case where the user tries to sell more than they own.
-            if (!user.isInPortfolio(ticker) || user.getStockOwned(ticker) < amount) {
-                sellPresenter.prepareFailView("You can't sell more than you have.");
-                return;
-            }
-
             // This error case will ideally never occur, since we grab stocks from the user portfolio
             // which cannot contain a ticker that does not exist. However, we need to handle
             // the exception that can be thrown by driverAPI.
@@ -90,6 +84,12 @@ public class SellInteractor extends BaseStockInteractor implements SellInputBoun
                 currentPrice = driverAPI.getCurrentPrice(ticker).getPrice();
             } catch (APIAccessInterface.TickerNotFoundException e) {
                 sellPresenter.prepareFailView("This ticker does not exist!");
+                return;
+            }
+
+            // The error case where the user tries to sell more than they own.
+            if (!user.isInPortfolio(ticker) || user.getStockOwned(ticker) < amount) {
+                sellPresenter.prepareFailView("You can't sell more than you have.");
                 return;
             }
 
