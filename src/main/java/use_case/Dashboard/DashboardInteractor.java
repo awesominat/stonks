@@ -19,6 +19,14 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
     DashboardOutputBoundary dashboardPresenter;
     APIAccessInterface driverAPI;
 
+    /**
+     * Constructor for the dashboard use case interactor
+     *
+     * @param userDataAccessInterface   allows us to manipulate the user entity
+     * @param cacheStockInformation     allows us to grab cached stock price information
+     * @param dashboardPresenter        allows us to update the dashboard state
+     * @param driverAPI                 allows us to grab new stock prices when refresh is pressed
+     */
     public DashboardInteractor(
             DashboardDataAccessInterface userDataAccessInterface,
             CacheStockInformation cacheStockInformation,
@@ -33,6 +41,15 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         this.cacheStockInformation.addPropertyChangeListener(this);
     }
 
+    /**
+     * The execute function that handles the two execution cases;
+     *      1. When we want to perform API calls to get new stock price information
+     *      2. When we do not want to perform API calls and want to use stock price
+     *         information already stored in the state.
+     * See the comments below for more information
+     *
+     * @param dashboardInputData    contains whether the execution case should be refresh or not
+     */
     @Override
     public void execute(DashboardInputData dashboardInputData) {
         Boolean refreshPressed = dashboardInputData.getRefreshPressed();
@@ -70,8 +87,16 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         }
     }
 
+    /**
+     * Constructs the user stats hashmap which is used to populate the user stats table
+     *
+     * @param user      The user object which allows access to transaction history and
+     *                  the portfolio, from which we can calculate statistics about the
+     *                  users performance
+     * @return          A Hashmap that represents the user stats table
+     */
     public HashMap<String, Double> buildUserStats(User user) {
-        HashMap<String, Double> userStats = new HashMap<String, Double>();
+        HashMap<String, Double> userStats = new HashMap<>();
         userStats.put("balance", user.getBalance());
 
         double portfolioNetWorth = 0.0;
@@ -107,6 +132,15 @@ public class DashboardInteractor extends BaseStockInteractor implements Dashboar
         return userStats;
     }
 
+    /**
+     * The propertyChange function of the dashboard interactor. This function grabs
+     * updated stock prices from the CacheStockInformation and sends them to the presenter,
+     * which can then use this information to update the dashboard state
+     * This is run whenever the CacheStockInformation entity is updated with new stock prices.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         CacheStockInformation cacheStockInformation = (CacheStockInformation) evt.getNewValue();
