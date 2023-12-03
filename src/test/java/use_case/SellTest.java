@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SellTest {
-    private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject(new CommonUserFactory());
     APIAccessInterface mockApi = Mockito.mock(APIAccessInterface.class);
 
     @BeforeAll
@@ -35,7 +35,7 @@ public class SellTest {
 
     @BeforeEach
     public void setupUser() {
-        userDataAccessObject = new InMemoryUserDataAccessObject();
+        userDataAccessObject = new InMemoryUserDataAccessObject(new CommonUserFactory());
 
         User user = userDataAccessObject.get();
         user.addToPortfolio("AAPL", 10.0);
