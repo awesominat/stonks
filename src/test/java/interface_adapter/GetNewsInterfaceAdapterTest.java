@@ -1,11 +1,14 @@
-package use_case;
+package interface_adapter;
 
 import entity.*;
 import interface_adapter.GetNews.GetNewsController;
-import org.apiguardian.api.API;
+import interface_adapter.GetNews.GetNewsPresenter;
+import interface_adapter.GetNews.GetNewsState;
+import interface_adapter.GetNews.GetNewsViewModel;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import use_case.APIAccessInterface;
 import use_case.GetNews.*;
 
 import java.time.LocalDate;
@@ -19,9 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GetNewsTest {
+public class GetNewsInterfaceAdapterTest {
     private APIAccessInterface mockAPI;
     private GetNewsOutputBoundary presenter;
+    private GetNewsInteractor interactor;
 
     @BeforeAll
     public void setUpAPI() throws RuntimeException, APIAccessInterface.TickerNotFoundException {
@@ -62,6 +66,7 @@ public class GetNewsTest {
     @BeforeEach
     public void setUpPresenter() {
         presenter = Mockito.mock(GetNewsOutputBoundary.class);
+        interactor = new GetNewsInteractor(presenter, mockAPI);
     }
 
     @AfterEach
@@ -71,11 +76,6 @@ public class GetNewsTest {
 
     @Test
     public void testInfoFetch() {
-//        GetNewsInputData inputData = new GetNewsInputData("AAPL");
-//        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
-//        interactor.execute(inputData);
-
-        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
         GetNewsController controller = new GetNewsController(interactor);
         controller.execute("AAPL");
 
@@ -90,21 +90,49 @@ public class GetNewsTest {
 
         assertEquals(5, response.getNewsItems().size());
         assertEquals("AAPL", response.getTicker());
+        assertEquals("The Cash-Rich Magnificent 7 For The Long Haul", newsItem.get("headline"));
+        assertEquals("company", newsItem.get("category"));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
         LocalDateTime localDateTime = LocalDateTime.parse(newsItem.get("datetime"), formatter);
         String date = localDateTime.format(formatter);
         assertEquals("2023-11-28", localDateTime.toLocalDate().toString());
+    }
 
+    @Test
+    public void testInterfaceAdapters() {
+        // Test-specific setup.
+        GetNewsController controller = new GetNewsController(interactor);
+        controller.execute("AAPL");
+        ArgumentCaptor<GetNewsOutputData> captor = ArgumentCaptor.forClass(GetNewsOutputData.class);
+        Mockito.verify(presenter).prepareSuccessView(captor.capture());
+        Mockito.verify(presenter, Mockito.never()).prepareFailView(any(String.class));
+        GetNewsOutputData response = captor.getValue();
+
+        // Test Interface Adapters
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        GetNewsViewModel getNewsViewModel = new GetNewsViewModel();
+        GetNewsPresenter getNewsPresenter = new GetNewsPresenter(viewManagerModel, getNewsViewModel);
+
+        getNewsPresenter.prepareSuccessView(response);
+
+        // Verify properties of the state
+        GetNewsState state = getNewsViewModel.getState();
+
+//        assertFalse(state.getRenderNewInfo());
+        assertNull(state.getTickerError());
+
+        Map<String, String> newsItem = state.getNewsItems().get(0);
+        assertEquals(5, state.getNewsItems().size());
+        assertEquals("AAPL", state.getTicker());
         assertEquals("The Cash-Rich Magnificent 7 For The Long Haul", newsItem.get("headline"));
         assertEquals("company", newsItem.get("category"));
     }
 
     @Test
     public void testInvalidTicker() throws APIAccessInterface.TickerNotFoundException {
-        GetNewsInputData inputData = new GetNewsInputData("SSS");
-        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
-        interactor.execute(inputData);
+        GetNewsController controller = new GetNewsController(interactor);
+        controller.execute("SSS");
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
@@ -118,9 +146,8 @@ public class GetNewsTest {
 
     @Test
     public void testNoApiResponse() throws RuntimeException {
-        GetNewsInputData inputData = new GetNewsInputData("API does not respond");
-        GetNewsInteractor interactor = new GetNewsInteractor(presenter, mockAPI);
-        interactor.execute(inputData);
+        GetNewsController controller = new GetNewsController(interactor);
+        controller.execute("API does not respond");
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
