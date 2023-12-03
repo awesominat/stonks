@@ -11,19 +11,19 @@ public class DashboardState {
     private Boolean refreshPressed;
     private Boolean resetPressed;
 
-    public DashboardState(
-            HashMap<String, Double> userStats,
-            HashMap<String, Double> ownedStocksTable,
-            HashMap<String, List<Double>> stocksPriceInformationTable,
-            Boolean refreshPressed,
-            Boolean resetPressed
-    ) {
-        this.userStats = userStats;
-        this.ownedStocksTable = ownedStocksTable;
-        this.stocksPriceInformationTable = stocksPriceInformationTable;
-        this.refreshPressed = refreshPressed;
-        this.resetPressed = resetPressed;
-    }
+//    public DashboardState(
+//            HashMap<String, Double> userStats,
+//            HashMap<String, Double> ownedStocksTable,
+//            HashMap<String, List<Double>> stocksPriceInformationTable,
+//            Boolean refreshPressed,
+//            Boolean resetPressed
+//    ) {
+//        this.userStats = userStats;
+//        this.ownedStocksTable = ownedStocksTable;
+//        this.stocksPriceInformationTable = stocksPriceInformationTable;
+//        this.refreshPressed = refreshPressed;
+//        this.resetPressed = resetPressed;
+//    }
 
     public HashMap<String, Double> getOwnedStocksTable() {
         return ownedStocksTable;
