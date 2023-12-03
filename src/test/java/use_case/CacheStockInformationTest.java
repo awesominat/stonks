@@ -3,11 +3,8 @@ package use_case;
 import data_access.InMemoryUserDataAccessObject;
 import entity.*;
 import org.junit.jupiter.api.*;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import use_case.CacheStockInformation.CacheStockInformationInteractor;
-import use_case.CacheStockInformation.CacheStockInformationOutputBoundary;
-import use_case.CacheStockInformation.CacheStockInformationOutputData;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,18 +56,13 @@ public class CacheStockInformationTest {
     }
     @Test
     public void testCachedStock() {
-        CacheStockInformationOutputBoundary cacheStockInformationPresenter = Mockito.mock(CacheStockInformationOutputBoundary.class);
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
 
-        CacheStockInformationInteractor cacheStockInformationInteractor = new CacheStockInformationInteractor(userDataAccessObject, cacheStockInformationPresenter, mockApi);
+        CacheStockInformationInteractor cacheStockInformationInteractor = new CacheStockInformationInteractor(
+                userDataAccessObject, cacheStockInformation, mockApi);
         cacheStockInformationInteractor.execute();
 
-        ArgumentCaptor<CacheStockInformationOutputData> captor = ArgumentCaptor.forClass(CacheStockInformationOutputData.class);
-
-        Mockito.verify(cacheStockInformationPresenter).updateCacheSuccess(captor.capture());
-
-        CacheStockInformationOutputData cacheStockInformationOutputData = captor.getValue();
-
-        HashMap<String, List<Double>> stockInformationMap = cacheStockInformationOutputData.getStockInformationMap();
+        HashMap<String, List<Double>> stockInformationMap = cacheStockInformation.getStockInformationMap();
 
         assertEquals(stockInformationMap.size(), 1);
         assertEquals(stockInformationMap.get("AAPL").size(), 3);
@@ -81,17 +73,14 @@ public class CacheStockInformationTest {
 
     @Test
     public void testInvalidTicker() {
-        CacheStockInformationOutputBoundary cacheStockInformationPresenter = Mockito.mock(CacheStockInformationOutputBoundary.class);
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
 
         User capturedUser = userDataAccessObject.get();
         capturedUser.addToPortfolio("AAPL :)", 1.0);
 
-        CacheStockInformationInteractor cacheStockInformationInteractor = new CacheStockInformationInteractor(userDataAccessObject, cacheStockInformationPresenter, mockApi);
+        CacheStockInformationInteractor cacheStockInformationInteractor = new CacheStockInformationInteractor(
+                userDataAccessObject, cacheStockInformation, mockApi);
         cacheStockInformationInteractor.execute();
-
-        ArgumentCaptor<CacheStockInformationOutputData> captor = ArgumentCaptor.forClass(CacheStockInformationOutputData.class);
-
-        Mockito.verify(cacheStockInformationPresenter).updateCacheSuccess(captor.capture());
 
         assertEquals(capturedUser.getPortfolio().size(), 1);
     }

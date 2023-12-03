@@ -5,6 +5,7 @@ import entity.*;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import use_case.CacheStockInformation.CacheStockInformationInteractor;
 import use_case.Dashboard.DashboardInputData;
 import use_case.Dashboard.DashboardInteractor;
 import use_case.Dashboard.DashboardOutputBoundary;
@@ -62,8 +63,10 @@ public class DashboardTest {
     @Test
     public void testInfoFetch() {
         DashboardOutputBoundary dashboardPresenter = Mockito.mock(DashboardOutputBoundary.class);
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
 
-        DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, mockApi);
+        DashboardInteractor dashboardInteractor = new DashboardInteractor(
+                userDataAccessObject, cacheStockInformation, dashboardPresenter, mockApi);
         DashboardInputData dashboardInputData = new DashboardInputData(false);
         dashboardInteractor.execute(dashboardInputData);
 
@@ -85,17 +88,21 @@ public class DashboardTest {
         assertEquals(userStats.get("Days since last reset"), -1.0);
         assertEquals(userStats.get("Portfolio net worth"), 1000.0);
 
-        assertEquals(dashboardOutputData.getOwnedTickers().size(), 1);
-        assertEquals(dashboardOutputData.getOwnedAmounts().size(), 1);
-        assertEquals(dashboardOutputData.getOwnedAmounts().get(0), 10.0);
-        assertEquals(dashboardOutputData.getOwnedTickers().get(0), "AAPL");
+        assertNull(dashboardOutputData.getStockPriceInformationTable());
+        assertEquals(dashboardOutputData.getOwnedStocksInformationTable().size(), 1);
+        assertTrue(dashboardOutputData.getOwnedStocksInformationTable().containsKey("AAPL"));
+        assertEquals(dashboardOutputData.getOwnedStocksInformationTable().get("AAPL"), 10.0);
+
+        assertEquals(cacheStockInformation.getStockInformationMap().size(), 0);
     }
 
     @Test
     public void testRefreshCase() {
         DashboardOutputBoundary dashboardPresenter = Mockito.mock(DashboardOutputBoundary.class);
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
 
-        DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, mockApi);
+        DashboardInteractor dashboardInteractor = new DashboardInteractor(
+                userDataAccessObject, cacheStockInformation, dashboardPresenter, mockApi);
         DashboardInputData dashboardInputData = new DashboardInputData(true);
         dashboardInteractor.execute(dashboardInputData);
 
@@ -108,25 +115,28 @@ public class DashboardTest {
 
         assertTrue(dashboardOutputData.getRefreshPressed());
 
-        assertEquals(dashboardOutputData.getCurrentPriceStats().size(), 1);
-        assertEquals(dashboardOutputData.getCurrentPriceStats().get(0).get(0), 100.0);
-        assertEquals(dashboardOutputData.getCurrentPriceStats().get(0).get(1), -1.0);
-        assertEquals(dashboardOutputData.getCurrentPriceStats().get(0).get(2), 2.0);
+        assertEquals(cacheStockInformation.getStockInformationMap().size(), 0);
+        assertEquals(dashboardOutputData.getStockPriceInformationTable().size(), 1);
+        assertTrue(dashboardOutputData.getStockPriceInformationTable().containsKey("AAPL"));
+        assertEquals(dashboardOutputData.getStockPriceInformationTable().get("AAPL").get(0), 100.0);
+        assertEquals(dashboardOutputData.getStockPriceInformationTable().get("AAPL").get(1), -1.0);
+        assertEquals(dashboardOutputData.getStockPriceInformationTable().get("AAPL").get(2), 2.0);
 
-        assertNull(dashboardOutputData.getOwnedAmounts());
+        assertNull(dashboardOutputData.getOwnedStocksInformationTable());
         assertNull(dashboardOutputData.getUserStats());
-        assertNull(dashboardOutputData.getOwnedTickers());
     }
 
 
     @Test
     public void testInvalidTicker() {
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
         DashboardOutputBoundary dashboardPresenter = Mockito.mock(DashboardOutputBoundary.class);
 
         User capturedUser = userDataAccessObject.get();
         capturedUser.addToPortfolio("AAPL :)", 1.0);
 
-        DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, mockApi);
+        DashboardInteractor dashboardInteractor = new DashboardInteractor(
+                userDataAccessObject, cacheStockInformation, dashboardPresenter, mockApi);
         DashboardInputData dashboardInputData = new DashboardInputData(true);
         dashboardInteractor.execute(dashboardInputData);
 
@@ -143,6 +153,7 @@ public class DashboardTest {
 
     @Test
     public void testDaysSinceReset() {
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
         DashboardOutputBoundary dashboardPresenter = Mockito.mock(DashboardOutputBoundary.class);
 
         User capturedUser = userDataAccessObject.get();
@@ -158,7 +169,8 @@ public class DashboardTest {
                 transactionList
         ));
 
-        DashboardInteractor dashboardInteractor = new DashboardInteractor(userDataAccessObject, dashboardPresenter, mockApi);
+        DashboardInteractor dashboardInteractor = new DashboardInteractor(
+                userDataAccessObject, cacheStockInformation, dashboardPresenter, mockApi);
         DashboardInputData dashboardInputData = new DashboardInputData(false);
         dashboardInteractor.execute(dashboardInputData);
 
@@ -172,5 +184,32 @@ public class DashboardTest {
         HashMap<String, Double> userStats = dashboardOutputData.getUserStats();
         assertFalse(dashboardOutputData.getRefreshPressed());
         assertEquals(userStats.get("Days since last reset"), 5.0);
+    }
+
+    @Test
+    public void testCacheStockInformationPropertyChanged() {
+        CacheStockInformation cacheStockInformation = new CacheStockInformation();
+        DashboardOutputBoundary dashboardPresenter = Mockito.mock(DashboardOutputBoundary.class);
+
+        CacheStockInformationInteractor cacheStockInformationInteractor = new CacheStockInformationInteractor(
+                userDataAccessObject, cacheStockInformation, mockApi);
+//
+        DashboardInteractor dashboardInteractor = new DashboardInteractor(
+                userDataAccessObject, cacheStockInformation, dashboardPresenter, mockApi);
+
+        cacheStockInformationInteractor.execute();
+
+        ArgumentCaptor<DashboardOutputData> argumentCaptor = ArgumentCaptor.forClass(DashboardOutputData.class);
+        Mockito.verify(dashboardPresenter).prepareSuccessView(argumentCaptor.capture());
+        DashboardOutputData capturedData = argumentCaptor.getValue();
+
+        assertTrue(capturedData.getRefreshPressed());
+        assertEquals(capturedData.getStockPriceInformationTable().size(), 1);
+        assertTrue(capturedData.getStockPriceInformationTable().containsKey("AAPL"));
+        assertEquals(capturedData.getStockPriceInformationTable().get("AAPL").get(0), 100.0);
+        assertEquals(capturedData.getStockPriceInformationTable().get("AAPL").get(1), -1.0);
+        assertEquals(capturedData.getStockPriceInformationTable().get("AAPL").get(2), 2.0);
+        assertNull(capturedData.getOwnedStocksInformationTable());
+        assertNull(capturedData.getUserStats());
     }
 }
