@@ -153,7 +153,6 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
             }
         }
         if (selectedStock != null) {
-            System.out.println(selectedStock);
             stockInputFieldFilterModel.setSelectedItem(selectedStock);
         }
 
