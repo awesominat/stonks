@@ -116,7 +116,7 @@ public class Main {
 
         // Async function call for CacheStockInformation to begin
         CompletableFuture<Void> beginAsyncCaching = CompletableFuture.runAsync(() -> {
-            try {
+            try{
                 while (true) {
                     Thread.sleep(15000);
                     cacheController.execute();

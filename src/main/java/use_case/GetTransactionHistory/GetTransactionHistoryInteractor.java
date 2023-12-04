@@ -86,7 +86,7 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
         unsortedTransactions.sort((list1, list2) -> {
             LocalDateTime dateTime1 = (LocalDateTime) list1.get(4);
             LocalDateTime dateTime2 = (LocalDateTime) list2.get(4);
-            return dateTime1.compareTo(dateTime2);
+            return dateTime2.compareTo(dateTime1);
         });
     }
 
