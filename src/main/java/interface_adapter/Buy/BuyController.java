@@ -4,7 +4,7 @@ import use_case.Buy.BuyInputBoundary;
 import use_case.Buy.BuyInputData;
 
 /**
- * Handles the user's input and passing it to the interactor.
+ * Handles the user's input and passes it to the interactor.
  */
 public class BuyController {
     final private BuyInputBoundary buyInteractor;
@@ -16,6 +16,10 @@ public class BuyController {
         this.buyInteractor = buyInteractor;
     }
 
+    /**
+     * @param amount The amount of stocks to be bought.
+     * @param ticker The ticker of the stock to be bought.
+     */
     public void execute(String amount, String ticker) {
         try {
             BuyInputData buyInputData = new BuyInputData(Double.parseDouble(amount), ticker);
@@ -26,10 +30,18 @@ public class BuyController {
         }
     }
 
+    /**
+     * @param ticker The ticker of the stock to be searched.
+     */
     public void execute(String ticker) {
         BuyInputData buyInputData = new BuyInputData(ticker);
         buyInteractor.execute(buyInputData);
     }
+
+    /**
+     * Executes the use case with no input data.
+     * The point of this is to get the balance.
+     */
     public void execute() {
         BuyInputData buyInputData = new BuyInputData();
         buyInteractor.execute(buyInputData);
