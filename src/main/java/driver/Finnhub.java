@@ -234,6 +234,8 @@ public class Finnhub implements APIAccessInterface {
 
             if (responseBody.get("c") instanceof BigDecimal) {
                 price = ((BigDecimal) responseBody.get("c")).doubleValue();
+            } else if (responseBody.get("c") instanceof Integer) {
+                price = ((Integer) responseBody.get("c")).doubleValue();
             } else {
                 price = (Double) responseBody.get("c");
             }
