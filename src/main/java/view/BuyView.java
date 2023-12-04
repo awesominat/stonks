@@ -16,10 +16,18 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Defines the view for the Buy use case.
+ */
 public class BuyView extends JPanel implements ActionListener, PropertyChangeListener {
 
+    /** The name of the view. */
     public final String viewName = "buy";
+
+    /** The name of the view. */
     private final BuyViewModel buyViewModel;
+
+    /** The controller for the view. */
     private final BuyController buyController;
 
     final JTextField tickerInputField = new JTextField(15);
@@ -55,6 +63,13 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             balanceField.setForeground(Color.RED);
         }
     }
+
+    /**
+     * @param buyController the controller for the view's use case
+     * @param buyViewModel the view model for the view
+     * @param viewManagerModel the view manager model
+     * @param dashboardViewModel the dashboard view model
+     */
     public BuyView(
             BuyController buyController,
             BuyViewModel buyViewModel,
@@ -206,10 +221,17 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
 
     }
 
+    /**
+     * @param evt the event to be processed by the controller
+     */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * @param evt A PropertyChangeEvent object describing the event source
+     *            and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         buyController.execute();
@@ -252,6 +274,9 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
         }
     }
 
+    /**
+     * @param state the state used to set the fields of the view
+     */
     private void setFields(BuyState state) {
         tickerInputField.setText(state.getTicker());
         amountInputField.setText(state.getAmount());
