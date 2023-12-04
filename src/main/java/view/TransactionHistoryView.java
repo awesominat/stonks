@@ -16,20 +16,39 @@ import java.util.List;
 
 public class TransactionHistoryView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "transactionHistory";
+
+    // transaction history view model that stores that transaction history state
     private final GetTransactionHistoryViewModel getTransactionHistoryViewModel;
+    // Transaction history controller that executes the use case
     GetTransactionHistoryController getTransactionHistoryController;
 
+    // Transaction history table
     final JTable table;
+
+    // back button to return to the dashboard view
     final JButton back;
+
+    // dropdown menus for filter selection
     DefaultComboBoxModel<String> stockInputFieldFilterModel;
     final JComboBox<String> stockInputFieldFilter;
     DefaultComboBoxModel<String> typeInputFieldFilterModel;
     final JComboBox<String> typeInputFieldFilter;
+
+    // the filter collection interface which allows us to apply the filters
     FilterCollectionInterface filterCollection = new FilterCollection();
 
+    // currently selected stock and transaction type in the filter
     String selectedStock = null;
     String selectedType = null;
 
+    /**
+     * Constructs a {@code TransactionHistoryView} with the specified dependencies.
+     *
+     * @param getTransactionHistoryController the controller for transaction history actions
+     * @param getTransactionHistoryViewModel  the view model for transaction history data
+     * @param viewManagerModel                the model for managing views
+     * @param dashboardViewModel              the view model for the dashboard
+     */
     public TransactionHistoryView(
             GetTransactionHistoryController getTransactionHistoryController,
             GetTransactionHistoryViewModel getTransactionHistoryViewModel,
@@ -45,7 +64,6 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
 
         filterCollection.add(new FilterByStockName());
         filterCollection.add(new FilterByTransactionType());
-//        this.getTransactionHistoryController.execute();
 
         back = new JButton(getTransactionHistoryViewModel.BACK_BUTTON_LABEL);
         table = new JTable();
@@ -108,10 +126,21 @@ public class TransactionHistoryView extends JPanel implements ActionListener, Pr
         this.add(splitPane);
     }
 
+    /**
+     * Handles the action performed event, e.g., button clicks.
+     *
+     * @param evt the action event
+     */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * Responds to property change events, updating the view based on changes in the
+     * associated view model and applying filters to the displayed transaction data.
+     *
+     * @param evt the property change event
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         getTransactionHistoryController.execute();
 

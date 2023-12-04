@@ -14,7 +14,8 @@ public class LocalDateTimeTypeAdapter implements JsonSerializer<LocalDateTime>, 
      *
      * @param dateTime      LocalDateTime object to be serialized
      * @param typeOfSrc     Type of source object that is being serialized
-     * @param context       ??? TODO
+     * @param context       an interface that is used by the json element returned. Not relevant for our
+     *                      usage of this function, since this is used by the library
      * @return              Returns a serialized element of a json object
      */
     @Override
@@ -28,7 +29,8 @@ public class LocalDateTimeTypeAdapter implements JsonSerializer<LocalDateTime>, 
      *
      * @param json      Json element to be deserialize
      * @param typeOfT   type of returned object
-     * @param context   ??? TODO
+     * @param context       an interface that is used by the json element returned. Not relevant for our
+     *                      usage of this function, since this is used by the library
      * @return          Deserialized date time object
      * @throws JsonParseException   throws this error if unable to parse json element
      */

@@ -45,12 +45,6 @@ public class Finnhub implements APIAccessInterface {
         APIKEY = fileReader.readFromInputStream(inputStream);
     }
 
-
-    /**
-     * TODO
-     * Unsure about the purpose of this method or what the attribute appName means
-     * @return
-     */
     @Override
     public String getAppName() {
         return appName;

@@ -15,6 +15,16 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
     ResetBalanceOutputBoundary resetBalancePresenter;
     APIAccessInterface driverAPI;
 
+    /**
+     * Constructor for the reset balance use case interactor
+     *
+     * @param userDataAccessInterface       allows us to access the user entity, which
+     *                                      allows us to reset the balance and portfolio
+     * @param resetBalancePresenter         the presenter, which allows us to modify the
+     *                                      dashboard state and cause a reset balance success popup to show
+     * @param driverAPI                     this is simply needed so that our implementation adheres
+     *                                      to the BaseStockInteractor class. This is not used in any way.
+     */
     public ResetBalanceInteractor(
             ResetBalanceDataAccessInterface userDataAccessInterface,
             ResetBalanceOutputBoundary resetBalancePresenter,
@@ -36,16 +46,21 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         );
     }
 
+    /**
+     * This function runs the reset balance use case and resets the users current balance to 10000
+     * and also empties the users portfolio.
+     *
+     * @param resetBalanceInputData     contains a boolean indicating whether the reset button has been
+     *                                  pressed or not
+     */
     @Override
     public void execute(ResetBalanceInputData resetBalanceInputData) {
         Boolean resetPressed = resetBalanceInputData.getResetPressed();
         User user = userDataAccessObject.get();
-        HashMap<String, Double> portfolio = user.getPortfolio();
         Double curBalance = user.getBalance();
         Double amountToAdd = 10000.0;
 
         user.setBalance(amountToAdd);
-
         user.clearPortfolio();
 
         Transaction transaction = createResetTransaction(amountToAdd);

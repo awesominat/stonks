@@ -10,6 +10,14 @@ public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
     private ViewManagerModel viewManagerModel;
     private final DashboardViewModel dashboardViewModel;
 
+    /**
+     * Constructor for the reset balance presenter
+     *
+     * @param viewManagerModel      view manager model
+     * @param dashboardViewModel    the dashboard view model. This is required because the reset use case
+     *                              has no view, so it mutates the dashboard state to indicate when the reset
+     *                              is successful and the reset popup needs to be shown.
+     */
     public ResetBalancePresenter(
             ViewManagerModel viewManagerModel,
             DashboardViewModel dashboardViewModel
@@ -17,6 +25,14 @@ public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewModel = dashboardViewModel;
     }
+
+    /**
+     * The prepare success view method, which accesses the dashboard state from the
+     * dashboard view model and mutates it to indicate that a reset has occurred.
+     *
+     * @param response      an instance of dashboard output data, which contains whether
+     *                      the reset button has been pressed
+     */
     @Override
     public void prepareSuccessView(ResetBalanceOutputData response) {
         if (response.isResetPressed()){
@@ -24,5 +40,4 @@ public class ResetBalancePresenter implements ResetBalanceOutputBoundary{
             state.setResetPressed(response.isResetPressed());
         }
     }
-
 }
