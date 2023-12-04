@@ -1,13 +1,12 @@
 package view;
 
 import interface_adapter.Dashboard.DashboardViewModel;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.Sell.SellController;
-import interface_adapter.Sell.SellViewModel;
 import interface_adapter.Sell.SellState;
+import interface_adapter.Sell.SellViewModel;
+import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -17,7 +16,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.util.List;
 
 public class SellView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -145,6 +143,9 @@ public class SellView extends JPanel implements ActionListener, PropertyChangeLi
                 sellViewModel.setState(currentState);
             }
         });
+        stockInputField.setName("stockInputField");
+        amountInputField.setName("amountInputField");
+        currentBalance.setName("currentBalance");
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(currentBalance);
