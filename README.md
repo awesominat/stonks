@@ -2,12 +2,12 @@
 
 ## Installation Instructions
 
-1. Clone the repository using any CLI with git installed using "git clone https://github.com/awesominat/stonks.git" (alternatively, you can download the repo)
-2. Install [Maven](https://maven.apache.org/download.cgi) or run `brew install maven` in terminal to install Maven
-3. Run `mvn clean install` in the project directory
-4. Create an account over on [Finnhub](finnhub.io) and copy your API key
-5. Create a file called file.txt in the root directory and paste the key and nothing else
-6. Navigate to src/app and run Main
+1. Clone the repository using any CLI with git installed using "git clone https://github.com/awesominat/stonks.git" (alternatively, you can download the repo as a zip folder)
+2. Install Maven using the instructions found [here](https://maven.apache.org/install.html). Alternatively, if you are on MacOS and have brew installed, you can install maven with `brew install maven`
+3. Navigate to the project directory in the terminal. Run `mvn clean install` in the project directory.
+4. Create a free account on [Finnhub](finnhub.io) and copy your API key.
+5. Create a file named `file.txt` in the root directory of the project and paste the API key (make sure that there are no leading/trailing spaces, the file only contains your API key).
+6. Navigate to src/app and run `Main.java`
 
 ## General Description
 The broad purpose of the software is to give users a platform to invest in stocks, view their profits, view stock price 
