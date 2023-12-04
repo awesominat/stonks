@@ -83,7 +83,7 @@ public class CommonUser implements User {
      * portfolio and a balance of 10000
      */
     public CommonUser() {
-        this.balance = 10000.0;
+        this.balance = User.DEFAULT_BALANCE;
         this.portfolio = new HashMap<>();
         this.history = new HashMap<>();
     }

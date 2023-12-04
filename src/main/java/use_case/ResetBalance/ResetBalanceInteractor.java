@@ -8,7 +8,6 @@ import use_case.APIAccessInterface;
 import use_case.BaseStockInteractor;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 public class ResetBalanceInteractor extends BaseStockInteractor implements ResetBalanceInputBoundary {
     final ResetBalanceDataAccessInterface userDataAccessObject;
@@ -58,7 +57,7 @@ public class ResetBalanceInteractor extends BaseStockInteractor implements Reset
         Boolean resetPressed = resetBalanceInputData.getResetPressed();
         User user = userDataAccessObject.get();
         Double curBalance = user.getBalance();
-        Double amountToAdd = 10000.0;
+        Double amountToAdd = User.DEFAULT_BALANCE;
 
         user.setBalance(amountToAdd);
         user.clearPortfolio();
