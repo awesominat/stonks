@@ -82,7 +82,7 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
      *
      * @param unsortedTransactions the list of transactions to be sorted
      */
-    public void sortTransactions(List<List<Object>> unsortedTransactions) {
+    private void sortTransactions(List<List<Object>> unsortedTransactions) {
         unsortedTransactions.sort((list1, list2) -> {
             LocalDateTime dateTime1 = (LocalDateTime) list1.get(4);
             LocalDateTime dateTime2 = (LocalDateTime) list2.get(4);
@@ -96,7 +96,7 @@ public class GetTransactionHistoryInteractor implements GetTransactionHistoryInp
      * @param objectList the list of transactions in object format
      * @return the list of transactions in string format
      */
-    public List<List<String>> convertObjectListToStringList(List<List<Object>> objectList) {
+    private List<List<String>> convertObjectListToStringList(List<List<Object>> objectList) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a yyyy-MM-dd");
         List<List<String>> outputList = new ArrayList<>();
         for (List<Object> o: objectList) {
