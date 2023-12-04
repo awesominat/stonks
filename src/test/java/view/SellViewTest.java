@@ -62,11 +62,6 @@ public class SellViewTest {
         viewManagerModel = Mockito.mock(ViewManagerModel.class);
 
         sellView = new SellView(sellViewModel, sellController, viewManagerModel, dashboardViewModel);
-
-        jf = new JFrame();
-        jf.setContentPane(sellView);
-        jf.pack();
-        jf.setVisible(true);
     }
 
     private JButton findButton(Component component, String query) {

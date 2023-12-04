@@ -39,11 +39,6 @@ public class BuyViewTest {
         viewManagerModel = Mockito.mock(ViewManagerModel.class);
 
         buyView = new BuyView(buyController, buyViewModel, viewManagerModel, dashboardViewModel);
-
-        jf = new JFrame();
-        jf.setContentPane(buyView);
-        jf.pack();
-        jf.setVisible(true);
     }
 
     @Test
