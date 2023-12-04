@@ -15,7 +15,8 @@ public class TransactionDeserializer implements JsonDeserializer<Transaction> {
      *
      * @param json      json element to deserialize
      * @param typeOfT   return type
-     * @param context   ??? TODO
+     * @param context       an interface that is used by the json element returned. Not relevant for our
+     *                      usage of this function, since this is used by the library
      * @return          deserialized json element (Transaction object)
      * @throws JsonParseException   error thrown if unable to parse json element
      */
