@@ -31,6 +31,7 @@ public class SellViewTest {
 
     @BeforeEach
     public void setUp() {
+        System.setProperty("java.awt.headless", "true");
         InMemoryUserDataAccessObject inMemoryUserDataAccessObject = new InMemoryUserDataAccessObject(new CommonUserFactory());
         User user = inMemoryUserDataAccessObject.get();
         user.addToPortfolio("AAPL", 10.0);

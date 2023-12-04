@@ -31,6 +31,7 @@ public class BuyViewTest {
 
     @BeforeEach
     public void setUp() {
+        System.setProperty("java.awt.headless", "true");
         buyViewModel = new BuyViewModel();
 
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
