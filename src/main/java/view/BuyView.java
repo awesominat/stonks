@@ -142,7 +142,9 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
             public void keyPressed(KeyEvent e) {}
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+                updateBalanceLabelColor();
+            }
         });
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setLayout(new BorderLayout());
@@ -280,6 +282,7 @@ public class BuyView extends JPanel implements ActionListener, PropertyChangeLis
     private void setFields(BuyState state) {
         tickerInputField.setText(state.getTicker());
         amountInputField.setText(state.getAmount());
+        updateBalanceLabelColor();
     }
 
 }

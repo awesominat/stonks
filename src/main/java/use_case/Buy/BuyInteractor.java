@@ -99,8 +99,7 @@ public class BuyInteractor extends BaseStockInteractor implements BuyInputBounda
             return;
         }
         if (!user.hasEnough(currentPrice * amount)) {
-            buyPresenter.prepareFailView("You need $" + (user.getBalance() - (currentPrice * amount))
-                        + " more to complete this transaction.");
+            buyPresenter.prepareFailView(String.format("You need $%.2f more to complete this transaction.", (currentPrice * amount) - user.getBalance()));
             return;
         }
 
