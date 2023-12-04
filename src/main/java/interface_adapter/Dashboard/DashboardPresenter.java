@@ -72,11 +72,7 @@ public class DashboardPresenter implements DashboardOutputBoundary  {
             Set<String> ownedTickers = ownedStocksTable.keySet();
             Set<String> stateTickers = stateStockPriceInfoTable.keySet();
 
-            for (String stateTicker: stateTickers) {
-                if (!ownedTickers.contains(stateTicker)) {
-                    stateStockPriceInfoTable.remove(stateTicker);
-                }
-            }
+            stateStockPriceInfoTable.keySet().removeIf(stateTicker -> !ownedTickers.contains(stateTicker));
 
             for (String ownedTicker: ownedTickers) {
                 if (!stateTickers.contains(ownedTicker)) {
