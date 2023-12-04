@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Implements the GetNewsInputBoundary interface.
- * Represents the interactor for the GetNews use case.
+ * Implements the {@code GetNewsInputBoundary} interface.
+ * Represents the interactor for the {@code GetNews} use case.
  * Implements input boundary's execute method to fetch news articles related to the company specified (in input data).
  */
 public class GetNewsInteractor implements GetNewsInputBoundary {
